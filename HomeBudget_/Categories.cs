@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
+using System.Data.SqlClient;
+using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -25,9 +27,10 @@ namespace Budget
     public class Categories
     {
         private static String DefaultFileName = "budgetCategories.txt";
-        private List<Category> _Cats = new List<Category>();
         private string _FileName;
         private string _DirName;
+        private SQLiteConnection _DbConnection;
+
 
         // ====================================================================
         // Properties
@@ -41,12 +44,22 @@ namespace Budget
         /// </summary>
         public String DirName { get { return _DirName; } }
 
+        public SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
+
+
         // ====================================================================
         // Constructor
         // ====================================================================
         public Categories()
         {
             SetCategoriesToDefaults();
+        }
+
+        public Categories(SQLiteConnection dbConnection, bool isNewDb)
+        {
+            DBConnection = dbConnection;
+            DBConnection.Open();
+
         }
 
         // ====================================================================
@@ -66,12 +79,24 @@ namespace Budget
         /// </example>
         public Category GetCategoryFromId(int i)
         {
-            Category c = _Cats.Find(x => x.Id == i);
-            if (c == null)
-            {
-                throw new Exception("Cannot find category with id " + i.ToString());
-            }
-            return c;
+            
+            string stm = $"SELECT * FROM categories WHERE id={i}";
+            using var cmd = new SQLiteCommand(stm,DBConnection);
+
+            using SQLiteDataReader rdr = cmd.ExecuteReader();
+
+            int id = rdr.GetInt32(0);
+            string description = rdr.GetString(1);
+            Category.CategoryType categoryType = (Category.CategoryType) rdr.GetInt32(2);
+
+            return new Category(id,description,categoryType);
+
+            //Category c = _Cats.Find(x => x.Id == i);
+            //if (c == null)
+            //{
+            //    throw new Exception("Cannot find category with id " + i.ToString());
+            //}
+            //return c;
         }
 
         // ====================================================================
@@ -90,33 +115,37 @@ namespace Budget
         /// categories.ReadFromFile("categories.xml");       
         /// </code>
         /// </example>
-        public void ReadFromFile(String filepath = null)
-        {
 
-            // ---------------------------------------------------------------
-            // reading from file resets all the current categories,
-            // ---------------------------------------------------------------
-            _Cats.Clear();
 
-            // ---------------------------------------------------------------
-            // reset default dir/filename to null 
-            // ... filepath may not be valid, 
-            // ---------------------------------------------------------------
-            _DirName = null;
-            _FileName = null;
+        //public void ReadFromFile(String filepath = null)
+        //{
 
-            // ---------------------------------------------------------------
-            // get filepath name (throws exception if it doesn't exist)
-            // ---------------------------------------------------------------
-            filepath = BudgetFiles.VerifyReadFromFileName(filepath, DefaultFileName);
+        //    // ---------------------------------------------------------------
+        //    // reading from file resets all the current categories,
+        //    // ---------------------------------------------------------------
+        //    _Cats.Clear();
 
-            // ---------------------------------------------------------------
-            // If file exists, read it
-            // ---------------------------------------------------------------
-            _ReadXMLFile(filepath);
-            _DirName = Path.GetDirectoryName(filepath);
-            _FileName = Path.GetFileName(filepath);
-        }
+        //    // ---------------------------------------------------------------
+        //    // reset default dir/filename to null 
+        //    // ... filepath may not be valid, 
+        //    // ---------------------------------------------------------------
+        //    _DirName = null;
+        //    _FileName = null;
+
+        //    // ---------------------------------------------------------------
+        //    // get filepath name (throws exception if it doesn't exist)
+        //    // ---------------------------------------------------------------
+        //    filepath = BudgetFiles.VerifyReadFromFileName(filepath, DefaultFileName);
+
+        //    // ---------------------------------------------------------------
+        //    // If file exists, read it
+        //    // ---------------------------------------------------------------
+        //    _ReadXMLFile(filepath);
+        //    _DirName = Path.GetDirectoryName(filepath);
+        //    _FileName = Path.GetFileName(filepath);
+        //}
+
+
 
         // ====================================================================
         // save to a file
@@ -133,38 +162,42 @@ namespace Budget
         /// categories.SaveToFile("categories.xml");       
         /// </code>
         /// </example>
-        public void SaveToFile(String filepath = null)
-        {
-            // ---------------------------------------------------------------
-            // if file path not specified, set to last read file
-            // ---------------------------------------------------------------
-            if (filepath == null && DirName != null && FileName != null)
-            {
-                filepath = DirName + "\\" + FileName;
-            }
+      
 
-            // ---------------------------------------------------------------
-            // just in case filepath doesn't exist, reset path info
-            // ---------------------------------------------------------------
-            _DirName = null;
-            _FileName = null;
+        //public void SaveToFile(String filepath = null)
+        //{
+        //    // ---------------------------------------------------------------
+        //    // if file path not specified, set to last read file
+        //    // ---------------------------------------------------------------
+        //    if (filepath == null && DirName != null && FileName != null)
+        //    {
+        //        filepath = DirName + "\\" + FileName;
+        //    }
 
-            // ---------------------------------------------------------------
-            // get filepath name (throws exception if it doesn't exist)
-            // ---------------------------------------------------------------
-            filepath = BudgetFiles.VerifyWriteToFileName(filepath, DefaultFileName);
+        //    // ---------------------------------------------------------------
+        //    // just in case filepath doesn't exist, reset path info
+        //    // ---------------------------------------------------------------
+        //    _DirName = null;
+        //    _FileName = null;
 
-            // ---------------------------------------------------------------
-            // save as XML
-            // ---------------------------------------------------------------
-            _WriteXMLFile(filepath);
+        //    // ---------------------------------------------------------------
+        //    // get filepath name (throws exception if it doesn't exist)
+        //    // ---------------------------------------------------------------
+        //    filepath = BudgetFiles.VerifyWriteToFileName(filepath, DefaultFileName);
 
-            // ----------------------------------------------------------------
-            // save filename info for later use
-            // ----------------------------------------------------------------
-            _DirName = Path.GetDirectoryName(filepath);
-            _FileName = Path.GetFileName(filepath);
-        }
+        //    // ---------------------------------------------------------------
+        //    // save as XML
+        //    // ---------------------------------------------------------------
+        //    _WriteXMLFile(filepath);
+
+        //    // ----------------------------------------------------------------
+        //    // save filename info for later use
+        //    // ----------------------------------------------------------------
+        //    _DirName = Path.GetDirectoryName(filepath);
+        //    _FileName = Path.GetFileName(filepath);
+        //}
+
+
 
         // ====================================================================
         // set categories to default
@@ -178,6 +211,7 @@ namespace Budget
         /// categories.SetCategoriesToDefaults();        
         /// </code>
         /// </example>
+        
         public void SetCategoriesToDefaults()
         {
             // ---------------------------------------------------------------
@@ -212,7 +246,11 @@ namespace Budget
         // ====================================================================
         private void Add(Category cat)
         {
-            _Cats.Add(cat);
+            string stm = $"INSERT INTO categories(Id,Description,TypeId) VALUES({cat.Id},{cat.Description},{cat.Type})";
+            using var cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.ExecuteNonQuery();
+            
         }
         /// <summary>
         /// Adds a new category by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.
