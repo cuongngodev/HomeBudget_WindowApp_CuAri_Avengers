@@ -27,15 +27,15 @@ namespace Budget
         /// <summary>
         /// Gets or sets the unique identifier for the category.
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; }
         /// <summary>
         /// Gets or sets the description of the category.
         /// </summary>
-        public String Description { get; set; }
+        public String Description { get;}
         /// <summary>
         /// Gets or sets the type of the category.
         /// </summary>
-        public CategoryType Type { get; set; }
+        public CategoryType Type { get;  }
         /// <summary>
         /// Enumeration specifying if the category is related to income, expense, credit, savings.
         /// </summary>

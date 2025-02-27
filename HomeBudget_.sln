@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeBudget_", "HomeBudget_\HomeBudget_.csproj", "{DE6A0CE7-4682-40A1-B7A9-146D44980859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeBudget_", "HomeBudget_\HomeBudget_.csproj", "{DE6A0CE7-4682-40A1-B7A9-146D44980859}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E980D414-CF82-42AE-8F80-5C9CF5894D39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E980D414-CF82-42AE-8F80-5C9CF5894D39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
