@@ -7,12 +7,16 @@ using System.IO;
 using System.Xml;
 using System.Data.SqlClient;
 using System.Data.SQLite;
+using System.Text.Json.Serialization;
+using System.Runtime.Intrinsics.Arm;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
 // * Released under the GNU General Public License
 // ============================================================================
 
+//TODO: 
+//REMOVE ALL SELECT *'s
 namespace Budget
 {
     // ====================================================================
@@ -27,6 +31,7 @@ namespace Budget
     public class Categories
     {
         private static String DefaultFileName = "budgetCategories.txt";
+        private List<Category> _Cats = new List<Category>();
         private string _FileName;
         private string _DirName;
         private SQLiteConnection _DbConnection;
@@ -44,7 +49,7 @@ namespace Budget
         /// </summary>
         public String DirName { get { return _DirName; } }
 
-        public SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
+        private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
 
 
         // ====================================================================
@@ -58,8 +63,27 @@ namespace Budget
         public Categories(SQLiteConnection dbConnection, bool isNewDb)
         {
             DBConnection = dbConnection;
-            DBConnection.Open();
 
+            if (isNewDb)
+            {
+                AddCategoryTypes();
+
+            }
+            
+
+        }
+
+        public void AddCategoryTypes()
+        { 
+
+            foreach (Category.CategoryType cat in Enum.GetValues<Category.CategoryType>())
+            {
+                string stm = "INSERT INTO categoryTypes(Description) VALUES(@description);";
+                SQLiteCommand cmd = new(stm, DBConnection);
+                cmd.Parameters.AddWithValue("@description", cat.ToString());
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+            }
         }
 
         // ====================================================================
@@ -81,18 +105,25 @@ namespace Budget
         {
             
             string stm = "SELECT * FROM categories WHERE id=@id";
-            using var cmd = new SQLiteCommand(stm,DBConnection);
+            var cmd = new SQLiteCommand(stm,DBConnection);
 
             cmd.CommandText = stm;
 
             cmd.Parameters.AddWithValue("@id", i);
             cmd.Prepare();
 
-            using SQLiteDataReader rdr = cmd.ExecuteReader();
+            SQLiteDataReader rdr = cmd.ExecuteReader();
 
-            int id = rdr.GetInt32(0);
-            string description = rdr.GetString(1);
-            Category.CategoryType categoryType = (Category.CategoryType) rdr.GetInt32(2);
+            int id = 0;
+            string description = "";
+            Category.CategoryType categoryType = Category.CategoryType.Income;
+            while (rdr.Read())
+            {
+                id = rdr.GetInt32(0);
+                description = rdr.GetString(1);
+                categoryType = (Category.CategoryType)rdr.GetInt32(2);
+
+            }
 
             return new Category(id,description,categoryType);
 
@@ -122,33 +153,33 @@ namespace Budget
         /// </example>
 
 
-        //public void ReadFromFile(String filepath = null)
-        //{
+        public void ReadFromFile(String filepath = null)
+        {
 
-        //    // ---------------------------------------------------------------
-        //    // reading from file resets all the current categories,
-        //    // ---------------------------------------------------------------
-        //    _Cats.Clear();
+            // ---------------------------------------------------------------
+            // reading from file resets all the current categories,
+            // ---------------------------------------------------------------
+            _Cats.Clear();
 
-        //    // ---------------------------------------------------------------
-        //    // reset default dir/filename to null 
-        //    // ... filepath may not be valid, 
-        //    // ---------------------------------------------------------------
-        //    _DirName = null;
-        //    _FileName = null;
+            // ---------------------------------------------------------------
+            // reset default dir/filename to null 
+            // ... filepath may not be valid, 
+            // ---------------------------------------------------------------
+            _DirName = null;
+            _FileName = null;
 
-        //    // ---------------------------------------------------------------
-        //    // get filepath name (throws exception if it doesn't exist)
-        //    // ---------------------------------------------------------------
-        //    filepath = BudgetFiles.VerifyReadFromFileName(filepath, DefaultFileName);
+            // ---------------------------------------------------------------
+            // get filepath name (throws exception if it doesn't exist)
+            // ---------------------------------------------------------------
+            filepath = BudgetFiles.VerifyReadFromFileName(filepath, DefaultFileName);
 
-        //    // ---------------------------------------------------------------
-        //    // If file exists, read it
-        //    // ---------------------------------------------------------------
-        //    _ReadXMLFile(filepath);
-        //    _DirName = Path.GetDirectoryName(filepath);
-        //    _FileName = Path.GetFileName(filepath);
-        //}
+            // ---------------------------------------------------------------
+            // If file exists, read it
+            // ---------------------------------------------------------------
+            _ReadXMLFile(filepath);
+            _DirName = Path.GetDirectoryName(filepath);
+            _FileName = Path.GetFileName(filepath);
+        }
 
 
 
@@ -169,38 +200,38 @@ namespace Budget
         /// </example>
 
 
-        //public void SaveToFile(String filepath = null)
-        //{
-        //    // ---------------------------------------------------------------
-        //    // if file path not specified, set to last read file
-        //    // ---------------------------------------------------------------
-        //    if (filepath == null && DirName != null && FileName != null)
-        //    {
-        //        filepath = DirName + "\\" + FileName;
-        //    }
+        public void SaveToFile(String filepath = null)
+        {
+            // ---------------------------------------------------------------
+            // if file path not specified, set to last read file
+            // ---------------------------------------------------------------
+            if (filepath == null && DirName != null && FileName != null)
+            {
+                filepath = DirName + "\\" + FileName;
+            }
 
-        //    // ---------------------------------------------------------------
-        //    // just in case filepath doesn't exist, reset path info
-        //    // ---------------------------------------------------------------
-        //    _DirName = null;
-        //    _FileName = null;
+            // ---------------------------------------------------------------
+            // just in case filepath doesn't exist, reset path info
+            // ---------------------------------------------------------------
+            _DirName = null;
+            _FileName = null;
 
-        //    // ---------------------------------------------------------------
-        //    // get filepath name (throws exception if it doesn't exist)
-        //    // ---------------------------------------------------------------
-        //    filepath = BudgetFiles.VerifyWriteToFileName(filepath, DefaultFileName);
+            // ---------------------------------------------------------------
+            // get filepath name (throws exception if it doesn't exist)
+            // ---------------------------------------------------------------
+            filepath = BudgetFiles.VerifyWriteToFileName(filepath, DefaultFileName);
 
-        //    // ---------------------------------------------------------------
-        //    // save as XML
-        //    // ---------------------------------------------------------------
-        //    _WriteXMLFile(filepath);
+            // ---------------------------------------------------------------
+            // save as XML
+            // ---------------------------------------------------------------
+            _WriteXMLFile(filepath);
 
-        //    // ----------------------------------------------------------------
-        //    // save filename info for later use
-        //    // ----------------------------------------------------------------
-        //    _DirName = Path.GetDirectoryName(filepath);
-        //    _FileName = Path.GetFileName(filepath);
-        //}
+            // ----------------------------------------------------------------
+            // save filename info for later use
+            // ----------------------------------------------------------------
+            _DirName = Path.GetDirectoryName(filepath);
+            _FileName = Path.GetFileName(filepath);
+        }
 
 
 
@@ -222,7 +253,13 @@ namespace Budget
             // ---------------------------------------------------------------
             // reset any current categories,
             // ---------------------------------------------------------------
+
             //_Cats.Clear();
+
+            string stm = "TRUNCATE TABLE categories";
+
+            using var cmd = new SQLiteCommand(stm, DBConnection);
+            cmd.ExecuteNonQuery();
 
             // ---------------------------------------------------------------
             // Add Defaults
@@ -253,14 +290,13 @@ namespace Budget
         {
             string stm = "INSERT INTO categories(Id,Description,TypeId) VALUES(@id,@description,@type)";
 
-            
             using var cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
 
             cmd.Parameters.AddWithValue("@id", cat.Id);
             cmd.Parameters.AddWithValue("@description", cat.Description);
-            cmd.Parameters.AddWithValue("@type", cat.Type);
+            cmd.Parameters.AddWithValue("@type", ((int) cat.Type) + 1);
 
             cmd.Prepare();
 
@@ -281,7 +317,19 @@ namespace Budget
         /// </example>
         public void Add(String desc, Category.CategoryType type)
         {
+            string stm = "INSERT INTO categories(Description,TypeId) VALUES(@description,@type)";
 
+            using var cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.CommandText = stm;
+
+            //cmd.Parameters.AddWithValue("@id", cat.Id);
+            cmd.Parameters.AddWithValue("@description", desc);
+            cmd.Parameters.AddWithValue("@type", ((int)type) + 1); //FIX THIS 
+
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
 
             //int new_num = 1;
             //if (_Cats.Count > 0)
@@ -342,10 +390,27 @@ namespace Budget
         /// </example>
         public List<Category> List()
         {
+            List<Category> newList = new List<Category>();
 
+            string stm = "SELECT * FROM categories";
+            using var cmd = new SQLiteCommand(stm, DBConnection);
 
+            cmd.ExecuteNonQuery();
 
-            //List<Category> newList = new List<Category>();
+            SQLiteDataReader rdr = cmd.ExecuteReader();
+
+           
+            while (rdr.Read())
+            {
+                int id = rdr.GetInt32(0);
+                string description = rdr.GetString(1);
+                Category.CategoryType categoryType = (Category.CategoryType)rdr.GetInt32(2);
+
+                newList.Add(new Category(id, description, categoryType));
+            }
+            return newList;
+           
+
             //foreach (Category category in _Cats)
             //{
             //    newList.Add(new Category(category));
@@ -404,41 +469,41 @@ namespace Budget
         // ====================================================================
         // write all categories in our list to XML file
         // ====================================================================
-        //private void _WriteXMLFile(String filepath)
-        //{
-        //    try
-        //    {
-        //        // create top level element of categories
-        //        XmlDocument doc = new XmlDocument();
-        //        doc.LoadXml("<Categories></Categories>");
+        private void _WriteXMLFile(String filepath)
+        {
+            try
+            {
+                // create top level element of categories
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml("<Categories></Categories>");
 
-        //        // foreach Category, create an new xml element
-        //        foreach (Category cat in _Cats)
-        //        {
-        //            XmlElement ele = doc.CreateElement("Category");
-        //            XmlAttribute attr = doc.CreateAttribute("ID");
-        //            attr.Value = cat.Id.ToString();
-        //            ele.SetAttributeNode(attr);
-        //            XmlAttribute type = doc.CreateAttribute("type");
-        //            type.Value = cat.Type.ToString();
-        //            ele.SetAttributeNode(type);
+                // foreach Category, create an new xml element
+                foreach (Category cat in _Cats)
+                {
+                    XmlElement ele = doc.CreateElement("Category");
+                    XmlAttribute attr = doc.CreateAttribute("ID");
+                    attr.Value = cat.Id.ToString();
+                    ele.SetAttributeNode(attr);
+                    XmlAttribute type = doc.CreateAttribute("type");
+                    type.Value = cat.Type.ToString();
+                    ele.SetAttributeNode(type);
 
-        //            XmlText text = doc.CreateTextNode(cat.Description);
-        //            doc.DocumentElement.AppendChild(ele);
-        //            doc.DocumentElement.LastChild.AppendChild(text);
+                    XmlText text = doc.CreateTextNode(cat.Description);
+                    doc.DocumentElement.AppendChild(ele);
+                    doc.DocumentElement.LastChild.AppendChild(text);
 
-        //        }
+                }
 
-        //        // write the xml to FilePath
-        //        doc.Save(filepath);
+                // write the xml to FilePath
+                doc.Save(filepath);
 
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception("_WriteXMLFile: Reading XML " + e.Message);
-        //    }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("_WriteXMLFile: Reading XML " + e.Message);
+            }
 
-        //}
+        }
 
     }
 }
