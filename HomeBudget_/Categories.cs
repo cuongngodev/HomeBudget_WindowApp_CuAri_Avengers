@@ -80,8 +80,13 @@ namespace Budget
         public Category GetCategoryFromId(int i)
         {
             
-            string stm = $"SELECT * FROM categories WHERE id={i}";
+            string stm = "SELECT * FROM categories WHERE id=@id";
             using var cmd = new SQLiteCommand(stm,DBConnection);
+
+            cmd.CommandText = stm;
+
+            cmd.Parameters.AddWithValue("@id", i);
+            cmd.Prepare();
 
             using SQLiteDataReader rdr = cmd.ExecuteReader();
 
@@ -162,7 +167,7 @@ namespace Budget
         /// categories.SaveToFile("categories.xml");       
         /// </code>
         /// </example>
-      
+
 
         //public void SaveToFile(String filepath = null)
         //{
@@ -211,13 +216,13 @@ namespace Budget
         /// categories.SetCategoriesToDefaults();        
         /// </code>
         /// </example>
-        
+
         public void SetCategoriesToDefaults()
         {
             // ---------------------------------------------------------------
             // reset any current categories,
             // ---------------------------------------------------------------
-            _Cats.Clear();
+            //_Cats.Clear();
 
             // ---------------------------------------------------------------
             // Add Defaults
@@ -246,12 +251,23 @@ namespace Budget
         // ====================================================================
         private void Add(Category cat)
         {
-            string stm = $"INSERT INTO categories(Id,Description,TypeId) VALUES({cat.Id},{cat.Description},{cat.Type})";
+            string stm = "INSERT INTO categories(Id,Description,TypeId) VALUES(@id,@description,@type)";
+
+            
             using var cmd = new SQLiteCommand(stm, DBConnection);
 
+            cmd.CommandText = stm;
+
+            cmd.Parameters.AddWithValue("@id", cat.Id);
+            cmd.Parameters.AddWithValue("@description", cat.Description);
+            cmd.Parameters.AddWithValue("@type", cat.Type);
+
+            cmd.Prepare();
+
             cmd.ExecuteNonQuery();
-            
         }
+
+
         /// <summary>
         /// Adds a new category by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.
         /// </summary>
@@ -265,13 +281,15 @@ namespace Budget
         /// </example>
         public void Add(String desc, Category.CategoryType type)
         {
-            int new_num = 1;
-            if (_Cats.Count > 0)
-            {
-                new_num = (from c in _Cats select c.Id).Max();
-                new_num++;
-            }
-            _Cats.Add(new Category(new_num, desc, type));
+
+
+            //int new_num = 1;
+            //if (_Cats.Count > 0)
+            //{
+            //    new_num = (from c in _Cats select c.Id).Max();
+            //    new_num++;
+            //}
+            //_Cats.Add(new Category(new_num, desc, type));
         }
 
         // ====================================================================
@@ -287,10 +305,24 @@ namespace Budget
         /// categories.Delete(1);
         /// </code>
         /// </example>
+
         public void Delete(int Id)
         {
-            int i = _Cats.FindIndex(x => x.Id == Id);
-            _Cats.RemoveAt(i);
+
+            string stm = "DELETE FROM categories WHERE id=@id";
+
+            using var cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.CommandText = stm;
+
+            cmd.Parameters.AddWithValue("@id", Id);
+
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            //int i = _Cats.FindIndex(x => x.Id == Id);
+            //_Cats.RemoveAt(i);
         }
 
         // ====================================================================
@@ -310,12 +342,15 @@ namespace Budget
         /// </example>
         public List<Category> List()
         {
-            List<Category> newList = new List<Category>();
-            foreach (Category category in _Cats)
-            {
-                newList.Add(new Category(category));
-            }
-            return newList;
+
+
+
+            //List<Category> newList = new List<Category>();
+            //foreach (Category category in _Cats)
+            //{
+            //    newList.Add(new Category(category));
+            //}
+            //return newList;
         }
 
         // ====================================================================
@@ -369,41 +404,41 @@ namespace Budget
         // ====================================================================
         // write all categories in our list to XML file
         // ====================================================================
-        private void _WriteXMLFile(String filepath)
-        {
-            try
-            {
-                // create top level element of categories
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml("<Categories></Categories>");
+        //private void _WriteXMLFile(String filepath)
+        //{
+        //    try
+        //    {
+        //        // create top level element of categories
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.LoadXml("<Categories></Categories>");
 
-                // foreach Category, create an new xml element
-                foreach (Category cat in _Cats)
-                {
-                    XmlElement ele = doc.CreateElement("Category");
-                    XmlAttribute attr = doc.CreateAttribute("ID");
-                    attr.Value = cat.Id.ToString();
-                    ele.SetAttributeNode(attr);
-                    XmlAttribute type = doc.CreateAttribute("type");
-                    type.Value = cat.Type.ToString();
-                    ele.SetAttributeNode(type);
+        //        // foreach Category, create an new xml element
+        //        foreach (Category cat in _Cats)
+        //        {
+        //            XmlElement ele = doc.CreateElement("Category");
+        //            XmlAttribute attr = doc.CreateAttribute("ID");
+        //            attr.Value = cat.Id.ToString();
+        //            ele.SetAttributeNode(attr);
+        //            XmlAttribute type = doc.CreateAttribute("type");
+        //            type.Value = cat.Type.ToString();
+        //            ele.SetAttributeNode(type);
 
-                    XmlText text = doc.CreateTextNode(cat.Description);
-                    doc.DocumentElement.AppendChild(ele);
-                    doc.DocumentElement.LastChild.AppendChild(text);
+        //            XmlText text = doc.CreateTextNode(cat.Description);
+        //            doc.DocumentElement.AppendChild(ele);
+        //            doc.DocumentElement.LastChild.AppendChild(text);
 
-                }
+        //        }
 
-                // write the xml to FilePath
-                doc.Save(filepath);
+        //        // write the xml to FilePath
+        //        doc.Save(filepath);
 
-            }
-            catch (Exception e)
-            {
-                throw new Exception("_WriteXMLFile: Reading XML " + e.Message);
-            }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception("_WriteXMLFile: Reading XML " + e.Message);
+        //    }
 
-        }
+        //}
 
     }
 }
