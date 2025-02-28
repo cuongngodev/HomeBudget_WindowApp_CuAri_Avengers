@@ -205,8 +205,16 @@ namespace Budget
         /// </example> 
         public void Delete(int Id)
         {
-            int i = _Expenses.FindIndex(x => x.Id == Id);
-            _Expenses.RemoveAt(i);
+            try
+            {
+                int i = _Expenses.FindIndex(x => x.Id == Id);
+                _Expenses.RemoveAt(i);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: Invalid expense id given.");
+            }
+     
 
         }
 
@@ -310,7 +318,7 @@ namespace Budget
 
                     // child attributes (date, description, amount, category)
                     XmlElement d = doc.CreateElement("Date");
-                    XmlText dText = doc.CreateTextNode(exp.Date.ToString("M/dd/yyyy hh:mm:ss tt"));
+                    XmlText dText = doc.CreateTextNode(exp.Date.ToString("yyyy-MM-dd"));
                     ele.AppendChild(d);
                     d.AppendChild(dText);
 
