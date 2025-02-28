@@ -47,19 +47,19 @@ namespace Budget
 
                 // your code
                 SQLiteConnection.CreateFile(filename);
-                string cs = $"URI=file:{filename}; Foreign Keys=1";
-                Database._connection = new SQLiteConnection(cs);
+                string cs = $"URI=file:{filename}";
+                _connection = new SQLiteConnection(cs);
 
                 dbConnection.Open();
                 using var cmd = new SQLiteCommand(dbConnection);
 
-                cmd.CommandText = @"CREATE TABLE expenses(Id int PRIMARY KEY, Date TEXT, Description TEXT, Amount DOUBLE, CategoryId int, FOREIGN KEY (CategoryId) REFERENCES categories (Id));";
+                cmd.CommandText = @"CREATE TABLE categoryTypes(Id INTEGER  PRIMARY KEY, Description TEXT)";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = @"CREATE TABLE categories(Id int PRIMARY KEY, Description TEXT, TypeId int, FOREIGN KEY (TypeId) REFERENCES categoryTypes (Id));";
+                cmd.CommandText = @"CREATE TABLE categories(Id INTEGER  PRIMARY KEY, Description TEXT, TypeId int, FOREIGN KEY (TypeId) REFERENCES categoryTypes (Id));";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = @"CREATE TABLE categoryTypes(Id int PRIMARY KEY, Description TEXT)";
+                cmd.CommandText = @"CREATE TABLE expenses(Id INTEGER  PRIMARY KEY, Date TEXT, Description TEXT, Amount DOUBLE, CategoryId int, FOREIGN KEY (CategoryId) REFERENCES categories (Id));";
                 cmd.ExecuteNonQuery();
                 dbConnection.Close();
 
@@ -82,8 +82,8 @@ namespace Budget
 
                 // your code
                 string cs = $"URI=file:{filename}; Foreign Keys=1";
-
-                Database._connection = new SQLiteConnection(cs);
+                _connection = new SQLiteConnection(cs);
+                
                 dbConnection.Open();
             }
             catch (Exception ex)

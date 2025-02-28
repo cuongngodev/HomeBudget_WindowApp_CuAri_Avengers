@@ -67,7 +67,7 @@ namespace Budget
             if (isNewDb)
             {
                 AddCategoryTypes();
-
+                SetCategoriesToDefaults(); 
             }
             
 
@@ -75,11 +75,11 @@ namespace Budget
 
         public void AddCategoryTypes()
         { 
-
             foreach (Category.CategoryType cat in Enum.GetValues<Category.CategoryType>())
             {
                 string stm = "INSERT INTO categoryTypes(Description) VALUES(@description);";
                 SQLiteCommand cmd = new(stm, DBConnection);
+                //cmd.Parameters.AddWithValue("@id", (int)cat + 1);
                 cmd.Parameters.AddWithValue("@description", cat.ToString());
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
@@ -256,9 +256,9 @@ namespace Budget
 
             //_Cats.Clear();
 
-            string stm = "TRUNCATE TABLE categories";
+           string stm = "DELETE FROM categories; VACUUM;";
 
-            using var cmd = new SQLiteCommand(stm, DBConnection);
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
             cmd.ExecuteNonQuery();
 
             // ---------------------------------------------------------------
@@ -290,7 +290,7 @@ namespace Budget
         {
             string stm = "INSERT INTO categories(Id,Description,TypeId) VALUES(@id,@description,@type)";
 
-            using var cmd = new SQLiteCommand(stm, DBConnection);
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
 
@@ -319,13 +319,15 @@ namespace Budget
         {
             string stm = "INSERT INTO categories(Description,TypeId) VALUES(@description,@type)";
 
-            using var cmd = new SQLiteCommand(stm, DBConnection);
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
 
             //cmd.Parameters.AddWithValue("@id", cat.Id);
+            int categoryType = (int)type + 1;
+
             cmd.Parameters.AddWithValue("@description", desc);
-            cmd.Parameters.AddWithValue("@type", ((int)type) + 1); //FIX THIS 
+            cmd.Parameters.AddWithValue("@type", categoryType); //FIX THIS 
 
             cmd.Prepare();
 
@@ -359,7 +361,7 @@ namespace Budget
 
             string stm = "DELETE FROM categories WHERE id=@id";
 
-            using var cmd = new SQLiteCommand(stm, DBConnection);
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
 
@@ -393,7 +395,7 @@ namespace Budget
             List<Category> newList = new List<Category>();
 
             string stm = "SELECT * FROM categories";
-            using var cmd = new SQLiteCommand(stm, DBConnection);
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.ExecuteNonQuery();
 
@@ -402,6 +404,7 @@ namespace Budget
            
             while (rdr.Read())
             {
+                //Console.WriteLine(rdr.GetInt32(1));
                 int id = rdr.GetInt32(0);
                 string description = rdr.GetString(1);
                 Category.CategoryType categoryType = (Category.CategoryType)rdr.GetInt32(2);

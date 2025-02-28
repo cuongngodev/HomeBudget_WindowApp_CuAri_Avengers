@@ -235,8 +235,6 @@ namespace Budget
         // ====================================================================
         private void _ReadXMLFile(String filepath)
         {
-
-
             try
             {
                 XmlDocument doc = new XmlDocument();
