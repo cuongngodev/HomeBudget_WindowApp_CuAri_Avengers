@@ -20,7 +20,7 @@ namespace Budget
     //        - etc
     // ====================================================================
     /// <summary>
-    /// Manages a collection of expense items, providing different functionality for reading from and writing to files, and managing expense entries. Uses XML format for file operations.
+    /// Responsible for manageing a collection of <see cref="Expense"/> objects, providing different functionality for reading from and writing to files, and managing expense entries. Uses XML format for file operations.
     /// </summary>
     public class Expenses
     {
@@ -37,6 +37,7 @@ namespace Budget
         /// Read-only
         /// </summary>
         public String FileName { get { return _FileName; } }
+        
         /// <summary>
         ///  Gets the directory name where contains expense file. Read - only
         /// </summary>
@@ -55,7 +56,6 @@ namespace Budget
         /// <exception cref="FileNotFoundException">Thrown when the file path does not exist</exception>
         /// <exception cref="ArgumentException">If there are problems parsing the file</exception>
         /// <exception cref="PathTooLongException">If there are problems parsing the file</exception>
-
         /// <notes>If filepath is not provided, uses default file name "</notes>
         /// <example>
         /// <code>
@@ -63,11 +63,8 @@ namespace Budget
         /// expenses.ReadFromFile("./users/document/filepathtoread")
         /// </code>
         /// </example>
-
-
         public void ReadFromFile(String filepath = null)
         {
-
             // ---------------------------------------------------------------
             // reading from file resets all the current expenses,
             // so clear out any old definitions
@@ -96,8 +93,6 @@ namespace Budget
             // ----------------------------------------------------------------
             _DirName = Path.GetDirectoryName(filepath);
             _FileName = Path.GetFileName(filepath);
-
-
         }
 
         // ====================================================================
@@ -157,11 +152,11 @@ namespace Budget
         // ====================================================================
         // Add expense
         // ====================================================================
-
         private void Add(Expense exp)
         {
             _Expenses.Add(exp);
         }
+        
         /// <summary>
         /// Adds a new expense to the collection. Generated a unique id automatically.
         /// </summary>
@@ -191,7 +186,6 @@ namespace Budget
         // ====================================================================
         // Delete expense
         // ====================================================================
-
         /// <summary>Removes an expense from the collection
         /// </summary>
         /// <param name="Id">Id of the expense to delete</param>
@@ -200,7 +194,6 @@ namespace Budget
         /// <code>
         /// Enxpenses expenses = new Expenses();
         /// expenses.Delete()
-
         /// </code>
         /// </example> 
         public void Delete(int Id)

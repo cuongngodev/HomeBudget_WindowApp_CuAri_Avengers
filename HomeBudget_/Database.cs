@@ -30,6 +30,9 @@ using System.Threading;
 
 namespace Budget
 {
+    /// <summary>
+    /// Corresponds to a new database for the Budget application to access and manage expenses from.
+    /// </summary>
     public class Database
     {
         public static SQLiteConnection dbConnection { get { return _connection; } }
@@ -38,6 +41,10 @@ namespace Budget
         // ===================================================================
         // create and open a new database
         // ===================================================================
+        /// <summary>
+        /// Creates a new budget database at on a newly created file location, generating the necessary tables for the database itself.
+        /// </summary>
+        /// <param name="filename">The path, absolute or relative, leading to the location of the new database file.</param>
         public static void newDatabase(string filename)
         {
             try
@@ -71,10 +78,14 @@ namespace Budget
             }
         }
 
-       // ===================================================================
-       // open an existing database
-       // ===================================================================
-       public static void existingDatabase(string filename)
+        // ===================================================================
+        // open an existing database
+        // ===================================================================
+        /// <summary>
+        /// Connects to a pre-existing database on a given file location.
+        /// </summary>
+        /// <param name="filename">The path, absolute or relative, leading to the location of the existing database file.</param>
+        public static void existingDatabase(string filename)
         {
             try
             {
@@ -92,10 +103,13 @@ namespace Budget
             }
         }
 
-       // ===================================================================
-       // close existing database, wait for garbage collector to
-       // release the lock before continuing
-       // ===================================================================
+        // ===================================================================
+        // close existing database, wait for garbage collector to
+        // release the lock before continuing
+        // ===================================================================
+        /// <summary>
+        /// Closes the database and waits for the garbage collector to release the lock.
+        /// </summary>
         static public void CloseDatabaseAndReleaseFile()
         {
             if (Database.dbConnection != null)

@@ -15,9 +15,6 @@ using System.Runtime.Intrinsics.Arm;
 // * Released under the GNU General Public License
 // ============================================================================
 
-//TODO: 
-//Update the XML documentation,
-
 namespace Budget
 {
     // ====================================================================
@@ -27,7 +24,8 @@ namespace Budget
     //        - etc
     // ====================================================================
     /// <summary>
-    /// Responsible for manageing a collection of Category object, representing different budget categories. It allows for operations including adding, deleting, and listing categories.
+    /// Responsible for managing a collection of categories stored on a database, representing different expense categories. 
+    /// <br></br>It allows for operations including adding, deleting, and listing categories.
     /// </summary>
     public class Categories
     {
@@ -42,25 +40,38 @@ namespace Budget
         // Properties
         // ====================================================================
         /// <summary>
-        /// Gets the name of the file used for storing category data.
+        /// Gets the path of the file used for reading and writing category data.
         /// </summary>
         public String FileName { get { return _FileName; } }
+        
         /// <summary>
-        /// Gets directory path where category file is stored.
+        /// Gets the directory path where the file corresponding to the <see cref="Categories.FileName"/> property is stored.
         /// </summary>
         public String DirName { get { return _DirName; } }
 
+        /// <summary>
+        /// Gets and sets the connection between the budget application and the necessary database to access information on expense categories.
+        /// </summary>
         private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
-
 
         // ====================================================================
         // Constructor
         // ====================================================================
+        /// <summary>
+        /// Default constructor which takes in no parameters and instead empties the category database and resets it two its default state.
+        /// </summary>
         public Categories()
         {
             SetCategoriesToDefaults();
         }
 
+        /// <summary>
+        /// Parameterized constructor which creates a <see cref="Categories"/> object by taking in input corresponding to the
+        /// <br></br>
+        /// correct database connection and a boolean stating whether the database is new or not in the potential need to create a new one.
+        /// </summary>
+        /// <param name="dbConnection">The connection to a given database location.</param>
+        /// <param name="isNewDb">An indicator to whether the desired database location is meant to be new or is pre-existing.</param>
         public Categories(SQLiteConnection dbConnection, bool isNewDb)
         {
             DBConnection = dbConnection;
@@ -72,6 +83,9 @@ namespace Budget
             }
         }
 
+        /// <summary>
+        /// A method designed to add the necessary category types to the categoryTypes table on a new database.
+        /// </summary>
         private void AddCategoryTypes()
         { 
             foreach (Category.CategoryType cat in Enum.GetValues<Category.CategoryType>())
@@ -88,20 +102,18 @@ namespace Budget
         // get a specific category from the list where the id is the one specified
         // ====================================================================
         /// <summary>
-        /// Gets a Category object by Id.
+        /// Gets a Category object by a given ID number as input.
         /// </summary>
-        /// <param name="i"> The ID of the category to retrieve.</param>
-        /// <returns>A Category object corresponding to the specified ID.</returns>
-        /// <exception cref="Exception">If the category with the specified ID does not exist.</exception>
+        /// <param name="i">The unique ID number of a category to retrieve.</param>
+        /// <returns>A Category object corresponding to its specified ID number.</returns>
         /// <example>
         /// <code>
         /// Categories categories = new Categories();
-        /// categories.GetCategoryFromId(1);       
+        /// categories.GetCategoryFromId(1);
         /// </code>
         /// </example>
         public Category GetCategoryFromId(int i)
         {
-            
             string stm = "SELECT Id, Description, TypeId FROM categories WHERE id=@id";
             var cmd = new SQLiteCommand(stm,DBConnection);
 
@@ -120,7 +132,6 @@ namespace Budget
                 id = rdr.GetInt32(0);
                 description = rdr.GetString(1);
                 categoryType = (Category.CategoryType)rdr.GetInt32(2);
-
             }
 
             return new Category(id,description,categoryType);
@@ -130,7 +141,7 @@ namespace Budget
         // set categories to default
         // ====================================================================
         /// <summary>
-        /// Resets the categories to a predefined set of default categories such as "Utilities", "Rent", "Education", etc.
+        /// Resets the category table within the database to a predefined set of default categories such as "Utilities", "Rent", "Education", etc.
         /// </summary>
         /// <example>
         /// <code>
@@ -138,7 +149,6 @@ namespace Budget
         /// categories.SetCategoriesToDefaults();        
         /// </code>
         /// </example>
-
         public void SetCategoriesToDefaults()
         {
             // ---------------------------------------------------------------
@@ -169,12 +179,21 @@ namespace Budget
             Add("Eating Out", Category.CategoryType.Expense);
             Add("Savings", Category.CategoryType.Savings);
             Add("Income", Category.CategoryType.Income);
-
         }
 
         // ====================================================================
         // Add category
         // ====================================================================
+        /// <summary>
+        /// Adds a new category to the database. The ID of the new category is automatically set based on the exisiting categories.
+        /// </summary>
+        /// <param name="cat">A <see cref="Category"/> object for the to-be added category to base itself on.</param>
+        /// <example>
+        /// <code>
+        /// Categories categories = new Categories();
+        /// categories.Add(vacationCategory);
+        /// </code>
+        /// </example>
         private void Add(Category cat)
         {
             string stm = "INSERT INTO categories(Id,Description,TypeId) VALUES(@id,@description,@type)";
@@ -192,9 +211,8 @@ namespace Budget
             cmd.ExecuteNonQuery();
         }
 
-
         /// <summary>
-        /// Adds a new category by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.
+        /// Adds a new category to the database by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.
         /// </summary>
         /// <param name="desc">The description of the new category.</param>
         /// <param name="type">The type of the category (e.g: Income, Expense, Credit, or Savings). </param>
@@ -226,19 +244,17 @@ namespace Budget
         // Delete category
         // ====================================================================
         /// <summary>
-        /// Deletes a category based on its ID.
+        /// Deletes a category from the database based on a given ID number.
         /// </summary>
-        /// <param name="Id">The ID of the category to delete.</param>
+        /// <param name="Id">The ID number of the category to delete.</param>
         /// <example>
         /// <code>
         /// Categories categories = new Categories();
         /// categories.Delete(1);
         /// </code>
         /// </example>
-
         public void Delete(int Id)
         {
-
             string stm = "DELETE FROM categories WHERE id=@id";
 
             SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
@@ -258,9 +274,9 @@ namespace Budget
         //        this instance
         // ====================================================================
         /// <summary>
-        /// Returns a copy of the list of categories. 
+        /// Returns a copy of the list of categories from the database. 
         /// </summary>
-        /// <returns>A List of Category object containing all the categories.</returns>
+        /// <returns>A list of <see cref="Category"/> objects containing all the categories found in the database.</returns>
         /// <example>
         /// <code>
         /// Categories categories = new Categories();

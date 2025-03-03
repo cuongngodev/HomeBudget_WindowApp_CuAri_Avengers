@@ -16,7 +16,7 @@ namespace Budget
     //        - An individual expens for budget program
     // ====================================================================
     /// <summary>
-    /// Represents an expense in the budget app.
+    /// Represents an expense made and accessed on the Budget application.
     /// </summary>
     public class Expense
     {
@@ -24,23 +24,27 @@ namespace Budget
         // Properties
         // ====================================================================
         /// <summary>
-        /// Gets a number representing the expense's unique ID.
+        /// Gets or sets the unique identifier of an expense object.
         /// </summary>
         public int Id { get; }
+        
         /// <summary>
-        /// Gets the date when a new expense is created. 
+        /// Gets the date when a new expense object was created. 
         /// </summary>
-        public DateTime Date { get;  }
+        public DateTime Date { get; }
+        
         /// <summary>
-        /// Gets or sets the amount of the expense.
+        /// Gets or sets the amount tied to an expense object.
         /// </summary>
         public Double Amount { get; set; }
+        
         /// <summary>
-        /// Gets or sets a description of the expense.
+        /// Gets or sets the description of an expense object.
         /// </summary>
         public String Description { get; set; }
+        
         /// <summary>
-        /// Gets or sets the category of the expense.
+        /// Gets or sets the category tied to an expense object.
         /// </summary>
         public int Category { get; set; }
 
@@ -49,6 +53,14 @@ namespace Budget
         //    NB: there is no verification the expense category exists in the
         //        categories object
         // ====================================================================
+        /// <summary>
+        /// Parameterized constructor that creates an <see cref="Expense"/> object by taking in input corresponding to the class' individual fields.
+        /// </summary>
+        /// <param name="id">The unique identifier of the new expense object.</param>
+        /// <param name="date">The date when the new expense object was created.</param>
+        /// <param name="category">The category tied to the new expense object.</param>
+        /// <param name="amount">The amount tied to the new expense object.</param>
+        /// <param name="description">The description of the new expense object.</param>
         public Expense(int id, DateTime date, int category, Double amount, String description)
         {
             this.Id = id;
@@ -61,6 +73,10 @@ namespace Budget
         // ====================================================================
         // Copy constructor - does a deep copy
         // ====================================================================
+        /// <summary>
+        /// Parameterized constructor that creates an <see cref="Expense"/> object by taking in input corresponding to another Expense object.
+        /// </summary>
+        /// <param name="obj">The <see cref="Expense"/> object used to base the new object on.</param>
         public Expense (Expense obj)
         {
             this.Id = obj.Id;

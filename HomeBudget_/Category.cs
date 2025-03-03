@@ -17,7 +17,7 @@ namespace Budget
     //        - Valid category types: Income, Expense, Credit, Saving
     // ====================================================================
     /// <summary>
-    /// Represents a category used in Budget app. Each category corresponds to a budget item such as income, expense, credit, or savings.
+    /// Represents an <see cref="Expense"/>'s category used in the Budget application. Each category corresponds to a budget item such as income, expense, credit, or savings.
     /// </summary>
     public class Category
     {
@@ -25,19 +25,22 @@ namespace Budget
         // Properties
         // ====================================================================
         /// <summary>
-        /// Gets or sets the unique identifier for the category.
+        /// Gets or sets the unique identifier of a category object.
         /// </summary>
-        public int Id { get; }
+        public int Id { get; set; }
+
         /// <summary>
-        /// Gets or sets the description of the category.
+        /// Gets or sets the description of a category object.
         /// </summary>
-        public String Description { get;}
+        public String Description { get; set; }
+
         /// <summary>
-        /// Gets or sets the type of the category.
+        /// Gets or sets the type of a category object.
         /// </summary>
-        public CategoryType Type { get;  }
+        public CategoryType Type { get; set; }
+
         /// <summary>
-        /// Enumeration specifying if the category is related to income, expense, credit, savings.
+        /// Enumeration specifying a <see cref="Category"/> object's possible types.
         /// </summary>
         public enum CategoryType
         {
@@ -50,6 +53,12 @@ namespace Budget
         // ====================================================================
         // Constructor
         // ====================================================================
+        /// <summary>
+        /// Parameterized constructor that creates a <see cref="Category"/> object by taking in input corresponding to the class' individual fields.
+        /// </summary>
+        /// <param name="id">The unique identifier of a category object.</param>
+        /// <param name="description">The description of a category object.</param>
+        /// <param name="type">The type of a category object.</param>
         public Category(int id, String description, CategoryType type = CategoryType.Expense)
         {
             this.Id = id;
@@ -60,20 +69,33 @@ namespace Budget
         // ====================================================================
         // Copy Constructor
         // ====================================================================
+        /// <summary>
+        /// Parameterized constructor that creates a <see cref="Category"/> object by taking in input corresponding to another Category object.
+        /// </summary>
+        /// <param name="category">The <see cref="Category"/> object used to base the new object on.</param>
         public Category(Category category)
         {
-            this.Id = category.Id;;
+            this.Id = category.Id; ;
             this.Description = category.Description;
             this.Type = category.Type;
         }
+
         // ====================================================================
         // String version of object
         // ====================================================================
+        /// <summary>
+        /// Overrides ToString() to allow for printing out the details of a <see cref="Category"/> object.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// Console.WriteLine(category1);
+        /// </code>
+        /// </example>
+        /// <returns>The text contained within the <see cref="Category"/> object's <see cref="Description"/> property.</returns>
         public override string ToString()
         {
             return Description;
         }
-
     }
 }
 
