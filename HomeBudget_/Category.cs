@@ -27,17 +27,17 @@ namespace Budget
         /// <summary>
         /// Gets or sets the unique identifier of a category object.
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get;}
 
         /// <summary>
         /// Gets or sets the description of a category object.
         /// </summary>
-        public String Description { get; set; }
+        public String Description { get;}
 
         /// <summary>
         /// Gets or sets the type of a category object.
         /// </summary>
-        public CategoryType Type { get; set; }
+        public CategoryType Type { get; }
 
         /// <summary>
         /// Enumeration specifying a <see cref="Category"/> object's possible types.
