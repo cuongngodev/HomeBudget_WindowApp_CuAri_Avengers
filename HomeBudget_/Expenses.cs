@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
+using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -28,6 +29,7 @@ namespace Budget
         private List<Expense> _Expenses = new List<Expense>();
         private string _FileName;
         private string _DirName;
+        private SQLiteConnection _DbConnection;
 
         // ====================================================================
         // Properties
@@ -42,6 +44,11 @@ namespace Budget
         ///  Gets the directory name where contains expense file. Read - only
         /// </summary>
         public String DirName { get { return _DirName; } }
+
+        /// <summary>
+        /// Gets and sets the connection between the budget application and the necessary database to access information on all expenses.
+        /// </summary>
+        private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
 
         // ====================================================================
         // populate categories from a file
@@ -147,7 +154,48 @@ namespace Budget
             _FileName = Path.GetFileName(filepath);
         }
 
+        // ====================================================================
+        // get a specific expense from the list where the id is the one specified
+        // ====================================================================
+        /// <summary>
+        /// Gets an <see cref="Expense"/> object by a given ID number as input.
+        /// </summary>
+        /// <param name="i">The unique ID number of an expense to retrieve.</param>
+        /// <returns>An <see cref="Expense"/> object corresponding to its specified ID number.</returns>
+        /// <example>
+        /// <code>
+        /// Expenses expenses = new Expenses();
+        /// categories.GetExpenseFromId(1);
+        /// </code>
+        /// </example>
+        public Expense GetExpenseFromId(int i)
+        {
+            string stm = "SELECT Id, Date, Description, Amount, CategoryId FROM expenses WHERE id=@id";
+            var cmd = new SQLiteCommand(stm, DBConnection);
 
+            cmd.CommandText = stm;
+
+            cmd.Parameters.AddWithValue("@id", i);
+            cmd.Prepare();
+
+            SQLiteDataReader rdr = cmd.ExecuteReader();
+
+            int id = 0;
+            DateTime date = DateTime.Now;
+            string description = "";
+            double amount = 0;
+            int categoryId = 0;
+            while (rdr.Read())
+            {
+                id = rdr.GetInt32(0);
+                date = rdr.GetDateTime(1);
+                description = rdr.GetString(2);
+                amount = rdr.GetDouble(3);
+                categoryId = rdr.GetInt32(4);
+            }
+
+            return new Expense(id, date, categoryId, amount, description);
+        }
 
         // ====================================================================
         // Add expense

@@ -58,7 +58,7 @@ namespace Budget
         // Constructor
         // ====================================================================
         /// <summary>
-        /// Default constructor which takes in no parameters and instead empties the category database and resets it two its default state.
+        /// Default constructor which takes in no parameters and instead empties the category database and resets it too its default state.
         /// </summary>
         public Categories()
         {
@@ -102,10 +102,10 @@ namespace Budget
         // get a specific category from the list where the id is the one specified
         // ====================================================================
         /// <summary>
-        /// Gets a Category object by a given ID number as input.
+        /// Gets a <see cref="Category"/> object by a given ID number as input.
         /// </summary>
         /// <param name="i">The unique ID number of a category to retrieve.</param>
-        /// <returns>A Category object corresponding to its specified ID number.</returns>
+        /// <returns>A <see cref="Category"/> object corresponding to its specified ID number.</returns>
         /// <example>
         /// <code>
         /// Categories categories = new Categories();
@@ -114,6 +114,8 @@ namespace Budget
         /// </example>
         public Category GetCategoryFromId(int i)
         {
+            
+            
             string stm = "SELECT Id, Description, TypeId FROM categories WHERE id=@id";
             var cmd = new SQLiteCommand(stm,DBConnection);
 
