@@ -114,7 +114,9 @@ namespace Budget
         /// </example>
         public Category GetCategoryFromId(int i)
         {
-            
+            const int ID_INDEX = 0;
+            const int DESCRIPTION_INDEX = 1;
+            const int CATEGORY_TYPE_INDEX = 2;
             
             string stm = "SELECT Id, Description, TypeId FROM categories WHERE id=@id";
             var cmd = new SQLiteCommand(stm,DBConnection);
@@ -129,11 +131,12 @@ namespace Budget
             int id = 0;
             string description = "";
             Category.CategoryType categoryType = Category.CategoryType.Income;
+
             while (rdr.Read())
             {
-                id = rdr.GetInt32(0);
-                description = rdr.GetString(1);
-                categoryType = (Category.CategoryType)rdr.GetInt32(2);
+                id = rdr.GetInt32(ID_INDEX);
+                description = rdr.GetString(DESCRIPTION_INDEX);
+                categoryType = (Category.CategoryType)rdr.GetInt32(CATEGORY_TYPE_INDEX);
             }
 
             return new Category(id,description,categoryType);
