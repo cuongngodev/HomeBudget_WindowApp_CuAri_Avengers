@@ -57,7 +57,7 @@ namespace Budget
         // Constructor
         // ====================================================================
         /// <summary>
-        /// Default constructor which takes in no parameters and instead empties the category database and resets it two its default state.
+        /// Default constructor which takes in no parameters and instead empties the category database and resets it too its default state.
         /// </summary>
         public Categories()
         {
@@ -101,10 +101,10 @@ namespace Budget
         // get a specific category from the list where the id is the one specified
         // ====================================================================
         /// <summary>
-        /// Gets a Category object by a given ID number as input.
+        /// Gets a <see cref="Category"/> object by a given ID number as input.
         /// </summary>
         /// <param name="i">The unique ID number of a category to retrieve.</param>
-        /// <returns>A Category object corresponding to its specified ID number.</returns>
+        /// <returns>A <see cref="Category"/> object corresponding to its specified ID number.</returns>
         /// <example>
         /// <code>
         /// Categories categories = new Categories();
@@ -113,6 +113,10 @@ namespace Budget
         /// </example>
         public Category GetCategoryFromId(int i)
         {
+            const int ID_INDEX = 0;
+            const int DESCRIPTION_INDEX = 1;
+            const int CATEGORY_TYPE_INDEX = 2;
+            
             string stm = "SELECT Id, Description, TypeId FROM categories WHERE id=@id";
             var cmd = new SQLiteCommand(stm,DBConnection);
 
@@ -126,11 +130,12 @@ namespace Budget
             int id = 0;
             string description = "";
             Category.CategoryType categoryType = Category.CategoryType.Income;
+
             while (rdr.Read())
             {
-                id = rdr.GetInt32(0);
-                description = rdr.GetString(1);
-                categoryType = (Category.CategoryType)rdr.GetInt32(2);
+                id = rdr.GetInt32(ID_INDEX);
+                description = rdr.GetString(DESCRIPTION_INDEX);
+                categoryType = (Category.CategoryType)rdr.GetInt32(CATEGORY_TYPE_INDEX);
             }
 
             return new Category(id,description,categoryType);
