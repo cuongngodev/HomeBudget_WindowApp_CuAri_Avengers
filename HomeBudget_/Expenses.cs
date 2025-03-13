@@ -70,6 +70,12 @@ namespace Budget
         /// </example>
         public Expense GetExpenseFromId(int i)
         {
+            const int ID_INDEX = 0;
+            const int DATE_INDEX = 1;
+            const int DESCRIPTION_INDEX = 2;
+            const int AMOUNT_INDEX = 3;
+            const int CATEGORY_ID_INDEX = 4;
+
             string stm = "SELECT Id, Date, Description, Amount, CategoryId FROM expenses WHERE id=@id";
             var cmd = new SQLiteCommand(stm, DBConnection);
 
@@ -85,13 +91,14 @@ namespace Budget
             string description = "";
             double amount = 0;
             int categoryId = 0;
+
             while (rdr.Read())
             {
-                id = rdr.GetInt32(0);
-                date = rdr.GetDateTime(1);
-                description = rdr.GetString(2);
-                amount = rdr.GetDouble(3);
-                categoryId = rdr.GetInt32(4);
+                id = rdr.GetInt32(ID_INDEX);
+                date = rdr.GetDateTime(DATE_INDEX);
+                description = rdr.GetString(DESCRIPTION_INDEX);
+                amount = rdr.GetDouble(AMOUNT_INDEX);
+                categoryId = rdr.GetInt32(CATEGORY_ID_INDEX);
             }
 
             return new Expense(id, date, categoryId, amount, description);
