@@ -239,6 +239,26 @@ namespace Budget
         }
 
         // ====================================================================
+        // Update Expense
+        // ====================================================================
+        public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
+        {
+            string stm = "UPDATE authors SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
+            var cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.CommandText = stm;
+
+            cmd.Parameters.AddWithValue("@id", expenseId);
+            cmd.Parameters.AddWithValue("@date", newDate);
+            cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+            cmd.Parameters.AddWithValue("@amount", newAmount);
+            cmd.Parameters.AddWithValue("@description", newDescription);
+            cmd.Prepare();
+
+            SQLiteDataReader rdr = cmd.ExecuteReader();
+        }
+
+        // ====================================================================
         // Delete expense
         // ====================================================================
         /// <summary>Removes an expense from the collection
@@ -262,8 +282,6 @@ namespace Budget
             {
                 Console.WriteLine("ERROR: Invalid expense id given.");
             }
-     
-
         }
 
         // ====================================================================
@@ -330,7 +348,6 @@ namespace Budget
                     this.Add(new Expense(id, date, category, amount, description));
 
                 }
-
             }
             catch (Exception e)
             {
@@ -386,17 +403,13 @@ namespace Budget
                     c.AppendChild(cText);
 
                 }
-
                 // write the xml to FilePath
                 doc.Save(filepath);
-
             }
             catch (Exception e)
             {
                 throw new Exception("SaveToFileException: Reading XML " + e.Message);
             }
         }
-
     }
 }
-
