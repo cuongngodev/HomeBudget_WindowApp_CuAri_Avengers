@@ -93,8 +93,25 @@ namespace Budget
             _expenses = new Expenses();
             //ReadFromFile(budgetFileName);
         }
-
-        public HomeBudget(String databaseFile, String expensesXMLFile, bool newDB = false)
+        public HomeBudget(String databaseFile, bool newDB = false)
+        {
+            // if database exists, and user doesn't want a new database, open existing DB
+            if (!newDB && File.Exists(databaseFile))
+            {
+                Database.existingDatabase(databaseFile);
+            }
+            // file did not exist, or user wants a new database, so open NEW DB
+            else
+            {
+                Database.newDatabase(databaseFile);
+                newDB = true;
+            }
+            // create the category object
+            _categories = new Categories(Database.dbConnection, newDB);
+            // create the expenses object
+            _expenses = new Expenses(); // need a constructor ? or default one is good?
+        }
+       /* public HomeBudget(String databaseFile, String expensesXMLFile, bool newDB = false)
         {
             // if database exists, and user doesn't want a new database, open existing DB
             if (!newDB && File.Exists(databaseFile))
@@ -116,7 +133,7 @@ namespace Budget
             _expenses = new Expenses();
             _expenses.ReadFromFile(expensesXMLFile);
         }
-
+*/
 
         #region OpenNewAndSave
         // ---------------------------------------------------------------

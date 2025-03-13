@@ -9,8 +9,8 @@ namespace BudgetCodeTests
     [Collection("Sequential")]
     public class TestHomeBudget
     {
-        //string testInputFile = TestConstants.testBudgetFile;
-        
+        string testInputFile = TestConstants.testBudgetFile;
+
 
         //// ========================================================================
 
@@ -37,23 +37,23 @@ namespace BudgetCodeTests
 
         //// ========================================================================
 
-        //[Fact]
-        //public void HomeBudgetObject_New_WithFilename()
-        //{
-        //    // Arrange
-        //    string file = TestConstants.GetSolutionDir() + "\\" + testInputFile;
-        //    int numExpenses = TestConstants.numberOfExpensesInFile;
-        //    int numCategories = TestConstants.numberOfCategoriesInFile;
+        [Fact]
+        public void HomeBudgetObject_New_WithFilename()
+        {
+            // Arrange
+            string file = TestConstants.GetSolutionDir() + "\\" + testInputFile;
+            int numExpenses = TestConstants.numberOfExpensesInFile;
+            int numCategories = TestConstants.numberOfCategoriesInFile;
 
-        //    // Act
-        //    HomeBudget homeBudget = new HomeBudget(file);
+            // Act
+            HomeBudget homeBudget = new HomeBudget(file);
 
-        //    // Assert 
-        //    Assert.IsType<HomeBudget>(homeBudget);
-        //    Assert.Equal(numExpenses, homeBudget.expenses.List().Count);
-        //    Assert.Equal(numCategories, homeBudget.categories.List().Count);
+            // Assert 
+            Assert.IsType<HomeBudget>(homeBudget);
+            Assert.Equal(numExpenses, homeBudget.expenses.List().Count);
+            Assert.Equal(numCategories, homeBudget.categories.List().Count);
 
-        //}
+        }
 
         //// ========================================================================
 
