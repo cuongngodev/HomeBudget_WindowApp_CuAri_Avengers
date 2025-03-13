@@ -25,7 +25,6 @@ namespace Budget
     /// </summary>
     public class Expenses
     {
-        private static String DefaultFileName = "budget.txt";
         private List<Expense> _Expenses = new List<Expense>();
         private string _FileName;
         private string _DirName;
