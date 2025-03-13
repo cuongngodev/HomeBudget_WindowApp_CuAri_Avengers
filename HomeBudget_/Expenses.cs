@@ -26,32 +26,13 @@ namespace Budget
     public class Expenses
     {
         private List<Expense> _Expenses = new List<Expense>();
-        private string _FileName;
-        private string _DirName;
-        private SQLiteConnection _DbConnection;
 
-        // ====================================================================
-        // Properties
-        // ====================================================================
-        /// <summary>
-        /// Gets the name of the current expense file.
-        /// Read-only
-        /// </summary>
-        public String FileName { get { return _FileName; } }
-        
-        /// <summary>
-        ///  Gets the directory name where contains expense file. Read - only
-        /// </summary>
-        public String DirName { get { return _DirName; } }
+        private SQLiteConnection _DbConnection;
 
         /// <summary>
         /// Gets and sets the connection between the budget application and the necessary database to access information on all expenses.
         /// </summary>
         private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
-
-      
-
-        
 
         // ====================================================================
         // get a specific expense from the list where the id is the one specified
@@ -183,8 +164,6 @@ namespace Budget
             }
             return newList;
         }
-
-
     }
 }
 
