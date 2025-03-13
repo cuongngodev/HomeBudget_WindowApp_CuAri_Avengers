@@ -142,6 +142,21 @@ namespace Budget
             return new Category(id,description,categoryType);
         }
 
+        public void UpdateProperties(int categoryId, string newDescription, Category.CategoryType newType)
+        {
+            string stm = "UPDATE authors SET Description = @description, TypeId = @typeId WHERE Id = @id";
+            var cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.CommandText = stm;
+
+            cmd.Parameters.AddWithValue("@id", categoryId);
+            cmd.Parameters.AddWithValue("@description", newDescription);
+            cmd.Parameters.AddWithValue("@typeId", (int)newType);
+            cmd.Prepare();
+
+            SQLiteDataReader rdr = cmd.ExecuteReader();
+        }
+
         // ====================================================================
         // set categories to default
         // ====================================================================

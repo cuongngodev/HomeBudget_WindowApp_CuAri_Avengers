@@ -236,32 +236,31 @@ namespace BudgetCodeTests
             {
                 Assert.True(categories.List().Exists(c => c.Description == defaultCat.Description && c.Type == defaultCat.Type));
             }
-
         }
 
         // ========================================================================
 
-        //[Fact]
-        //public void CategoriesMethod_UpdateCategory()
-        //{
-        //    // Arrange
-        //    String folder = TestConstants.GetSolutionDir();
-        //    String newDB = $"{folder}\\newDB.db";
-        //    Database.newDatabase(newDB);
-        //    SQLiteConnection conn = Database.dbConnection;
-        //    Categories categories = new Categories(conn, true);
-        //    String newDescr = "Presents";
-        //    int id = 11;
+        [Fact]
+        public void CategoriesMethod_UpdateCategory()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, true);
+            String newDescr = "Presents";
+            int id = 11;
 
-        //    // Act
-        //    categories.UpdateProperties(id, newDescr, Category.CategoryType.Income);
-        //    Category category = categories.GetCategoryFromId(id);
+            // Act
+            categories.UpdateProperties(id, newDescr, Category.CategoryType.Income);
+            Category category = categories.GetCategoryFromId(id);
 
-        //    // Assert 
-        //    Assert.Equal(newDescr, category.Description);
-        //    Assert.Equal(Category.CategoryType.Income, category.Type);
+            // Assert 
+            Assert.Equal(newDescr, category.Description);
+            Assert.Equal(Category.CategoryType.Income, category.Type);
 
-        //}
+        }
     }
 }
 
