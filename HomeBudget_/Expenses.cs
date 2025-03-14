@@ -29,6 +29,11 @@ namespace Budget
 
         private SQLiteConnection _DbConnection;
 
+        public Expenses(SQLiteConnection dbConnection)
+        {
+            DBConnection = dbConnection;
+     
+        }
         /// <summary>
         /// Gets and sets the connection between the budget application and the necessary database to access information on all expenses.
         /// </summary>
@@ -185,9 +190,6 @@ namespace Budget
             return newList;
         }
 
-
-    }
-}
 
     }
 }
