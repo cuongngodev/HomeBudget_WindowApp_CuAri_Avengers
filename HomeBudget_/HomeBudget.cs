@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Dynamic;
+using System.Data.SQLite;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -44,7 +46,7 @@ namespace Budget
         public Expenses expenses { get { return _expenses; } }
 
 
-        public HomeBudget(String databaseFile, bool newDB = false)
+        public HomeBudget(string databaseFile, bool newDB = false)
         {
             // if database exists, and user doesn't want a new database, open existing DB
             if (!newDB && File.Exists(databaseFile))
@@ -63,7 +65,7 @@ namespace Budget
             // create the expenses object
             _expenses = new Expenses(Database.dbConnection); // need a constructor ? the constructor need to connect to the DB
         }
-      
+
         #region GetList
 
 
@@ -152,44 +154,55 @@ namespace Budget
             // ------------------------------------------------------------------------
             // return joined list within time frame
             // ------------------------------------------------------------------------
+            // Default end/ start time if unspecified
             Start = Start ?? new DateTime(1900, 1, 1);
             End = End ?? new DateTime(2500, 1, 1);
-
-            var query = from c in _categories.List()
+            List<BudgetItem> budgetItems = new List<BudgetItem>();
+            /*var query = from c in _categories.List()
                         join e in _expenses.List() on c.Id equals e.Category
                         where e.Date >= Start && e.Date <= End
-                        select new { CatId = c.Id, ExpId = e.Id, e.Date, Category = c.Description, e.Description, e.Amount };
+                        select new { CatId = c.Id, ExpId = e.Id, e.Date, Category = c.Description, e.Description, e.Amount };*/
 
-            // ------------------------------------------------------------------------
-            // create a BudgetItem list with totals,
-            // ------------------------------------------------------------------------
-            List<BudgetItem> items = new List<BudgetItem>();
+            //  list of BudgetItem objects (CategoryId, ExpenseId, date, category, description, amount, balance )
+            string stm = @"SELECT e.CategoryId, e.Id, e.Date, e.Amount, e.Description, c.Description 
+                           FROM categories c, expenses e
+                           WHERE c.Id = e.CategoryId
+                           AND e.Date BETWEEN @Start AND @End";
+            // run the query on the db
+            SQLiteCommand cmd = new(stm, Database.dbConnection);
+
+            cmd.Parameters.AddWithValue("@Start", Start);
+            cmd.Parameters.AddWithValue("@End", End);
+
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+
+            // start reading the result
+
+            SQLiteDataReader reader = cmd.ExecuteReader();
             Double total = 0;
-
-            foreach (var e in query.OrderBy(q => q.Date))
+            while (reader.Read())
             {
-                // filter out unwanted categories if filter flag is on
-                if (FilterFlag && CategoryID != e.CatId)
+                total += reader.GetDouble(3);
+                budgetItems.Add(new BudgetItem
                 {
-                    continue;
-                }
-                // testing with branch
 
-                // keep track of running totals
-                total = total + e.Amount;
-                items.Add(new BudgetItem
-                {
-                    CategoryID = e.CatId,
-                    ExpenseID = e.ExpId,
-                    ShortDescription = e.Description,
-                    Date = e.Date,
-                    Amount = -e.Amount,
-                    Category = e.Category,
+                    CategoryID = reader.GetInt32(0),
+                    ExpenseID = reader.GetInt32(1),
+                    ShortDescription = reader.GetString(4),
+                    Date = reader.GetDateTime(2),
+                    Amount = -reader.GetDouble(3),
+                    Category = reader.GetString(5),
                     Balance = total
                 });
             }
+            return budgetItems;
 
-            return items;
+        }
+
+
+
+         
         }
 
         // ============================================================================
@@ -277,7 +290,7 @@ namespace Budget
                 // Add new BudgetItemsByMonth to our list
                 summary.Add(new BudgetItemsByMonth
                 {
-                    Month = MonthGroup.Key,
+                    Month = MonthGroup.Key, // we can use get budget item to call in this case
                     Details = details,
                     Total = total
                 });
