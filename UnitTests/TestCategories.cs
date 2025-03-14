@@ -241,27 +241,91 @@ namespace BudgetCodeTests
 
         // ========================================================================
 
-        //[Fact]
-        //public void CategoriesMethod_UpdateCategory()
-        //{
-        //    // Arrange
-        //    String folder = TestConstants.GetSolutionDir();
-        //    String newDB = $"{folder}\\newDB.db";
-        //    Database.newDatabase(newDB);
-        //    SQLiteConnection conn = Database.dbConnection;
-        //    Categories categories = new Categories(conn, true);
-        //    String newDescr = "Presents";
-        //    int id = 11;
+        [Fact]
+        public void CategoriesMethod_UpdateCategory_WithOneNewProperty()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, true);
 
-        //    // Act
-        //    categories.UpdateProperties(id, newDescr, Category.CategoryType.Income);
-        //    Category category = categories.GetCategoryFromId(id);
+            String newDescr = "Presents";
+            int id = 11;
+            Category.CategoryType catType = Category.CategoryType.Income;
 
-        //    // Assert 
-        //    Assert.Equal(newDescr, category.Description);
-        //    Assert.Equal(Category.CategoryType.Income, category.Type);
+            // Act
+            categories.UpdateProperties(id, newDescr, catType);
+            Category category = categories.GetCategoryFromId(id);
 
-        //}
+            // Assert 
+            Assert.Equal(newDescr, category.Description);
+            Assert.Equal(Category.CategoryType.Income, category.Type);
+
+        }
+
+        [Fact]
+        public void CategoriesMethod_UpdateCategory_WithMultipleNewProperties()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, true);
+
+            String newDescr = "Presents";
+            int id = 11;
+            Category.CategoryType newCatType = Category.CategoryType.Savings;
+
+            // Act
+            categories.UpdateProperties(id, newDescr, newCatType);
+            Category category = categories.GetCategoryFromId(id);
+
+            // Assert 
+            Assert.Equal(newDescr, category.Description);
+            Assert.Equal(Category.CategoryType.Income, category.Type);
+
+        }
+
+        [Fact]
+        public void CategoriesMethod_UpdateCategory_InvalidIDDoesntCrash()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, true);
+
+            String newDescr = "Presents";
+            int id = 11;
+            Category.CategoryType catType = Category.CategoryType.Income;
+
+            int defaultId = 0;
+            string defaultDesc = "";
+            Category.CategoryType defaultCat = Category.CategoryType.Income;
+
+            categories.Delete(id);
+            Category category = new Category(defaultId, defaultDesc, defaultCat);
+
+            int length = categories.List().Count();
+
+            // Act
+            try
+            {
+                categories.UpdateProperties(id, newDescr, catType);
+                category = categories.GetCategoryFromId(id);
+            }
+            // Assert 
+            catch (Exception ex)
+            {
+                Assert.True(false, "Invalid Id causes Update to crash");
+            }
+
+            Assert.Equal(length, categories.List().Count());
+        }
     }
 }
 
