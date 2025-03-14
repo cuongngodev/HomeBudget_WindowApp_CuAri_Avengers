@@ -251,7 +251,7 @@ namespace BudgetCodeTests
             Categories categories = new Categories(conn, true);
 
             String newDescr = "Presents";
-            int id = 11;
+            int id = 1;
             Category.CategoryType catType = Category.CategoryType.Income;
 
             // Act
@@ -284,7 +284,8 @@ namespace BudgetCodeTests
 
             // Assert 
             Assert.Equal(newDescr, category.Description);
-            Assert.Equal(Category.CategoryType.Income, category.Type);
+            Assert.Equal(newCatType, category.Type);
+      
 
         }
 
