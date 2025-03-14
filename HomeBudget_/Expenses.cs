@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Data.SQLite;
+using System.Data.SqlClient;
+using Microsoft.VisualBasic;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -94,11 +96,24 @@ namespace Budget
         // ====================================================================
         private void Add(Expense exp)
         {
-            _Expenses.Add(exp);
+            string stm = "INSERT INTO expenses(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.CommandText = stm;
+
+            cmd.Parameters.AddWithValue("@id", exp.Id);
+            cmd.Parameters.AddWithValue("@date", exp.Date);
+            cmd.Parameters.AddWithValue("@categoryId", exp.Category);
+            cmd.Parameters.AddWithValue("@amount", exp.Amount);
+            cmd.Parameters.AddWithValue("@description", exp.Description);
+
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
         }
         
         /// <summary>
-        /// Adds a new expense to the collection. Generated a unique id automatically.
+        /// Adds a new expense to the collection. Generates a unique id automatically.
         /// </summary>
         /// <param name="date"> Date of the expense</param>
         /// <param name="category"> Category Id tge expense </param>
@@ -110,17 +125,19 @@ namespace Budget
         /// </example>
         public void Add(DateTime date, int category, Double amount, String description)
         {
-            int new_id = 1;
+            string stm = "INSERT INTO categories(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
-            // if we already have expenses, set ID to max
-            if (_Expenses.Count > 0)
-            {
-                new_id = (from e in _Expenses select e.Id).Max();
-                new_id++;
-            }
+            cmd.CommandText = stm;
 
-            _Expenses.Add(new Expense(new_id, date, category, amount, description));
+            cmd.Parameters.AddWithValue("@date", date);
+            cmd.Parameters.AddWithValue("@categoryId", category);
+            cmd.Parameters.AddWithValue("@amount", amount);
+            cmd.Parameters.AddWithValue("@description", description);
 
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
         }
 
         // ====================================================================
@@ -128,7 +145,7 @@ namespace Budget
         // ====================================================================
         public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
         {
-            string stm = "UPDATE authors SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
+            string stm = "UPDATE expenses SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
             var cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
