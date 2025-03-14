@@ -26,32 +26,13 @@ namespace Budget
     public class Expenses
     {
         private List<Expense> _Expenses = new List<Expense>();
-        private string _FileName;
-        private string _DirName;
-        private SQLiteConnection _DbConnection;
 
-        // ====================================================================
-        // Properties
-        // ====================================================================
-        /// <summary>
-        /// Gets the name of the current expense file.
-        /// Read-only
-        /// </summary>
-        public String FileName { get { return _FileName; } }
-        
-        /// <summary>
-        ///  Gets the directory name where contains expense file. Read - only
-        /// </summary>
-        public String DirName { get { return _DirName; } }
+        private SQLiteConnection _DbConnection;
 
         /// <summary>
         /// Gets and sets the connection between the budget application and the necessary database to access information on all expenses.
         /// </summary>
         private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
-
-      
-
-        
 
         // ====================================================================
         // get a specific expense from the list where the id is the one specified
@@ -138,6 +119,26 @@ namespace Budget
         }
 
         // ====================================================================
+        // Update Expense
+        // ====================================================================
+        public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
+        {
+            string stm = "UPDATE authors SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
+            var cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.CommandText = stm;
+
+            cmd.Parameters.AddWithValue("@id", expenseId);
+            cmd.Parameters.AddWithValue("@date", newDate);
+            cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+            cmd.Parameters.AddWithValue("@amount", newAmount);
+            cmd.Parameters.AddWithValue("@description", newDescription);
+            cmd.Prepare();
+
+            SQLiteDataReader rdr = cmd.ExecuteReader();
+        }
+
+        // ====================================================================
         // Delete expense
         // ====================================================================
         /// <summary>Removes an expense from the collection
@@ -188,3 +189,5 @@ namespace Budget
     }
 }
 
+    }
+}
