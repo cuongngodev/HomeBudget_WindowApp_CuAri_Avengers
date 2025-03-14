@@ -236,7 +236,6 @@ namespace BudgetCodeTests
             {
                 Assert.True(categories.List().Exists(c => c.Description == defaultCat.Description && c.Type == defaultCat.Type));
             }
-
         }
 
         // ========================================================================

@@ -26,43 +26,12 @@ namespace Budget
     /// </summary>
     public class HomeBudget
     {
-
-        private string _FileName;
-        private string _DirName;
         private Categories _categories;
         private Expenses _expenses;
 
         // ====================================================================
         // Properties
         // ===================================================================
-
-        // Properties (location of files etc)
-        /// <summary>
-        /// Gets the name of the budget file.
-        /// </summary>
-        public String FileName { get { return _FileName; } }
-        /// <summary>
-        /// Gets the directory name of the home budget file.
-        /// </summary>
-        public String DirName { get { return _DirName; } }
-        /// <summary>
-        /// Gets the path name of home budget app, path name is a combination of file name and directory name.
-        /// Return null if not found.
-        /// </summary>
-        public String PathName
-        {
-            get
-            {
-                if (_FileName != null && _DirName != null)
-                {
-                    return Path.GetFullPath(_DirName + "\\" + _FileName);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
 
         // Properties (categories and expenses object)
         /// <summary>
@@ -74,25 +43,7 @@ namespace Budget
         /// </summary>
         public Expenses expenses { get { return _expenses; } }
 
-        // -------------------------------------------------------------------
-        // Constructor (new... default categories, no expenses)
-        // -------------------------------------------------------------------
-        public HomeBudget()
-        {
-            _categories = new Categories();
-            _expenses = new Expenses();
 
-        }
-
-        // -------------------------------------------------------------------
-        // Constructor (existing budget ... must specify file)
-        // -------------------------------------------------------------------
-    /*    public HomeBudget(String budgetFileName)
-        {
-            _categories = new Categories();
-            _expenses = new Expenses();
-            //ReadFromFile(budgetFileName);
-        }*/
         public HomeBudget(String databaseFile, bool newDB = false)
         {
             // if database exists, and user doesn't want a new database, open existing DB
@@ -108,34 +59,11 @@ namespace Budget
             }
             // create the category object
             _categories = new Categories(Database.dbConnection, newDB);
+
             // create the expenses object
-            _expenses = new Expenses(); // need a constructor ? or default one is good?
+            _expenses = new Expenses(); // need a constructor ? the constructor need to connect to the DB
         }
-       /* public HomeBudget(String databaseFile, String expensesXMLFile, bool newDB = false)
-        {
-            // if database exists, and user doesn't want a new database, open existing DB
-            if (!newDB && File.Exists(databaseFile))
-            {
-                Database.existingDatabase(databaseFile);
-            }
-
-            // file did not exist, or user wants a new database, so open NEW DB
-            else
-            {
-                Database.newDatabase(databaseFile);
-                newDB = true;
-            }
-
-            // create the category object
-            _categories = new Categories(Database.dbConnection, newDB);
-
-            // create the _expenses course
-            _expenses = new Expenses();
-            _expenses.ReadFromFile(expensesXMLFile);
-        }
-*/
-
-    
+      
         #region GetList
 
 
@@ -361,14 +289,6 @@ namespace Budget
         // ============================================================================
         // Group all expenses by category (ordered by category name)
         // ============================================================================
-
-
-
-
-
-
-
-
 
         /// <summary>
         /// Retrieves a list of Budget Item groupped by category.
