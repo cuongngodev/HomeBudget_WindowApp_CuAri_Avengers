@@ -13,6 +13,5 @@ namespace BudgetCodeTests
         String testInputFile = TestConstants.testExpensesInputFile;
         int maxIDInExpenseFile = TestConstants.maxIDInExpenseFile;
         Expense firstExpenseInFile = new Expense(1, new DateTime(2021, 1, 10), 10, 12, "hat (on credit)");
-   
     }
 }
