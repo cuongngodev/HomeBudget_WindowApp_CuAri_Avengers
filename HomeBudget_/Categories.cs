@@ -29,7 +29,6 @@ namespace Budget
     /// </summary>
     public class Categories
     {
-        private static String DefaultFileName = "budgetCategories.txt";
         private List<Category> _Cats = new List<Category>();
         private string _FileName;
         private string _DirName;
@@ -144,7 +143,7 @@ namespace Budget
 
         public void UpdateProperties(int categoryId, string newDescription, Category.CategoryType newType)
         {
-            string stm = "UPDATE authors SET Description = @description, TypeId = @typeId WHERE Id = @id";
+            string stm = "UPDATE categories SET Description = @description, TypeId = @typeId WHERE Id = @id";
             var cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
