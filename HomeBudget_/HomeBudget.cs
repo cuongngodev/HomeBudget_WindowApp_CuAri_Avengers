@@ -61,7 +61,7 @@ namespace Budget
             _categories = new Categories(Database.dbConnection, newDB);
 
             // create the expenses object
-            _expenses = new Expenses(); // need a constructor ? the constructor need to connect to the DB
+            _expenses = new Expenses(Database.dbConnection); // need a constructor ? the constructor need to connect to the DB
         }
       
         #region GetList
