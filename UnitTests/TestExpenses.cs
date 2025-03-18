@@ -33,6 +33,26 @@ namespace BudgetCodeTests
         }
 
         [Fact]
+        public void ExpensesMethod_List_ReturnsListOfExpenses()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+
+            
+            Expenses expenses = new Expenses(conn);
+            int oldSizeOfList = expenses.List().Count;
+            // Act
+            List<Expense> list = expenses.List();
+
+            // Assert
+            Assert.Equal(oldSizeOfList, list.Count);
+
+        }
+
+        [Fact]
         public void ExpensesMethod_Add()
         {
             // Arrange
@@ -60,6 +80,8 @@ namespace BudgetCodeTests
 
         }
 
+
+
         [Fact]
         public void ExpensesMethod_GetExpenseByID()
         {
@@ -78,15 +100,81 @@ namespace BudgetCodeTests
             int category = 1;
             double amount = 20.00;
 
+            int boo = expenses.List().Count;
+
             expenses.Add(date, category, amount, desc);
 
 
             //Act
-            Expense newExpense = expenses.GetExpenseFromId(0);
+            Expense newExpense = expenses.GetExpenseFromId(1);
 
             //Assert 
             Assert.Equal(amount, newExpense.Amount);
 
         }
+
+        [Fact]
+        public void ExpensesMethod_Delete()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+
+            
+            Expenses expenses = new Expenses(conn);
+
+            int IdToDelete = 1;
+            string desc = "New Expense";
+            DateTime date = DateTime.Now;
+            int category = 1;
+            double amount = 20.00;
+            expenses.Add(date,category, amount, desc);
+
+            int oldSizeOfList = expenses.List().Count;
+            // Act
+            expenses.Delete(IdToDelete);
+            List<Expense> expensesList = expenses.List();
+            int sizeOfList = expensesList.Count;
+
+            // Assert
+            Assert.Equal(oldSizeOfList - 1, sizeOfList);
+            Assert.Null(expenses.GetExpenseFromId(IdToDelete));
+
+        }
+
+        [Fact]
+        public void ExpensesMethod_Delete_InvalidIDDoesntCrash()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+
+            Expenses expenses = new Expenses(conn);
+           
+            int IdToDelete = 1006;
+            int sizeOfList = expenses.List().Count;
+
+            // Act
+            try
+            {
+                expenses.Delete(IdToDelete);
+                Assert.Equal(sizeOfList, expenses.List().Count);
+            }
+
+            // Assert
+            catch
+            {
+                Assert.Fail("Invalid ID causes Delete to break");
+            }
+        }
+
+
+
+
+
     }
 }
