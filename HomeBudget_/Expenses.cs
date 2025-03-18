@@ -23,28 +23,28 @@ namespace Budget
     //        - etc
     // ====================================================================
     /// <summary>
-    /// Responsible for manageing a collection of <see cref="Expense"/> objects, providing different functionality for reading from and writing to files, and managing expense entries. Uses XML format for file operations.
+    /// Responsible for manageing a collection of <see cref="Expense"/> objects, providing different functionality for reading from and writing to files, and managing expense entries. Uses SQLite for file operations.
     /// </summary>
     public class Expenses
     {
-        private List<Expense> _Expenses = new List<Expense>();
-
         private SQLiteConnection _DbConnection;
 
+        private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
+
+        /// <summary>
+        /// Parameterized constructor that takes in a database connection path as input in order to link the Expenses object to the correct database.
+        /// </summary>
+        /// <param name="dbConnection">Database connection path to link up Expense object and database.</param>
         public Expenses(SQLiteConnection dbConnection)
         {
             DBConnection = dbConnection;
         }
-        /// <summary>
-        /// Gets and sets the connection between the budget application and the necessary database to access information on all expenses.
-        /// </summary>
-        private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
 
         // ====================================================================
         // get a specific expense from the list where the id is the one specified
         // ====================================================================
         /// <summary>
-        /// Gets an <see cref="Expense"/> object by a given ID number as input.
+        /// Gets an <see cref="Expense"/> object by a given ID number as input and retrieving its data from the database.
         /// </summary>
         /// <param name="i">The unique ID number of an expense to retrieve.</param>
         /// <returns>An <see cref="Expense"/> object corresponding to its specified ID number.</returns>
@@ -93,38 +93,38 @@ namespace Budget
         // ====================================================================
         // Add expense
         // ====================================================================
-        private void Add(Expense exp)
-        {
-            string stm = "INSERT INTO expenses(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
-            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
+        //private void Add(Expense exp)
+        //{
+        //    string stm = "INSERT INTO expenses(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
+        //    SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
-            cmd.CommandText = stm;
+        //    cmd.CommandText = stm;
 
-            cmd.Parameters.AddWithValue("@id", exp.Id);
-            cmd.Parameters.AddWithValue("@date", exp.Date);
-            cmd.Parameters.AddWithValue("@categoryId", exp.Category);
-            cmd.Parameters.AddWithValue("@amount", exp.Amount);
-            cmd.Parameters.AddWithValue("@description", exp.Description);
+        //    cmd.Parameters.AddWithValue("@id", exp.Id);
+        //    cmd.Parameters.AddWithValue("@date", exp.Date);
+        //    cmd.Parameters.AddWithValue("@categoryId", exp.Category);
+        //    cmd.Parameters.AddWithValue("@amount", exp.Amount);
+        //    cmd.Parameters.AddWithValue("@description", exp.Description);
 
-            cmd.Prepare();
+        //    cmd.Prepare();
 
-            cmd.ExecuteNonQuery();
-        }
-        
+        //    cmd.ExecuteNonQuery();
+        //}
+
         /// <summary>
-        /// Adds a new expense to the collection. Generates a unique id automatically.
+        /// Adds a new expense entry to the database and generates a unique id for it automatically.
         /// </summary>
-        /// <param name="date"> Date of the expense</param>
-        /// <param name="category"> Category Id tge expense </param>
-        /// <param name="amount">Amount of earning of the expense </param>
-        /// <param name="description">Description of the expense</param>
+        /// <param name="date">Creation date of the expense object.</param>
+        /// <param name="category">Category Id of the expense object.</param>
+        /// <param name="amount">Monetary amount assigned to the expense object.</param>
+        /// <param name="description">Description of the expense object.</param>
         /// <example>
         /// Enxpenses expenses = new Expenses();
         /// expenses.Add(date,category,amount,description)
         /// </example>
         public void Add(DateTime date, int category, Double amount, String description)
         {
-            string stm = "INSERT INTO categories(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
+            string stm = "INSERT INTO expenses(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
             SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
@@ -162,14 +162,13 @@ namespace Budget
         // ====================================================================
         // Delete expense
         // ====================================================================
-        /// <summary>Removes an expense from the collection
+        /// <summary>Deletes an expense entry from the database.
         /// </summary>
-        /// <param name="Id">Id of the expense to delete</param>
+        /// <param name="Id">Id of the expense to delete.</param>
         /// <exception cref="ArgumentNullException"> Thrown if id is null. </exception>
         /// <example>
         /// <code>
-        /// Enxpenses expenses = new Expenses();
-        /// expenses.Delete()
+        /// expenses.Delete(23)
         /// </code>
         /// </example> 
         public void Delete(int Id)
@@ -193,19 +192,37 @@ namespace Budget
         //        this instance
         // ====================================================================
         /// <summary>
-        /// Returns a copy of all the expenses in the collection.
+        /// Returns a copy of all the expenses in the database in the form of an <see cref="Expense"/> list.
         /// </summary>
         /// <returns>A new list containning copies of all expenses</returns>
         public List<Expense> List()
         {
+            const int ID_INDEX = 0;
+            const int DATE_INDEX = 1;
+            const int DESCRIPTION_INDEX = 2;
+            const int AMOUNT_INDEX = 3;
+            const int CATEGORY_ID_INDEX = 4;
+            
             List<Expense> newList = new List<Expense>();
-            foreach (Expense expense in _Expenses)
+
+            string stm = "SELECT Id, Date, Description, Amount, CategoryId FROM expenses";
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.ExecuteNonQuery();
+
+            SQLiteDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
             {
-                newList.Add(new Expense(expense));
+                int id = rdr.GetInt32(ID_INDEX);
+                DateTime date = rdr.GetDateTime(DATE_INDEX);
+                string description = rdr.GetString(DESCRIPTION_INDEX);
+                double amount = rdr.GetDouble(AMOUNT_INDEX);
+                int categoryId = rdr.GetInt32(CATEGORY_ID_INDEX);
+
+                newList.Add(new Expense(id, date, categoryId, amount, description));
             }
             return newList;
         }
-
-
     }
 }

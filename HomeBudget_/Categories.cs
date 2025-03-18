@@ -25,15 +25,13 @@ namespace Budget
     // ====================================================================
     /// <summary>
     /// Responsible for managing a collection of categories stored on a database, representing different expense categories. 
-    /// <br></br>It allows for operations including adding, deleting, and listing categories.
+    /// <br></br>It allows for operations including adding, deleting, and listing categories to and from the database.
     /// </summary>
     public class Categories
     {
-        private List<Category> _Cats = new List<Category>();
         private string _FileName;
         private string _DirName;
         private SQLiteConnection _DbConnection;
-
 
         // ====================================================================
         // Properties
@@ -44,13 +42,10 @@ namespace Budget
         public String FileName { get { return _FileName; } }
         
         /// <summary>
-        /// Gets the directory path where the file corresponding to the <see cref="Categories.FileName"/> property is stored.
+        /// Gets the directory path where the file corresponding to the <see cref="FileName"/> property is stored.
         /// </summary>
         public String DirName { get { return _DirName; } }
 
-        /// <summary>
-        /// Gets and sets the connection between the budget application and the necessary database to access information on expense categories.
-        /// </summary>
         private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
 
         // ====================================================================
@@ -67,7 +62,7 @@ namespace Budget
         /// <summary>
         /// Parameterized constructor which creates a <see cref="Categories"/> object by taking in input corresponding to the
         /// <br></br>
-        /// correct database connection and a boolean stating whether the database is new or not in the potential need to create a new one.
+        /// correct database connection and a boolean argument stating whether the database is new or not in the potential need to create a new one.
         /// </summary>
         /// <param name="dbConnection">The connection to a given database location.</param>
         /// <param name="isNewDb">An indicator to whether the desired database location is meant to be new or is pre-existing.</param>
@@ -82,9 +77,6 @@ namespace Budget
             }
         }
 
-        /// <summary>
-        /// A method designed to add the necessary category types to the categoryTypes table on a new database.
-        /// </summary>
         private void AddCategoryTypes()
         { 
             foreach (Category.CategoryType cat in Enum.GetValues<Category.CategoryType>())
@@ -101,7 +93,7 @@ namespace Budget
         // get a specific category from the list where the id is the one specified
         // ====================================================================
         /// <summary>
-        /// Gets a <see cref="Category"/> object by a given ID number as input.
+        /// Gets a <see cref="Category"/> object from the database by a given ID number as input.
         /// </summary>
         /// <param name="i">The unique ID number of a category to retrieve.</param>
         /// <returns>A <see cref="Category"/> object corresponding to its specified ID number.</returns>
@@ -203,38 +195,38 @@ namespace Budget
         // ====================================================================
         // Add category
         // ====================================================================
-        /// <summary>
-        /// Adds a new category to the database. The ID of the new category is automatically set based on the exisiting categories.
-        /// </summary>
-        /// <param name="cat">A <see cref="Category"/> object for the to-be added category to base itself on.</param>
-        /// <example>
-        /// <code>
-        /// Categories categories = new Categories();
-        /// categories.Add(vacationCategory);
-        /// </code>
-        /// </example>
-        private void Add(Category cat)
-        {
-            string stm = "INSERT INTO categories(Id,Description,TypeId) VALUES(@id,@description,@type)";
+        ///// <summary>
+        ///// Adds a new category to the database. The ID of the new category is automatically set based on the exisiting categories.
+        ///// </summary>
+        ///// <param name="cat">A <see cref="Category"/> object for the to-be added category to base itself on.</param>
+        ///// <example>
+        ///// <code>
+        ///// Categories categories = new Categories();
+        ///// categories.Add(vacationCategory);
+        ///// </code>
+        ///// </example>
+        //private void Add(Category cat)
+        //{
+        //    string stm = "INSERT INTO categories(Id,Description,TypeId) VALUES(@id,@description,@type)";
 
-            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
+        //    SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
-            cmd.CommandText = stm;
+        //    cmd.CommandText = stm;
 
-            cmd.Parameters.AddWithValue("@id", cat.Id);
-            cmd.Parameters.AddWithValue("@description", cat.Description);
-            cmd.Parameters.AddWithValue("@type", ((int) cat.Type) + 1);
+        //    cmd.Parameters.AddWithValue("@id", cat.Id);
+        //    cmd.Parameters.AddWithValue("@description", cat.Description);
+        //    cmd.Parameters.AddWithValue("@type", ((int)cat.Type) + 1);
 
-            cmd.Prepare();
+        //    cmd.Prepare();
 
-            cmd.ExecuteNonQuery();
-        }
+        //    cmd.ExecuteNonQuery();
+        //}
 
         /// <summary>
         /// Adds a new category to the database by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.
         /// </summary>
         /// <param name="desc">The description of the new category.</param>
-        /// <param name="type">The type of the category (e.g: Income, Expense, Credit, or Savings). </param>
+        /// <param name="type">The type of the category (e.g: Income, Expense, Credit, or Savings).</param>
         /// <example>
         /// <code>
         /// Categories categories = new Categories();
@@ -304,6 +296,10 @@ namespace Budget
         /// </example>
         public List<Category> List()
         {
+            const int ID_INDEX = 0;
+            const int DESCRIPTION_INDEX = 1;
+            const int CATEGORY_TYPE_INDEX = 2;
+
             List<Category> newList = new List<Category>();
 
             string stm = "SELECT Id, Description, TypeId FROM categories";
@@ -316,9 +312,9 @@ namespace Budget
            
             while (rdr.Read())
             {
-                int id = rdr.GetInt32(0);
-                string description = rdr.GetString(1);
-                Category.CategoryType categoryType = (Category.CategoryType)rdr.GetInt32(2);
+                int id = rdr.GetInt32(ID_INDEX);
+                string description = rdr.GetString(DESCRIPTION_INDEX);
+                Category.CategoryType categoryType = (Category.CategoryType)rdr.GetInt32(CATEGORY_TYPE_INDEX);
 
                 newList.Add(new Category(id, description, categoryType));
             }
