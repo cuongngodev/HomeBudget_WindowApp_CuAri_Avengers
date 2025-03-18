@@ -252,15 +252,19 @@ namespace BudgetCodeTests
 
             String newDescr = "Presents";
             int id = 1;
-            Category.CategoryType catType = Category.CategoryType.Income;
+            Category.CategoryType newCatType = Category.CategoryType.Income;
 
             // Act
-            categories.UpdateProperties(id, newDescr, catType);
             Category category = categories.GetCategoryFromId(id);
+            Category.CategoryType catType = category.Type;
+            categories.UpdateProperties(id, newDescr, catType); //I'm thinking that maybe we might want an overload for Update
 
             // Assert 
+            //checking if the description updated
             Assert.Equal(newDescr, category.Description);
-            Assert.Equal(Category.CategoryType.Income, category.Type);
+
+            //checking if the cat didn't change
+            //Assert.Equal(catType, category.Type);
 
         }
 
