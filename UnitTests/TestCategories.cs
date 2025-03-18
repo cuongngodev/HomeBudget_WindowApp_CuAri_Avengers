@@ -241,7 +241,7 @@ namespace BudgetCodeTests
         // ========================================================================
 
         [Fact]
-        public void CategoriesMethod_UpdateCategory()
+        public void CategoriesMethod_UpdateProperties_WithOneNewProperty()
         {
             // Arrange
             String folder = TestConstants.GetSolutionDir();
@@ -249,18 +249,163 @@ namespace BudgetCodeTests
             Database.newDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
             Categories categories = new Categories(conn, true);
+
             String newDescr = "Presents";
-            int id = 11;
+            int id = 1;
+            Category.CategoryType newCatType = Category.CategoryType.Income;
 
             // Act
-            categories.UpdateProperties(id, newDescr, Category.CategoryType.Income);
+            Category category = categories.GetCategoryFromId(id);
+            Category.CategoryType catType = category.Type;
+            categories.UpdateProperties(id, newDescr, catType); //I'm thinking that maybe we might want an overload for Update
+            Category newCat = categories.GetCategoryFromId(id);
+            // Assert 
+            //checking if the description updated
+            Assert.Equal(newDescr, newCat.Description);
+
+            //checking if the cat didn't change
+            //Assert.Equal(catType, category.Type);
+
+        }
+
+        [Fact]
+        public void CategoriesMethod_UpdateProperties_WithMultipleNewProperties()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, true);
+
+            String newDescr = "Presents";
+            int id = 11;
+            Category.CategoryType newCatType = Category.CategoryType.Savings;
+
+            // Act
+            categories.UpdateProperties(id, newDescr, newCatType);
             Category category = categories.GetCategoryFromId(id);
 
             // Assert 
             Assert.Equal(newDescr, category.Description);
-            Assert.Equal(Category.CategoryType.Income, category.Type);
+            Assert.Equal(newCatType, category.Type);
+      
 
         }
+
+        [Fact]
+        public void CategoriesMethod_UpdateCategory_IDDoesntExistNoCrash()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, true);
+
+            String newDescr = "Presents";
+            int id = 11;
+            Category.CategoryType catType = Category.CategoryType.Income;
+
+            int defaultId = 0;
+            string defaultDesc = "";
+            Category.CategoryType defaultCat = Category.CategoryType.Income;
+
+            categories.Delete(id);
+            Category category = new Category(defaultId, defaultDesc, defaultCat);
+
+            int length = categories.List().Count();
+
+            // Act
+            try
+            {
+                categories.UpdateProperties(id, newDescr, catType);
+                category = categories.GetCategoryFromId(id);
+            }
+            // Assert 
+            catch (Exception ex)
+            {
+                Assert.True(false, "Invalid Id causes Update to crash");
+            }
+
+            Assert.Equal(length, categories.List().Count());
+        }
+
+        [Fact]
+        public void CategoriesMethod_UpdateCategory_InvalidIdNoCrash()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, true);
+
+            String newDescr = "Presents";
+            int id = -11;
+            Category.CategoryType catType = Category.CategoryType.Income;
+
+            int defaultId = 0;
+            string defaultDesc = "";
+            Category.CategoryType defaultCat = Category.CategoryType.Income;
+
+            categories.Delete(id);
+            Category category = new Category(defaultId, defaultDesc, defaultCat);
+
+            int length = categories.List().Count();
+
+            // Act
+            try
+            {
+                categories.UpdateProperties(id, newDescr, catType);
+                category = categories.GetCategoryFromId(id);
+            }
+            // Assert 
+            catch (Exception ex)
+            {
+                Assert.True(false, "Invalid Id causes Update to crash");
+            }
+
+            Assert.Equal(length, categories.List().Count());
+        }
+
+        public void CategoriesMethod_UpdateCategory_NullValuesNoCrash()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, true);
+
+            String newDescr = "Presents";
+            int id = 10;
+            Category.CategoryType catType = Category.CategoryType.Income;
+
+            int defaultId = 0;
+            string defaultDesc = "";
+            Category.CategoryType defaultCat = Category.CategoryType.Income;
+
+            categories.Delete(id);
+            Category category = new Category(defaultId, defaultDesc, defaultCat);
+
+            int length = categories.List().Count();
+
+            // Act
+            try
+            {
+                categories.UpdateProperties(id, newDescr, catType);
+                category = categories.GetCategoryFromId(id);
+            }
+            // Assert 
+            catch (Exception ex)
+            {
+                Assert.True(false, "Invalid Id causes Update to crash");
+            }
+
+            Assert.Equal(length, categories.List().Count());
+        }
+
     }
 }
 

@@ -17,7 +17,7 @@ namespace Budget
     //        - Valid category types: Income, Expense, Credit, Saving
     // ====================================================================
     /// <summary>
-    /// Represents an <see cref="Expense"/>'s category used in the Budget application. Each category corresponds to a budget item such as income, expense, credit, or savings.
+    /// Represents an <see cref="Expense"/> object's category used in the Budget application. Each category corresponds to a budget item such as income, expense, credit, or savings.
     /// </summary>
     public class Category
     {
@@ -25,17 +25,17 @@ namespace Budget
         // Properties
         // ====================================================================
         /// <summary>
-        /// Gets or sets the unique identifier of a category object.
+        /// Gets the unique identifier of a category object.
         /// </summary>
         public int Id { get;}
 
         /// <summary>
-        /// Gets or sets the description of a category object.
+        /// Gets the description of a category object.
         /// </summary>
         public String Description { get;}
 
         /// <summary>
-        /// Gets or sets the type of a category object.
+        /// Gets the type of a category object.
         /// </summary>
         public CategoryType Type { get; }
 
