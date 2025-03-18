@@ -62,7 +62,7 @@ namespace Budget
             const int AMOUNT_INDEX = 3;
             const int CATEGORY_ID_INDEX = 4;
 
-            string stm = "SELECT Id, Date, Description, Amount, CategoryId FROM expenses WHERE id=@id";
+            string stm = "SELECT Id, Date, Description, Amount, CategoryId FROM expenses WHERE Id=@id";
             var cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
@@ -124,7 +124,7 @@ namespace Budget
         /// </example>
         public void Add(DateTime date, int category, Double amount, String description)
         {
-            string stm = "INSERT INTO expenses(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
+            string stm = "INSERT INTO expenses(Date, CategoryId, Amount, Description) VALUES(@date, @categoryId, @amount, @description)";
             SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
@@ -164,14 +164,14 @@ namespace Budget
         // ====================================================================
         /// <summary>Deletes an expense entry from the database.
         /// </summary>
-        /// <param name="Id">Id of the expense to delete.</param>
+        /// <param name="id">Id of the expense to delete.</param>
         /// <exception cref="ArgumentNullException"> Thrown if id is null. </exception>
         /// <example>
         /// <code>
         /// expenses.Delete(23)
         /// </code>
         /// </example> 
-        public void Delete(int Id)
+        public void Delete(int id)
         {
             string stm = "DELETE FROM expenses WHERE Id=@id";
 
@@ -179,7 +179,7 @@ namespace Budget
 
             cmd.CommandText = stm;
 
-            cmd.Parameters.AddWithValue("@id", Id);
+            cmd.Parameters.AddWithValue("@id", id);
 
             cmd.Prepare();
 
