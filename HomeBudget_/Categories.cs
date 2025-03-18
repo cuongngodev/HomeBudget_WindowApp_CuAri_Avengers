@@ -29,7 +29,6 @@ namespace Budget
     /// </summary>
     public class Categories
     {
-        private List<Category> _Cats = new List<Category>();
         private string _FileName;
         private string _DirName;
         private SQLiteConnection _DbConnection;
@@ -297,6 +296,10 @@ namespace Budget
         /// </example>
         public List<Category> List()
         {
+            const int ID_INDEX = 0;
+            const int DESCRIPTION_INDEX = 1;
+            const int CATEGORY_TYPE_INDEX = 2;
+
             List<Category> newList = new List<Category>();
 
             string stm = "SELECT Id, Description, TypeId FROM categories";
@@ -309,9 +312,9 @@ namespace Budget
            
             while (rdr.Read())
             {
-                int id = rdr.GetInt32(0);
-                string description = rdr.GetString(1);
-                Category.CategoryType categoryType = (Category.CategoryType)rdr.GetInt32(2);
+                int id = rdr.GetInt32(ID_INDEX);
+                string description = rdr.GetString(DESCRIPTION_INDEX);
+                Category.CategoryType categoryType = (Category.CategoryType)rdr.GetInt32(CATEGORY_TYPE_INDEX);
 
                 newList.Add(new Category(id, description, categoryType));
             }

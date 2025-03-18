@@ -27,8 +27,6 @@ namespace Budget
     /// </summary>
     public class Expenses
     {
-        private List<Expense> _Expenses = new List<Expense>();
-
         private SQLiteConnection _DbConnection;
 
         private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
@@ -194,19 +192,37 @@ namespace Budget
         //        this instance
         // ====================================================================
         /// <summary>
-        /// Returns a copy of all the expenses in the database in the form of a list.
+        /// Returns a copy of all the expenses in the database in the form of an <see cref="Expense"/> list.
         /// </summary>
         /// <returns>A new list containning copies of all expenses</returns>
         public List<Expense> List()
         {
+            const int ID_INDEX = 0;
+            const int DATE_INDEX = 1;
+            const int DESCRIPTION_INDEX = 2;
+            const int AMOUNT_INDEX = 3;
+            const int CATEGORY_ID_INDEX = 4;
+            
             List<Expense> newList = new List<Expense>();
-            foreach (Expense expense in _Expenses)
+
+            string stm = "SELECT Id, Date, Description, Amount, CategoryId FROM expenses";
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
+
+            cmd.ExecuteNonQuery();
+
+            SQLiteDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
             {
-                newList.Add(new Expense(expense));
+                int id = rdr.GetInt32(ID_INDEX);
+                DateTime date = rdr.GetDateTime(DATE_INDEX);
+                string description = rdr.GetString(DESCRIPTION_INDEX);
+                double amount = rdr.GetDouble(AMOUNT_INDEX);
+                int categoryId = rdr.GetInt32(CATEGORY_ID_INDEX);
+
+                newList.Add(new Expense(id, date, categoryId, amount, description));
             }
             return newList;
         }
-
-
     }
 }
