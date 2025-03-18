@@ -24,7 +24,7 @@ namespace Budget
         // Properties
         // ====================================================================
         /// <summary>
-        /// Gets or sets the unique identifier of an expense object.
+        /// Gets the unique identifier of an expense object.
         /// </summary>
         public int Id { get; }
         
@@ -34,19 +34,19 @@ namespace Budget
         public DateTime Date { get; }
         
         /// <summary>
-        /// Gets or sets the amount tied to an expense object.
+        /// Gets the amount tied to an expense object.
         /// </summary>
-        public Double Amount { get; set; }
+        public Double Amount { get; }
         
         /// <summary>
-        /// Gets or sets the description of an expense object.
+        /// Gets the description of an expense object.
         /// </summary>
-        public String Description { get; set; }
+        public String Description { get;  }
         
         /// <summary>
-        /// Gets or sets the category tied to an expense object.
+        /// Gets the category tied to an expense object.
         /// </summary>
-        public int Category { get; set; }
+        public int Category { get; }
 
         // ====================================================================
         // Constructor
@@ -84,7 +84,6 @@ namespace Budget
             this.Category = obj.Category;
             this.Amount = obj.Amount;
             this.Description = obj.Description;
-           
         }
     }
 }
