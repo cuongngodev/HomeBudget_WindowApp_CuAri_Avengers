@@ -200,10 +200,8 @@ namespace Budget
 
         }
 
-
-
          
-        }
+        
 
         // ============================================================================
         // Group all expenses month by month (sorted by year/month)
@@ -262,41 +260,78 @@ namespace Budget
         /// </example>       
         public List<BudgetItemsByMonth> GetBudgetItemsByMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
+            Start = Start ?? new DateTime(1900, 1, 1);
+            End = End ?? new DateTime(2500, 1, 1);
             // -----------------------------------------------------------------------
             // get all items first
             // -----------------------------------------------------------------------
+
             List<BudgetItem> items = GetBudgetItems(Start, End, FilterFlag, CategoryID);
 
-            // -----------------------------------------------------------------------
-            // Group by year/month
-            // -----------------------------------------------------------------------
-            var GroupedByMonth = items.GroupBy(c => c.Date.Year.ToString("D4") + "/" + c.Date.Month.ToString("D2"));
+
+
+
 
             // -----------------------------------------------------------------------
-            // create new list
+            // Group by year/month, get the month group using db
             // -----------------------------------------------------------------------
-            var summary = new List<BudgetItemsByMonth>();
-            foreach (var MonthGroup in GroupedByMonth)
+           
+            string stm = @"SELECT STRFTIME('%Y/%m', e.Date) AS month,  
+                           FROM categories c, expenses e
+                           WHERE c.Id = e.CategoryId
+                           AND e.Date BETWEEN @Start AND @End";
+
+            // list of months that contain budget items
+            List<string> monthGroup = new List<string>();
+
+            // run the query on the db
+            SQLiteCommand cmd = new(stm, Database.dbConnection);
+
+            cmd.Parameters.AddWithValue("@Start", Start);
+            cmd.Parameters.AddWithValue("@End", End);
+
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+
+            // start reading the result
+
+            SQLiteDataReader reader = cmd.ExecuteReader();
+            
+            while (reader.Read())
             {
-                // calculate total for this month, and create list of details
-                double total = 0;
-                var details = new List<BudgetItem>();
-                foreach (var item in MonthGroup)
+                // fill in the month group list all the month from the database
+                monthGroup.Add(reader.GetString(0));
+            }
+            var summaryByMonth = new List<BudgetItemsByMonth>();
+
+
+            foreach(string month in monthGroup)
+            {
+                List<BudgetItem> details = new List<BudgetItem>();
+                Double total = 0;
+                // get the details (list of items for that month)
+                foreach(BudgetItem item in items)
                 {
-                    total = total + item.Amount;
-                    details.Add(item);
+                    string itemDateTime = item.Date.ToString("yyyy/mm");
+                    if (month == itemDateTime)
+                    {
+                        details.Add(item);
+                    }
+                    total += item.Amount;
                 }
 
-                // Add new BudgetItemsByMonth to our list
-                summary.Add(new BudgetItemsByMonth
+                // add new BudgetItemsByMonth to our list
+                summaryByMonth.Add(new BudgetItemsByMonth
                 {
-                    Month = MonthGroup.Key, // we can use get budget item to call in this case
+                    Month = month,
                     Details = details,
-                    Total = total
+                    Total = total,
                 });
-            }
 
-            return summary;
+
+            }
+            return summaryByMonth;
+            
         }
 
         // ============================================================================
@@ -478,7 +513,7 @@ namespace Budget
         /// <param name="FilterFlag"></param>
         /// <param name="CategoryID"></param>
         /// <returns></returns>
-        public List<Dictionary<string, object>> GetBudgetDictionaryByCategoryAndMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
+       /* public List<Dictionary<string, object>> GetBudgetDictionaryByCategoryAndMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
             // -----------------------------------------------------------------------
             // get all items by month 
@@ -555,7 +590,7 @@ namespace Budget
             return summary;
         }
       
-
+*/
 
 
         #endregion GetList
