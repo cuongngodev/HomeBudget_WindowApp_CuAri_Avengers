@@ -124,7 +124,7 @@ namespace Budget
         /// </example>
         public void Add(DateTime date, int category, Double amount, String description)
         {
-            string stm = "INSERT INTO categories(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
+            string stm = "INSERT INTO expenses(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
             SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
