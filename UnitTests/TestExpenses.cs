@@ -172,6 +172,39 @@ namespace BudgetCodeTests
             }
         }
 
+        [Fact]
+        public void ExpensesMethod_UpdateProperties_WithMultipleNewProperties()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Expenses expenses = new Expenses(conn);
+
+            int id = 1;
+            string desc = "New Expense";
+            DateTime date = DateTime.Now;
+            int category = 1;
+            double amount = 20.00;
+
+            double newAmount = 10.00;
+            int newCat = 2;
+            string newDescr = "New Desc";
+
+            expenses.Add(date, category, amount, desc);
+
+
+            // Act
+            expenses.UpdateProperties(id, date, newCat, newAmount,desc);
+            Expense newExpense = expenses.GetExpenseFromId(id);
+
+            // Assert 
+            Assert.Equal(newAmount,newExpense.Amount);
+            Assert.Equal(newCat, newExpense.Category);
+
+
+        }
 
 
 
