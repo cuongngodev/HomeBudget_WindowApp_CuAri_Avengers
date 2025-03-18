@@ -258,10 +258,10 @@ namespace BudgetCodeTests
             Category category = categories.GetCategoryFromId(id);
             Category.CategoryType catType = category.Type;
             categories.UpdateProperties(id, newDescr, catType); //I'm thinking that maybe we might want an overload for Update
-
+            Category newCat = categories.GetCategoryFromId(id);
             // Assert 
             //checking if the description updated
-            Assert.Equal(newDescr, category.Description);
+            Assert.Equal(newDescr, newCat.Description);
 
             //checking if the cat didn't change
             //Assert.Equal(catType, category.Type);
