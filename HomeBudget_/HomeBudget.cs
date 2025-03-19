@@ -276,7 +276,7 @@ namespace Budget
             // Group by year/month, get the month group using db
             // -----------------------------------------------------------------------
            
-            string stm = @"SELECT STRFTIME('%Y/%m', e.Date) AS month,  
+            string stm = @"SELECT STRFTIME('%Y-%m', e.Date) AS month
                            FROM categories c, expenses e
                            WHERE c.Id = e.CategoryId
                            AND e.Date BETWEEN @Start AND @End";
@@ -312,7 +312,7 @@ namespace Budget
                 // get the details (list of items for that month)
                 foreach(BudgetItem item in items)
                 {
-                    string itemDateTime = item.Date.ToString("yyyy/mm");
+                    string itemDateTime = item.Date.ToString("yyyy/MM");
                     if (month == itemDateTime)
                     {
                         details.Add(item);
@@ -327,8 +327,6 @@ namespace Budget
                     Details = details,
                     Total = total,
                 });
-
-
             }
             return summaryByMonth;
             
