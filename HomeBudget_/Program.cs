@@ -21,6 +21,8 @@ namespace HomeBudget_
             {
                 Console.WriteLine(i.Date.ToString("yyyy/MM") + "  " + i.ShortDescription);
             }*/
+            Console.WriteLine("Get Budget Items By Months");
+
             List<BudgetItemsByMonth> itemsByMonth = homeBudget.GetBudgetItemsByMonth(null, null, false, 1);
             foreach (var i in itemsByMonth)
             {
@@ -28,6 +30,17 @@ namespace HomeBudget_
                 foreach (BudgetItem item in i.Details)
                 {
                     Console.Write(item.Category + " " + item.Balance + " " + item.ShortDescription);
+                }
+                Console.WriteLine(i.Total);
+            }
+            Console.WriteLine("Get Budget Items By Categories");
+            List<BudgetItemsByCategory> itemsByCategory = homeBudget.GetBudgetItemsByCategory(null, null, false, 1);
+            foreach (BudgetItemsByCategory i in itemsByCategory)
+            {
+                Console.Write(i.Category);
+                foreach (BudgetItem item in i.Details)
+                {
+                    Console.Write(item.Date.ToString("yyyy/MM") + " " + item.Balance + " " + item.ShortDescription);
                 }
                 Console.WriteLine(i.Total);
             }

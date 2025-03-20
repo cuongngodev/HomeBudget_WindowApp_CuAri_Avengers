@@ -399,6 +399,8 @@ namespace Budget
         /// <returns>The list of all budget items group by category clustered by specified category ID if filter flag is true; if the category ID is not found, returns a list of budget items</returns>
         public List<BudgetItemsByCategory> GetBudgetItemsByCategory(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
+            Start = Start ?? new DateTime(1900, 1, 1);
+            End = End ?? new DateTime(2500, 1, 1);
             // -----------------------------------------------------------------------
             // get all items first
             // -----------------------------------------------------------------------
@@ -407,31 +409,65 @@ namespace Budget
             // -----------------------------------------------------------------------
             // Group by Category
             // -----------------------------------------------------------------------
-            var GroupedByCategory = items.GroupBy(c => c.Category);
+            string stm = @"SELECT c.Description
+                           FROM categories c, expenses e
+                           WHERE c.Id = e.CategoryId
+                                AND e.Date BETWEEN @Start AND @End
+                           ORDER BY c.Description";
+
+            // run the query on the db
+            SQLiteCommand cmd = new(stm, Database.dbConnection);
+
+            cmd.Parameters.AddWithValue("@Start", Start);
+            cmd.Parameters.AddWithValue("@End", End);
+            
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
 
             // -----------------------------------------------------------------------
             // create new list
             // -----------------------------------------------------------------------
-            var summary = new List<BudgetItemsByCategory>();
-            foreach (var CategoryGroup in GroupedByCategory.OrderBy(g => g.Key))
+            List<BudgetItemsByCategory> summaryByCategory = new List<BudgetItemsByCategory>();
+
+            // start reading the result 
+            List<string> categoryGroup = new List<string>();
+
+            SQLiteDataReader reader = cmd.ExecuteReader();
+
+            // get all the category
+            while (reader.Read())
             {
-                // calculate total for this category, and create list of details
-                double total = 0;
-                var details = new List<BudgetItem>();
-                foreach (var item in CategoryGroup)
+                categoryGroup.Add(reader.GetString(0));
+            }
+
+            foreach(string category in categoryGroup)
+            {
+                List<BudgetItem> details = new List<BudgetItem>();
+                Double total = 0;
+                foreach(BudgetItem item in items)
                 {
-                    total = total + item.Amount;
-                    details.Add(item);
+                    if(category == item.Category)
+                    {
+                        details.Add(item);
+                    }
+                    total += item.Amount;
                 }
-                // Add new BudgetItemsByCategory to our list
-                summary.Add(new BudgetItemsByCategory
+
+                // list of BudgetItems should be sorted by date.
+                details.Sort((x,y) => x.Date.CompareTo(y.Date));
+
+                summaryByCategory.Add(new BudgetItemsByCategory
                 {
-                    Category = CategoryGroup.Key,
+                    Category = category,
                     Details = details,
-                    Total = total
+                    Total = total,
                 });
             }
-            return summary;
+
+            // sort the list by category description, alphabetically.
+            summaryByCategory.Sort((x, y) => x.Category.CompareTo(y.Category));  
+
+            return summaryByCategory;
         }
 
 
