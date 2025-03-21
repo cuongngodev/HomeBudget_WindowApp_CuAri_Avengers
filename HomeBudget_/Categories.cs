@@ -36,16 +36,6 @@ namespace Budget
         // ====================================================================
         // Properties
         // ====================================================================
-        /// <summary>
-        /// Gets the path of the file used for reading and writing category data.
-        /// </summary>
-        public String FileName { get { return _FileName; } }
-        
-        /// <summary>
-        /// Gets the directory path where the file corresponding to the <see cref="FileName"/> property is stored.
-        /// </summary>
-        public String DirName { get { return _DirName; } }
-
         private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
 
         // ====================================================================
