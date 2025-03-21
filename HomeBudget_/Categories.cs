@@ -271,7 +271,7 @@ namespace Budget
         /// </example>
         public void Delete(int Id)
         {
-            string stm = "DELETE FROM categories WHERE id=@id";
+            string stm = "SELECT count(Id) FROM expenses WHERE CategoryId = @catId";
 
             SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
@@ -281,7 +281,24 @@ namespace Budget
 
             cmd.Prepare();
 
-            cmd.ExecuteNonQuery();
+            int numOfLines = Convert.ToInt32(cmd.ExecuteScalar());
+
+            if (numOfLines == 0)
+            {
+                stm = "DELETE FROM categories WHERE id=@id";
+
+                cmd.CommandText = stm;
+
+                cmd.Parameters.AddWithValue("@id", Id);
+
+                cmd.Prepare();
+
+                cmd.ExecuteNonQuery();
+            }
+            else
+            {
+                throw new Exception("ERROR: There are still expenses with this category.");
+            }
         }
 
         // ====================================================================
