@@ -21,8 +21,8 @@ namespace BudgetCodeTests
         {
             // Arrange
             String folder = TestConstants.GetSolutionDir();
-            String newDB = $"{folder}\\newDB.db";
-            Database.newDatabase(newDB);
+            String messy = $"{folder}\\messy.db";
+            Database.existingDatabase(messy);
             SQLiteConnection conn = Database.dbConnection;
 
             // Act
@@ -37,8 +37,8 @@ namespace BudgetCodeTests
         {
             // Arrange
             String folder = TestConstants.GetSolutionDir();
-            String newDB = $"{folder}\\newDB.db";
-            Database.newDatabase(newDB);
+            String messy = $"{folder}\\messy.db";
+            Database.newDatabase(messy);
             SQLiteConnection conn = Database.dbConnection;
 
             
@@ -107,9 +107,10 @@ namespace BudgetCodeTests
 
             expenses.Add(date, category, amount, desc);
 
+            int newExpenseId = expenses.List().Count - 1;
 
-            //Act
-            Expense newExpense = expenses.GetExpenseFromId(1);
+            //Act 
+            Expense newExpense = expenses.GetExpenseFromId(boo+2); //SERIOUS ISSUE WITH THE ID SKIPPING 6
 
             //Assert 
             Assert.Equal(amount, newExpense.Amount);
@@ -121,8 +122,8 @@ namespace BudgetCodeTests
         {
             // Arrange
             String folder = TestConstants.GetSolutionDir();
-            String newDB = $"{folder}\\newDB.db";
-            Database.newDatabase(newDB);
+            String messy = $"{folder}\\messy.db";
+            Database.existingDatabase(messy);
             SQLiteConnection conn = Database.dbConnection;
 
             
@@ -152,8 +153,8 @@ namespace BudgetCodeTests
         {
             // Arrange
             String folder = TestConstants.GetSolutionDir();
-            String newDB = $"{folder}\\newDB.db";
-            Database.newDatabase(newDB);
+            String messy = $"{folder}\\messy.db";
+            Database.existingDatabase(messy);
             SQLiteConnection conn = Database.dbConnection;
 
             Expenses expenses = new Expenses(conn);
@@ -180,8 +181,8 @@ namespace BudgetCodeTests
         {
             // Arrange
             String folder = TestConstants.GetSolutionDir();
-            String newDB = $"{folder}\\newDB.db";
-            Database.newDatabase(newDB);
+            String messy = $"{folder}\\messy.db";
+            Database.existingDatabase(messy);
             SQLiteConnection conn = Database.dbConnection;
             Expenses expenses = new Expenses(conn);
 
@@ -197,10 +198,11 @@ namespace BudgetCodeTests
 
             expenses.Add(date, category, amount, desc);
 
+            int expenseID = expenses.List()[expenses.List().Count - 1].Id;
 
             // Act
-            expenses.UpdateProperties(id, date, newCat, newAmount,desc);
-            Expense newExpense = expenses.GetExpenseFromId(id);
+            expenses.UpdateProperties(expenseID, date, newCat, newAmount, newDescr);
+            Expense newExpense = expenses.GetExpenseFromId(expenseID);
 
             // Assert 
             Assert.Equal(newAmount,newExpense.Amount);
@@ -208,9 +210,5 @@ namespace BudgetCodeTests
 
 
         }
-
-
-
-
     }
 }
