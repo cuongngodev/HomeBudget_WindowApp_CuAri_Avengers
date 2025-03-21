@@ -513,7 +513,7 @@ namespace Budget
         /// <param name="FilterFlag"></param>
         /// <param name="CategoryID"></param>
         /// <returns></returns>
-       /* public List<Dictionary<string, object>> GetBudgetDictionaryByCategoryAndMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
+        public List<Dictionary<string, object>> GetBudgetDictionaryByCategoryAndMonth(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
         {
             // -----------------------------------------------------------------------
             // get all items by month 
@@ -524,7 +524,7 @@ namespace Budget
             // loop over each month
             // -----------------------------------------------------------------------
             var summary = new List<Dictionary<string, object>>();
-            var totalsPerCategory = new Dictionary<String, Double>();
+            var totalsPerCategory = new Dictionary<string, double>();
 
             foreach (var MonthGroup in GroupedByMonth)
             {
@@ -589,11 +589,6 @@ namespace Budget
 
             return summary;
         }
-      
-*/
-
-
         #endregion GetList
-
     }
 }
