@@ -87,6 +87,11 @@ namespace Budget
                 categoryId = rdr.GetInt32(CATEGORY_ID_INDEX);
             }
 
+            if (id == 0)
+            {
+                throw new ArgumentOutOfRangeException("ERROR: Invalid ID, expense not found.");
+            }
+
             return new Expense(id, date, categoryId, amount, description);
         }
 
@@ -124,9 +129,6 @@ namespace Budget
         // ====================================================================
         public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
         {
-            if (expenseId == null)
-                throw new ArgumentNullException("expenseId can't be null");
-
             string stm = "UPDATE expenses SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
             SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 

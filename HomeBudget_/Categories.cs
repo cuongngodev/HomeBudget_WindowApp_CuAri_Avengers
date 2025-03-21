@@ -130,6 +130,11 @@ namespace Budget
                 categoryType = (Category.CategoryType)rdr.GetInt32(CATEGORY_TYPE_INDEX);
             }
 
+            if (id == 0)
+            {
+                throw new ArgumentOutOfRangeException("ERROR: Invalid ID, category not found.");
+            }
+
             return new Category(id,description,categoryType);
         }
 

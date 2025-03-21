@@ -350,7 +350,6 @@ namespace BudgetCodeTests
             try
             {
                 categories.UpdateProperties(id, newDescr, catType);
-                category = categories.GetCategoryFromId(id);
             }
             // Assert 
             catch (Exception ex)
@@ -388,7 +387,6 @@ namespace BudgetCodeTests
             try
             {
                 categories.UpdateProperties(id, newDescr, catType);
-                category = categories.GetCategoryFromId(id);
             }
             // Assert 
             catch (Exception ex)
