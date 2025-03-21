@@ -118,6 +118,31 @@ namespace BudgetCodeTests
         }
 
         [Fact]
+        public void ExpensesMethod_GetExpenseByID_InvalidIDCrashes()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            String messyDB = $"{folder}\\messy.db";
+            System.IO.File.Copy(goodDB, messyDB, true);
+            Database.existingDatabase(messyDB);
+            SQLiteConnection conn = Database.dbConnection;
+
+
+            Expenses expenses = new Expenses(conn);
+
+            int catID = (expenses.List()[expenses.List().Count - 1].Id) + 10;
+            // Act
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => expenses.GetExpenseFromId(catID));
+
+            // Assert
+
+
+        }
+
+
+        [Fact]
         public void ExpensesMethod_Delete()
         {
             // Arrange
@@ -209,6 +234,38 @@ namespace BudgetCodeTests
             Assert.Equal(newCat, newExpense.Category);
 
 
+        }
+
+        [Fact]
+        public void ExpensesMethod_UpdateCategory_IDDoesntExistNoCrash()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\newDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+           Expenses expenses = new Expenses(conn);
+
+            String newDescr = "Presents";
+            int id = 11;
+
+            expenses.Delete(id);
+            List<Expense> oldexpenses = expenses.List();
+
+            int length = expenses.List().Count();
+
+            // Act
+            try
+            {
+                expenses.UpdateProperties(id,DateTime.Now,1,20.00,"b");
+                List<Expense> newExpenses= expenses.List();
+                Assert.Equal(newExpenses, oldexpenses);
+            }
+            // Assert 
+            catch (Exception ex)
+            {
+                Assert.True(false, "Invalid Id causes Update to crash");
+            }
         }
     }
 }

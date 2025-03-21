@@ -195,32 +195,8 @@ namespace Budget
         // ====================================================================
         // Add category
         // ====================================================================
-        ///// <summary>
-        ///// Adds a new category to the database. The ID of the new category is automatically set based on the exisiting categories.
-        ///// </summary>
-        ///// <param name="cat">A <see cref="Category"/> object for the to-be added category to base itself on.</param>
-        ///// <example>
-        ///// <code>
-        ///// Categories categories = new Categories();
-        ///// categories.Add(vacationCategory);
-        ///// </code>
-        ///// </example>
-        //private void Add(Category cat)
-        //{
-        //    string stm = "INSERT INTO categories(Id,Description,TypeId) VALUES(@id,@description,@type)";
 
-        //    SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
-        //    cmd.CommandText = stm;
-
-        //    cmd.Parameters.AddWithValue("@id", cat.Id);
-        //    cmd.Parameters.AddWithValue("@description", cat.Description);
-        //    cmd.Parameters.AddWithValue("@type", ((int)cat.Type) + 1);
-
-        //    cmd.Prepare();
-
-        //    cmd.ExecuteNonQuery();
-        //}
 
         /// <summary>
         /// Adds a new category to the database by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.

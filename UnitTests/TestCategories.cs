@@ -218,18 +218,11 @@ namespace BudgetCodeTests
 
             int catID = (categories.List()[categories.List().Count -1].Id) + 10;
 
-            // Act
-            try
-            {
-                Category category = categories.GetCategoryFromId(catID);
-                Assert.Fail("InvalidId should fail");
+            // Act   // Assert
 
-            }
-            // Assert
-            catch (ArgumentOutOfRangeException ex) 
-            {
-                    Assert.True(true);
-            }
+            Assert.Throws<ArgumentOutOfRangeException> (() => categories.GetCategoryFromId(catID));
+
+          
         }
 
         // ========================================================================
@@ -343,6 +336,7 @@ namespace BudgetCodeTests
 
             categories.Delete(id);
             Category category = new Category(defaultId, defaultDesc, defaultCat);
+            List<Category> oldCategories = categories.List();
 
             int length = categories.List().Count();
 
@@ -350,15 +344,16 @@ namespace BudgetCodeTests
             try
             {
                 categories.UpdateProperties(id, newDescr, catType);
-                category = categories.GetCategoryFromId(id);
+                List<Category> newCategories = categories.List();
+                Assert.Equal(newCategories, oldCategories);
             }
             // Assert 
             catch (Exception ex)
             {
-                Assert.True(false, "Invalid Id causes Update to crash");
+                Assert.True(false,"Invalid Id causes Update to crash");
             }
 
-            Assert.Equal(length, categories.List().Count());
+           
         }
 
         [Fact]
