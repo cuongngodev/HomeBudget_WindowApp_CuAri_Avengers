@@ -90,26 +90,6 @@ namespace Budget
             return new Expense(id, date, categoryId, amount, description);
         }
 
-        // ====================================================================
-        // Add expense
-        // ====================================================================
-        //private void Add(Expense exp)
-        //{
-        //    string stm = "INSERT INTO expenses(Id, Date, CategoryId, Amount, Description) VALUES(@id, @date, @categoryId, @amount, @description)";
-        //    SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
-
-        //    cmd.CommandText = stm;
-
-        //    cmd.Parameters.AddWithValue("@id", exp.Id);
-        //    cmd.Parameters.AddWithValue("@date", exp.Date);
-        //    cmd.Parameters.AddWithValue("@categoryId", exp.Category);
-        //    cmd.Parameters.AddWithValue("@amount", exp.Amount);
-        //    cmd.Parameters.AddWithValue("@description", exp.Description);
-
-        //    cmd.Prepare();
-
-        //    cmd.ExecuteNonQuery();
-        //}
 
         /// <summary>
         /// Adds a new expense entry to the database and generates a unique id for it automatically.
@@ -144,8 +124,11 @@ namespace Budget
         // ====================================================================
         public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
         {
+            if (expenseId == null)
+                throw new ArgumentNullException("expenseId can't be null");
+
             string stm = "UPDATE expenses SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
-            var cmd = new SQLiteCommand(stm, DBConnection);
+            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using Budget;
 using System.Data.SQLite;
+using System.Linq.Expressions;
 
 namespace BudgetCodeTests
 {
@@ -181,6 +182,8 @@ namespace BudgetCodeTests
             }
         }
 
+
+
         // ========================================================================
 
         [Fact]
@@ -200,6 +203,33 @@ namespace BudgetCodeTests
             // Assert
             Assert.Equal(catID, category.Id);
 
+        }
+
+
+        [Fact]
+        public void CategoriesMethod_GetCategoryFromId_InvalidIDCrashes()
+        {
+            // Arrange
+            String folder = TestConstants.GetSolutionDir();
+            String newDB = $"{folder}\\{TestConstants.testDBInputFile}";
+            Database.existingDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+            Categories categories = new Categories(conn, false);
+
+            int catID = (categories.List()[categories.List().Count -1].Id) + 10;
+
+            // Act
+            try
+            {
+                Category category = categories.GetCategoryFromId(catID);
+                Assert.Fail("InvalidId should fail");
+
+            }
+            // Assert
+            catch (ArgumentOutOfRangeException ex) 
+            {
+                    Assert.True(true);
+            }
         }
 
         // ========================================================================
