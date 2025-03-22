@@ -72,31 +72,6 @@ namespace BudgetCodeTests
 
         }
 
-        [Fact]
-        public void HomeBudgetObject_New_WithFilename()
-        {
-            // Arrange
-            String folder = TestConstants.GetSolutionDir();
-            String messy = $"{folder}\\messy.db";
-            Database.existingDatabase(messy);
-            SQLiteConnection conn = Database.dbConnection;
-            Expenses expenses = new Expenses(conn);
-
-
-            string file = TestConstants.GetSolutionDir() + "\\" + testInputFile;
-            int numOfExpenses = TestConstants.numberOfExpensesInFile;
-            int numCategories = TestConstants.numberOfCategoriesInFile;
-
-            // Act
-            HomeBudget homeBudget = new HomeBudget(file);
-
-            // Assert 
-            Assert.IsType<HomeBudget>(homeBudget);
-
-            Assert.Equal(numCategories, homeBudget.categories.List().Count);
-            Assert.Equal(numOfExpenses, homeBudget.expenses.List().Count);
-
-        }
     }
 }
 

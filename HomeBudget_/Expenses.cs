@@ -130,18 +130,20 @@ namespace Budget
         public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
         {
             string stm = "UPDATE expenses SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
-            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
-            cmd.CommandText = stm;
+            using (SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection))
+            {
+                cmd.Parameters.AddWithValue("@id", expenseId);
+                cmd.Parameters.AddWithValue("@date", newDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@categoryId", categoryId);
+                cmd.Parameters.AddWithValue("@amount", newAmount);
+                cmd.Parameters.AddWithValue("@description", newDescription);
 
-            cmd.Parameters.AddWithValue("@id", expenseId);
-            cmd.Parameters.AddWithValue("@date", newDate);
-            cmd.Parameters.AddWithValue("@CategoryId", categoryId);
-            cmd.Parameters.AddWithValue("@amount", newAmount);
-            cmd.Parameters.AddWithValue("@description", newDescription);
-            cmd.Prepare();
+                cmd.Prepare();
 
-            SQLiteDataReader rdr = cmd.ExecuteReader();
+                cmd.ExecuteNonQuery();
+            }
+           
         }
 
         // ====================================================================

@@ -391,6 +391,7 @@ namespace BudgetCodeTests
             Assert.Equal(length, categories.List().Count());
         }
 
+        [Fact]
         public void CategoriesMethod_UpdateCategory_NullValuesNoCrash()
         {
             // Arrange
@@ -422,10 +423,34 @@ namespace BudgetCodeTests
             // Assert 
             catch (Exception ex)
             {
-                Assert.True(false, "Invalid Id causes Update to crash");
+                Assert.True(false, "Null Id causes Update to crash");
             }
 
             Assert.Equal(length, categories.List().Count());
+        }
+
+        [Fact]
+        public void Categories_DeleteCategoryWithExpenses_ShouldFail()
+        {
+            // Arrange
+            string folder = TestConstants.GetSolutionDir();
+            string newDB = $"{folder}\\testDB.db";
+            Database.newDatabase(newDB);
+            SQLiteConnection conn = Database.dbConnection;
+
+            Categories categories = new Categories(conn,true);
+            Expenses expenses = new Expenses(conn);
+
+            categories.Add("New Cat",Category.CategoryType.Savings);
+
+            expenses.Add(DateTime.Now, 1, 20.00, "New Expense");
+
+            List<Expense> expenseList = expenses.List();
+
+            int catId = categories.List()[categories.List().Count() -1].Id;
+            // Act and Assert
+            Assert.Throws<Exception>(() => categories.Delete(catId));
+
         }
 
     }

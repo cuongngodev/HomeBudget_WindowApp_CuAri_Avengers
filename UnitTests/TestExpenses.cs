@@ -209,6 +209,7 @@ namespace BudgetCodeTests
             String messy = $"{folder}\\messy.db";
             Database.existingDatabase(messy);
             SQLiteConnection conn = Database.dbConnection;
+
             Expenses expenses = new Expenses(conn);
 
             int id = 1;
@@ -241,10 +242,11 @@ namespace BudgetCodeTests
         {
             // Arrange
             String folder = TestConstants.GetSolutionDir();
-            String newDB = $"{folder}\\newDB.db";
-            Database.newDatabase(newDB);
+            String messy = $"{folder}\\messy.db";
+            Database.existingDatabase(messy);
             SQLiteConnection conn = Database.dbConnection;
-           Expenses expenses = new Expenses(conn);
+
+            Expenses expenses = new Expenses(conn);
 
             String newDescr = "Presents";
             int id = 11;
