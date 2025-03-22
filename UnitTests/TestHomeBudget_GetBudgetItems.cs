@@ -39,8 +39,8 @@ namespace BudgetCodeTests
                 Category category = listCategories.Find(c => c.Id == expense.Category);
                 Assert.Equal(budgetItem.Category, category.Description);
                 Assert.Equal(budgetItem.CategoryID, expense.Category);
-                Assert.Equal(budgetItem.Amount, expense.Amount);
                 Assert.Equal(budgetItem.ShortDescription, expense.Description);
+                Assert.Equal(budgetItem.Amount, expense.Amount);
             }
         }
 

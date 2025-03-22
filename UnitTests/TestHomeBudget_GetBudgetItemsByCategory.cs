@@ -64,14 +64,14 @@ namespace BudgetCodeTests
             int maxRecords20 = TestConstants.budgetItemsByCategory20;
 
             // Act
-            List<BudgetItemsByMonth> budgetItemsByCategory = homeBudget.GetBudgetItemsByMonth(null, null, true, 14);
+            List<BudgetItemsByCategory> budgetItemsByCategory = homeBudget.GetBudgetItemsByCategory(null, null, true, 14);
 
             // Assert
             Assert.Equal(maxRecords14, budgetItemsByCategory.Count);
 
 
             // Act
-            budgetItemsByCategory = homeBudget.GetBudgetItemsByMonth(null, null, true, 20);
+            budgetItemsByCategory = homeBudget.GetBudgetItemsByCategory(null, null, true, 20);
 
             // Assert
             Assert.Equal(maxRecords20, budgetItemsByCategory.Count);

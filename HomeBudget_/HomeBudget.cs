@@ -204,7 +204,7 @@ namespace Budget
                     ExpenseID = reader.GetInt32(1),
                     ShortDescription = reader.GetString(4),
                     Date = reader.GetDateTime(2),
-                    Amount = -reader.GetDouble(3),
+                    Amount = reader.GetDouble(3),
                     Category = reader.GetString(5),
                     Balance = total
                 });
