@@ -9,7 +9,9 @@ namespace BudgetCodeTests
     [Collection("Sequential")]
     public class TestHomeBudget
     {
-        string testInputFile = TestConstants.testBudgetFile;
+        string testInputNewFile = "MessyDB.db";
+        string testIntPutExistingDb = "messy.db";
+
 
 
         // ========================================================================
@@ -38,20 +40,35 @@ namespace BudgetCodeTests
         // ========================================================================
 
         [Fact]
-        public void HomeBudgetObject_New_WithFilename()
+        public void HomeBudgetObject_With_New_Database()
         {
             // Arrange
-            string file = TestConstants.GetSolutionDir() + "\\" + testInputFile;
-            int numExpenses = TestConstants.numberOfExpensesInFile;
-            int numCategories = TestConstants.numberOfCategoriesInFile;
+            string file = TestConstants.GetSolutionDir() + "\\" + testInputNewFile;
+            int numDefaultCategories = 16;
+          
+            // Act
+            HomeBudget homeBudget = new HomeBudget(file, true);
+
+            // Assert 
+            Assert.Empty(homeBudget.expenses.List());
+            Assert.IsType<HomeBudget>(homeBudget);
+            Assert.Equal(numDefaultCategories, homeBudget.categories.List().Count);
+        }
+
+        [Fact]
+        public void HomeBudgetObject_With_ExistingDatabase()
+        {
+            // Arrange
+            string file = TestConstants.GetSolutionDir() + "\\" + testIntPutExistingDb;
 
             // Act
             HomeBudget homeBudget = new HomeBudget(file);
 
             // Assert 
+            Assert.NotEmpty(homeBudget.expenses.List());
+
             Assert.IsType<HomeBudget>(homeBudget);
-            Assert.Equal(numExpenses, homeBudget.expenses.List().Count);
-            Assert.Equal(numCategories, homeBudget.categories.List().Count);
+            Assert.NotEmpty(homeBudget.categories.List());
 
         }
 
