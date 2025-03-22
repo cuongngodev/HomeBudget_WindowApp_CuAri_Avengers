@@ -280,6 +280,7 @@ namespace Budget
             string stm = @"SELECT STRFTIME('%m/%d/%Y', e.Date) AS month
                             FROM categories c, expenses e
                             WHERE c.Id = e.CategoryId
+                            GROUP BY month
                             AND e.Date BETWEEN @Start AND @End";
 
             // list of months that contain budget items
@@ -402,24 +403,36 @@ namespace Budget
         {
             Start = Start ?? new DateTime(1900, 1, 1);
             End = End ?? new DateTime(2500, 1, 1);
-            // -----------------------------------------------------------------------
-            // get all items first
-            // -----------------------------------------------------------------------
-            List<BudgetItem> items = GetBudgetItems(Start, End, FilterFlag, CategoryID);
-
+            string stm;
             // -----------------------------------------------------------------------
             // Get all the category Ids
             // -----------------------------------------------------------------------
-            string stm = @"SELECT e.CategoryId
-                           FROM categories c, expenses e
-                           WHERE c.Id = e.CategoryId
-                                AND e.Date BETWEEN @Start AND @End
-                           ORDER BY c.Description";
+            if (FilterFlag)
+            {
+                stm = @"SELECT e.CategoryId
+                               FROM categories c, expenses e
+                               WHERE c.Id = e.CategoryId
+                                    AND e.CategoryId = @categoryId
+                                    AND e.Date BETWEEN @Start AND @End
+                               GROUP BY e.CategoryId
+                               ORDER BY c.Description";
+            }
+            else
+            {
+                stm = @"SELECT e.CategoryId
+                               FROM categories c, expenses e
+                               WHERE c.Id = e.CategoryId
+                                    AND e.Date BETWEEN @Start AND @End
+                               GROUP BY e.CategoryId
+                               ORDER BY c.Description";
+            }
             // run the query on the db
             SQLiteCommand cmd = new(stm, Database.dbConnection);
 
             cmd.Parameters.AddWithValue("@Start", Start);
             cmd.Parameters.AddWithValue("@End", End);
+            cmd.Parameters.AddWithValue("@categoryId", CategoryID);
+
 
             cmd.Prepare();
             cmd.ExecuteNonQuery();

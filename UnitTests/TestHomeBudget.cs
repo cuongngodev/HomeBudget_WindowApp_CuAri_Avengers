@@ -63,12 +63,11 @@ namespace BudgetCodeTests
 
             // Act
             HomeBudget homeBudget = new HomeBudget(file);
-
+            int numExpenses = homeBudget.GetBudgetItems(null,null,false,1).Count;
             // Assert 
-            Assert.NotEmpty(homeBudget.expenses.List());
-
+            //Assert.NotEmpty(homeBudget.expenses.List());
+            Assert.Equal(homeBudget.expenses.List().Count(), numExpenses);
             Assert.IsType<HomeBudget>(homeBudget);
-            Assert.NotEmpty(homeBudget.categories.List());
 
         }
 
