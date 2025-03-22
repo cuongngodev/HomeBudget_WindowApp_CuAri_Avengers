@@ -1,10 +1,5 @@
-﻿using System;
-using Xunit;
-using System.IO;
-using System.Collections.Generic;
-using Budget;
+﻿using Budget;
 using System.Data.SQLite;
-using System.Linq.Expressions;
 
 namespace BudgetCodeTests
 {
@@ -216,20 +211,13 @@ namespace BudgetCodeTests
             SQLiteConnection conn = Database.dbConnection;
             Categories categories = new Categories(conn, false);
 
-            int catID = (categories.List()[categories.List().Count -1].Id) + 10;
+            int catID = (categories.List()[categories.List().Count - 1].Id) + 10;
 
-            // Act
-            try
-            {
-                Category category = categories.GetCategoryFromId(catID);
-                Assert.Fail("InvalidId should fail");
+            // Act   // Assert
 
-            }
-            // Assert
-            catch (ArgumentOutOfRangeException ex) 
-            {
-                    Assert.True(true);
-            }
+            Assert.Throws<ArgumentOutOfRangeException>(() => categories.GetCategoryFromId(catID));
+
+
         }
 
         // ========================================================================
@@ -319,7 +307,7 @@ namespace BudgetCodeTests
             // Assert 
             Assert.Equal(newDescr, category.Description);
             Assert.Equal(newCatType, category.Type);
-      
+
 
         }
 
@@ -343,6 +331,7 @@ namespace BudgetCodeTests
 
             categories.Delete(id);
             Category category = new Category(defaultId, defaultDesc, defaultCat);
+            List<Category> oldCategories = categories.List();
 
             int length = categories.List().Count();
 
@@ -350,14 +339,14 @@ namespace BudgetCodeTests
             try
             {
                 categories.UpdateProperties(id, newDescr, catType);
+                List<Category> newCategories = categories.List();
+                Assert.Equal(newCategories.Count, oldCategories.Count);
             }
             // Assert 
             catch (Exception ex)
             {
                 Assert.True(false, "Invalid Id causes Update to crash");
             }
-
-            Assert.Equal(length, categories.List().Count());
         }
 
         [Fact]
@@ -397,42 +386,6 @@ namespace BudgetCodeTests
             Assert.Equal(length, categories.List().Count());
         }
 
-        public void CategoriesMethod_UpdateCategory_NullValuesNoCrash()
-        {
-            // Arrange
-            String folder = TestConstants.GetSolutionDir();
-            String newDB = $"{folder}\\newDB.db";
-            Database.newDatabase(newDB);
-            SQLiteConnection conn = Database.dbConnection;
-            Categories categories = new Categories(conn, true);
-
-            String newDescr = "Presents";
-            int id = 10;
-            Category.CategoryType catType = Category.CategoryType.Income;
-
-            int defaultId = 0;
-            string defaultDesc = "";
-            Category.CategoryType defaultCat = Category.CategoryType.Income;
-
-            categories.Delete(id);
-            Category category = new Category(defaultId, defaultDesc, defaultCat);
-
-            int length = categories.List().Count();
-
-            // Act
-            try
-            {
-                categories.UpdateProperties(id, newDescr, catType);
-                category = categories.GetCategoryFromId(id);
-            }
-            // Assert 
-            catch (Exception ex)
-            {
-                Assert.True(false, "Invalid Id causes Update to crash");
-            }
-
-            Assert.Equal(length, categories.List().Count());
-        }
 
     }
 }

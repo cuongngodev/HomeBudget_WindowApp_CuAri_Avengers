@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Xml;
-using System.Data.SQLite;
-using System.Data.SqlClient;
-using Microsoft.VisualBasic;
+﻿using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -129,19 +120,33 @@ namespace Budget
         // ====================================================================
         public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
         {
+            string checkExistenceStm = "SELECT COUNT(*) FROM expenses WHERE Id = @id";
+            var cmdCheck = new SQLiteCommand(checkExistenceStm, DBConnection);
+            cmdCheck.Parameters.AddWithValue("@id", expenseId);
+            cmdCheck.Prepare();
+
+            int count = Convert.ToInt32(cmdCheck.ExecuteScalar());
+
+            if (count == 0)
+            {
+                return; 
+            }
+
             string stm = "UPDATE expenses SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
-            SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
-            cmd.CommandText = stm;
+            using (SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection))
+            {
+                cmd.Parameters.AddWithValue("@id", expenseId);
+                cmd.Parameters.AddWithValue("@date", newDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@categoryId", categoryId);
+                cmd.Parameters.AddWithValue("@amount", newAmount);
+                cmd.Parameters.AddWithValue("@description", newDescription);
 
-            cmd.Parameters.AddWithValue("@id", expenseId);
-            cmd.Parameters.AddWithValue("@date", newDate);
-            cmd.Parameters.AddWithValue("@CategoryId", categoryId);
-            cmd.Parameters.AddWithValue("@amount", newAmount);
-            cmd.Parameters.AddWithValue("@description", newDescription);
-            cmd.Prepare();
+                cmd.Prepare();
 
-            SQLiteDataReader rdr = cmd.ExecuteReader();
+                cmd.ExecuteNonQuery();
+            }
+
         }
 
         // ====================================================================
@@ -187,7 +192,7 @@ namespace Budget
             const int DESCRIPTION_INDEX = 2;
             const int AMOUNT_INDEX = 3;
             const int CATEGORY_ID_INDEX = 4;
-            
+
             List<Expense> newList = new List<Expense>();
 
             string stm = "SELECT Id, Date, Description, Amount, CategoryId FROM expenses";

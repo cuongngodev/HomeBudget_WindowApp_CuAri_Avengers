@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Xml;
-using System.Data.SqlClient;
-using System.Data.SQLite;
-using System.Text.Json.Serialization;
-using System.Runtime.Intrinsics.Arm;
+﻿using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -36,16 +26,6 @@ namespace Budget
         // ====================================================================
         // Properties
         // ====================================================================
-        /// <summary>
-        /// Gets the path of the file used for reading and writing category data.
-        /// </summary>
-        public String FileName { get { return _FileName; } }
-        
-        /// <summary>
-        /// Gets the directory path where the file corresponding to the <see cref="FileName"/> property is stored.
-        /// </summary>
-        public String DirName { get { return _DirName; } }
-
         private SQLiteConnection DBConnection { get { return _DbConnection; } set { _DbConnection = value; } }
 
         // ====================================================================
@@ -73,12 +53,12 @@ namespace Budget
             if (isNewDb)
             {
                 AddCategoryTypes();
-                SetCategoriesToDefaults(); 
+                SetCategoriesToDefaults();
             }
         }
 
         private void AddCategoryTypes()
-        { 
+        {
             foreach (Category.CategoryType cat in Enum.GetValues<Category.CategoryType>())
             {
                 string stm = "INSERT INTO categoryTypes(Description) VALUES(@description);";
@@ -108,9 +88,9 @@ namespace Budget
             const int ID_INDEX = 0;
             const int DESCRIPTION_INDEX = 1;
             const int CATEGORY_TYPE_INDEX = 2;
-            
+
             string stm = "SELECT Id, Description, TypeId FROM categories WHERE id=@id";
-            var cmd = new SQLiteCommand(stm,DBConnection);
+            var cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
 
@@ -135,11 +115,23 @@ namespace Budget
                 throw new ArgumentOutOfRangeException("ERROR: Invalid ID, category not found.");
             }
 
-            return new Category(id,description,categoryType);
+            return new Category(id, description, categoryType);
         }
 
         public void UpdateProperties(int categoryId, string newDescription, Category.CategoryType newType)
         {
+
+            string checkExistenceStm = "SELECT COUNT(*) FROM categories WHERE Id = @id";
+            var cmdCheck = new SQLiteCommand(checkExistenceStm, DBConnection);
+            cmdCheck.Parameters.AddWithValue("@id", categoryId);
+            cmdCheck.Prepare();
+
+            int count = Convert.ToInt32(cmdCheck.ExecuteScalar());
+
+            if (count == 0)
+                return; 
+            
+
             string stm = "UPDATE categories SET Description = @description, TypeId = @typeId WHERE Id = @id";
             var cmd = new SQLiteCommand(stm, DBConnection);
 
@@ -200,32 +192,8 @@ namespace Budget
         // ====================================================================
         // Add category
         // ====================================================================
-        ///// <summary>
-        ///// Adds a new category to the database. The ID of the new category is automatically set based on the exisiting categories.
-        ///// </summary>
-        ///// <param name="cat">A <see cref="Category"/> object for the to-be added category to base itself on.</param>
-        ///// <example>
-        ///// <code>
-        ///// Categories categories = new Categories();
-        ///// categories.Add(vacationCategory);
-        ///// </code>
-        ///// </example>
-        //private void Add(Category cat)
-        //{
-        //    string stm = "INSERT INTO categories(Id,Description,TypeId) VALUES(@id,@description,@type)";
 
-        //    SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
 
-        //    cmd.CommandText = stm;
-
-        //    cmd.Parameters.AddWithValue("@id", cat.Id);
-        //    cmd.Parameters.AddWithValue("@description", cat.Description);
-        //    cmd.Parameters.AddWithValue("@type", ((int)cat.Type) + 1);
-
-        //    cmd.Prepare();
-
-        //    cmd.ExecuteNonQuery();
-        //}
 
         /// <summary>
         /// Adds a new category to the database by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.
@@ -314,7 +282,7 @@ namespace Budget
 
             SQLiteDataReader rdr = cmd.ExecuteReader();
 
-           
+
             while (rdr.Read())
             {
                 int id = rdr.GetInt32(ID_INDEX);

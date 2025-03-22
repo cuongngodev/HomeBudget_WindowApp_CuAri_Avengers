@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-// ============================================================================
+﻿// ============================================================================
 // (c) Sandy Bultena 2018
 // * Released under the GNU General Public License
 // ============================================================================
@@ -27,22 +21,22 @@ namespace Budget
         /// Gets the unique identifier of an expense object.
         /// </summary>
         public int Id { get; }
-        
+
         /// <summary>
         /// Gets the date when a new expense object was created. 
         /// </summary>
         public DateTime Date { get; }
-        
+
         /// <summary>
         /// Gets the amount tied to an expense object.
         /// </summary>
         public Double Amount { get; }
-        
+
         /// <summary>
         /// Gets the description of an expense object.
         /// </summary>
-        public String Description { get;  }
-        
+        public String Description { get; }
+
         /// <summary>
         /// Gets the category tied to an expense object.
         /// </summary>
@@ -77,7 +71,7 @@ namespace Budget
         /// Parameterized constructor that creates an <see cref="Expense"/> object by taking in input corresponding to another Expense object.
         /// </summary>
         /// <param name="obj">The <see cref="Expense"/> object used to base the new object on.</param>
-        public Expense (Expense obj)
+        public Expense(Expense obj)
         {
             this.Id = obj.Id;
             this.Date = obj.Date;

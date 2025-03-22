@@ -1,6 +1,4 @@
-﻿using System;
-using Xunit;
-using Budget;
+﻿using Budget;
 
 namespace BudgetCodeTests
 {

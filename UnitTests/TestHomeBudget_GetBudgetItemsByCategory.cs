@@ -1,8 +1,4 @@
-﻿using System;
-using Xunit;
-using System.IO;
-using System.Collections.Generic;
-using Budget;
+﻿using Budget;
 
 namespace BudgetCodeTests
 {
@@ -60,18 +56,29 @@ namespace BudgetCodeTests
             String messyDB = $"{folder}\\messy.db";
             System.IO.File.Copy(goodDB, messyDB, true);
             HomeBudget homeBudget = new HomeBudget(messyDB, false);
-            int maxRecords14 = TestConstants.budgetItemsByCategory14;
+            int maxRecords = TestConstants.budgetItemsByCategory_MaxRecords;
             int maxRecords20 = TestConstants.budgetItemsByCategory20;
+            int maxRecords14 = TestConstants.budgetItemsByCategory14;
 
             // Act
-            List<BudgetItemsByMonth> budgetItemsByCategory = homeBudget.GetBudgetItemsByMonth(null, null, true, 14);
+            // non filtering
+            List<BudgetItemsByCategory> budgetItemsByCategory = homeBudget.GetBudgetItemsByCategory(null, null, false, 14);
 
             // Assert
-            Assert.Equal(maxRecords14, budgetItemsByCategory.Count);
 
+            Assert.Equal(maxRecords, budgetItemsByCategory.Count);
 
             // Act
-            budgetItemsByCategory = homeBudget.GetBudgetItemsByMonth(null, null, true, 20);
+            // filter by cat 14
+            budgetItemsByCategory = homeBudget.GetBudgetItemsByCategory(null, null, true, 14);
+
+            // Assert
+
+            Assert.Equal(maxRecords14, budgetItemsByCategory.Count);
+
+            // Act
+            // filter by cat 20
+            budgetItemsByCategory = homeBudget.GetBudgetItemsByCategory(null, null, true, 20);
 
             // Assert
             Assert.Equal(maxRecords20, budgetItemsByCategory.Count);

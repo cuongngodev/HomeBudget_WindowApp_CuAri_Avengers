@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Budget;
-using System.IO;
+﻿using Budget;
 
 
 namespace BudgetCodeTests
@@ -174,7 +168,7 @@ namespace BudgetCodeTests
             {
                 Category = "Clothes",
                 Details = budgetItems,
-                Total = budgetItem1.Amount+ budgetItem3.Amount
+                Total = budgetItem1.Amount + budgetItem3.Amount
             });
             return list;
         }
@@ -266,7 +260,7 @@ namespace BudgetCodeTests
             return dict;
         }
 
-        public static List<Dictionary<string,object>> getBudgetItemsByCategoryAndMonthCat10()
+        public static List<Dictionary<string, object>> getBudgetItemsByCategoryAndMonthCat10()
         {
             List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
             List<BudgetItem> budgetItems = new List<BudgetItem>();
@@ -300,10 +294,10 @@ namespace BudgetCodeTests
             return list;
         }
 
- 
-        public static List<Dictionary<string,object>> getBudgetItemsByCategoryAndMonth2020()
+
+        public static List<Dictionary<string, object>> getBudgetItemsByCategoryAndMonth2020()
         {
-            List< Dictionary<string, object> > list = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
 
             list.Add(new Dictionary<string, object> {
                 {"Month","2020/01" },
@@ -314,12 +308,12 @@ namespace BudgetCodeTests
                 }
             );
 
-           list.Add(new Dictionary<string, object> {
+            list.Add(new Dictionary<string, object> {
                 {"Month","TOTALS" },
                 { "Credit Card",budgetItem4.Amount},
                 { "Eating Out",budgetItem5.Amount + budgetItem7.Amount},
                 }
-            );
+             );
 
 
 
