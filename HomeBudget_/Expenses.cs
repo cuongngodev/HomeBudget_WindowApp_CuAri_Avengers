@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Xml;
-using System.Data.SQLite;
-using System.Data.SqlClient;
-using Microsoft.VisualBasic;
+﻿using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -143,7 +134,7 @@ namespace Budget
 
                 cmd.ExecuteNonQuery();
             }
-           
+
         }
 
         // ====================================================================
@@ -189,7 +180,7 @@ namespace Budget
             const int DESCRIPTION_INDEX = 2;
             const int AMOUNT_INDEX = 3;
             const int CATEGORY_ID_INDEX = 4;
-            
+
             List<Expense> newList = new List<Expense>();
 
             string stm = "SELECT Id, Date, Description, Amount, CategoryId FROM expenses";

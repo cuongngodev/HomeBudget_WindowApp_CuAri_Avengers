@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Xml;
-using System.Data.SqlClient;
-using System.Data.SQLite;
-using System.Text.Json.Serialization;
-using System.Runtime.Intrinsics.Arm;
+﻿using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -63,12 +53,12 @@ namespace Budget
             if (isNewDb)
             {
                 AddCategoryTypes();
-                SetCategoriesToDefaults(); 
+                SetCategoriesToDefaults();
             }
         }
 
         private void AddCategoryTypes()
-        { 
+        {
             foreach (Category.CategoryType cat in Enum.GetValues<Category.CategoryType>())
             {
                 string stm = "INSERT INTO categoryTypes(Description) VALUES(@description);";
@@ -98,9 +88,9 @@ namespace Budget
             const int ID_INDEX = 0;
             const int DESCRIPTION_INDEX = 1;
             const int CATEGORY_TYPE_INDEX = 2;
-            
+
             string stm = "SELECT Id, Description, TypeId FROM categories WHERE id=@id";
-            var cmd = new SQLiteCommand(stm,DBConnection);
+            var cmd = new SQLiteCommand(stm, DBConnection);
 
             cmd.CommandText = stm;
 
@@ -125,7 +115,7 @@ namespace Budget
                 throw new ArgumentOutOfRangeException("ERROR: Invalid ID, category not found.");
             }
 
-            return new Category(id,description,categoryType);
+            return new Category(id, description, categoryType);
         }
 
         public void UpdateProperties(int categoryId, string newDescription, Category.CategoryType newType)
@@ -280,7 +270,7 @@ namespace Budget
 
             SQLiteDataReader rdr = cmd.ExecuteReader();
 
-           
+
             while (rdr.Read())
             {
                 int id = rdr.GetInt32(ID_INDEX);

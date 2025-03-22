@@ -1,9 +1,4 @@
-﻿using System;
-using Xunit;
-using System.IO;
-using System.Collections.Generic;
-using Budget;
-using System.Data.SQLite;
+﻿using Budget;
 
 namespace BudgetCodeTests
 {
@@ -37,7 +32,7 @@ namespace BudgetCodeTests
             Assert.Empty(homeBudget.expenses.List());
             Assert.NotEmpty(homeBudget.categories.List());
         }
-    
+
         // ========================================================================
 
         [Fact]
@@ -46,7 +41,7 @@ namespace BudgetCodeTests
             // Arrange
             string file = TestConstants.GetSolutionDir() + "\\" + testInputNewFile;
             int numDefaultCategories = 16;
-          
+
             // Act
             HomeBudget homeBudget = new HomeBudget(file, true);
 
@@ -64,7 +59,7 @@ namespace BudgetCodeTests
 
             // Act
             HomeBudget homeBudget = new HomeBudget(file);
-            int numExpenses = homeBudget.GetBudgetItems(null,null,false,1).Count;
+            int numExpenses = homeBudget.GetBudgetItems(null, null, false, 1).Count;
             // Assert 
             //Assert.NotEmpty(homeBudget.expenses.List());
             Assert.Equal(homeBudget.expenses.List().Count(), numExpenses);

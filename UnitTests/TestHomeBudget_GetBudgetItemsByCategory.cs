@@ -1,8 +1,4 @@
-﻿using System;
-using Xunit;
-using System.IO;
-using System.Collections.Generic;
-using Budget;
+﻿using Budget;
 
 namespace BudgetCodeTests
 {
@@ -77,7 +73,7 @@ namespace BudgetCodeTests
             budgetItemsByCategory = homeBudget.GetBudgetItemsByCategory(null, null, true, 14);
 
             // Assert
-           
+
             Assert.Equal(maxRecords14, budgetItemsByCategory.Count);
 
             // Act

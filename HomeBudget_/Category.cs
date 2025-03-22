@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-// ============================================================================
+﻿// ============================================================================
 // (c) Sandy Bultena 2018
 // * Released under the GNU General Public License
 // ============================================================================
@@ -27,12 +21,12 @@ namespace Budget
         /// <summary>
         /// Gets the unique identifier of a category object.
         /// </summary>
-        public int Id { get;}
+        public int Id { get; }
 
         /// <summary>
         /// Gets the description of a category object.
         /// </summary>
-        public String Description { get;}
+        public String Description { get; }
 
         /// <summary>
         /// Gets the type of a category object.
@@ -75,7 +69,7 @@ namespace Budget
         /// <param name="category">The <see cref="Category"/> object used to base the new object on.</param>
         public Category(Category category)
         {
-            this.Id = category.Id; ;
+            this.Id = category.Id;
             this.Description = category.Description;
             this.Type = category.Type;
         }

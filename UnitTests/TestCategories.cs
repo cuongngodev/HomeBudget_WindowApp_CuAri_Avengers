@@ -1,10 +1,5 @@
-﻿using System;
-using Xunit;
-using System.IO;
-using System.Collections.Generic;
-using Budget;
+﻿using Budget;
 using System.Data.SQLite;
-using System.Linq.Expressions;
 
 namespace BudgetCodeTests
 {
@@ -216,13 +211,13 @@ namespace BudgetCodeTests
             SQLiteConnection conn = Database.dbConnection;
             Categories categories = new Categories(conn, false);
 
-            int catID = (categories.List()[categories.List().Count -1].Id) + 10;
+            int catID = (categories.List()[categories.List().Count - 1].Id) + 10;
 
             // Act   // Assert
 
-            Assert.Throws<ArgumentOutOfRangeException> (() => categories.GetCategoryFromId(catID));
+            Assert.Throws<ArgumentOutOfRangeException>(() => categories.GetCategoryFromId(catID));
 
-          
+
         }
 
         // ========================================================================
@@ -312,7 +307,7 @@ namespace BudgetCodeTests
             // Assert 
             Assert.Equal(newDescr, category.Description);
             Assert.Equal(newCatType, category.Type);
-      
+
 
         }
 
@@ -350,7 +345,7 @@ namespace BudgetCodeTests
             // Assert 
             catch (Exception ex)
             {
-                Assert.True(false,"Invalid Id causes Update to crash");
+                Assert.True(false, "Invalid Id causes Update to crash");
             }
         }
 
@@ -438,16 +433,16 @@ namespace BudgetCodeTests
             Database.newDatabase(newDB);
             SQLiteConnection conn = Database.dbConnection;
 
-            Categories categories = new Categories(conn,true);
+            Categories categories = new Categories(conn, true);
             Expenses expenses = new Expenses(conn);
 
-            categories.Add("New Cat",Category.CategoryType.Savings);
+            categories.Add("New Cat", Category.CategoryType.Savings);
 
             expenses.Add(DateTime.Now, 1, 20.00, "New Expense");
 
             List<Expense> expenseList = expenses.List();
 
-            int catId = categories.List()[categories.List().Count() -1].Id;
+            int catId = categories.List()[categories.List().Count() - 1].Id;
             // Act and Assert
             Assert.Throws<Exception>(() => categories.Delete(catId));
 

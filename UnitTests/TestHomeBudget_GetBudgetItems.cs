@@ -1,8 +1,4 @@
-﻿using System;
-using Xunit;
-using System.IO;
-using System.Collections.Generic;
-using Budget;
+﻿using Budget;
 
 namespace BudgetCodeTests
 {
@@ -76,7 +72,7 @@ namespace BudgetCodeTests
             string folder = TestConstants.GetSolutionDir();
             String goodDB = $"{folder}\\{TestConstants.testDBInputFile}";
             String messyDB = $"{folder}\\messy.db";
-            System.IO.File.Copy(goodDB, messyDB, true); 
+            System.IO.File.Copy(goodDB, messyDB, true);
             HomeBudget homeBudget = new HomeBudget(messyDB, false);
             int filterCategory = 9;
             List<Expense> listExpenses = TestConstants.filteredbyCat9();
