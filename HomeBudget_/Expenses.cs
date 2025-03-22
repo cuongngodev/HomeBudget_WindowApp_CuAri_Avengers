@@ -120,6 +120,18 @@ namespace Budget
         // ====================================================================
         public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
         {
+            string checkExistenceStm = "SELECT COUNT(*) FROM expenses WHERE Id = @id";
+            var cmdCheck = new SQLiteCommand(checkExistenceStm, DBConnection);
+            cmdCheck.Parameters.AddWithValue("@id", expenseId);
+            cmdCheck.Prepare();
+
+            int count = Convert.ToInt32(cmdCheck.ExecuteScalar());
+
+            if (count == 0)
+            {
+                return; 
+            }
+
             string stm = "UPDATE expenses SET Date = @date, CategoryId = @categoryId, Amount = @amount, Description = @description WHERE Id = @id";
 
             using (SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection))

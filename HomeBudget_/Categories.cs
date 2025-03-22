@@ -120,6 +120,18 @@ namespace Budget
 
         public void UpdateProperties(int categoryId, string newDescription, Category.CategoryType newType)
         {
+
+            string checkExistenceStm = "SELECT COUNT(*) FROM categories WHERE Id = @id";
+            var cmdCheck = new SQLiteCommand(checkExistenceStm, DBConnection);
+            cmdCheck.Parameters.AddWithValue("@id", categoryId);
+            cmdCheck.Prepare();
+
+            int count = Convert.ToInt32(cmdCheck.ExecuteScalar());
+
+            if (count == 0)
+                return; 
+            
+
             string stm = "UPDATE categories SET Description = @description, TypeId = @typeId WHERE Id = @id";
             var cmd = new SQLiteCommand(stm, DBConnection);
 

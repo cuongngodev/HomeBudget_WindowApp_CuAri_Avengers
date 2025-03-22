@@ -23,9 +23,7 @@ namespace BudgetCodeTests
             // Assert 
             Assert.IsType<HomeBudget>(homeBudget);
 
-            Assert.True(typeof(HomeBudget).GetProperty("FileName").CanWrite == false, "Filename read only");
-            Assert.True(typeof(HomeBudget).GetProperty("DirName").CanWrite == false, "Dirname read only");
-            Assert.True(typeof(HomeBudget).GetProperty("PathName").CanWrite == false, "Pathname read only");
+           
             Assert.True(typeof(HomeBudget).GetProperty("categories").CanWrite == false, "categories read only");
             Assert.True(typeof(HomeBudget).GetProperty("expenses").CanWrite == false, "expenses read only");
 

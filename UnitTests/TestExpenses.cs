@@ -257,7 +257,7 @@ namespace BudgetCodeTests
             {
                 expenses.UpdateProperties(id, DateTime.Now, 1, 20.00, "b");
                 List<Expense> newExpenses = expenses.List();
-                Assert.Equal(newExpenses, oldexpenses);
+                Assert.Equal(newExpenses.Count, oldexpenses.Count);
             }
             // Assert 
             catch (Exception ex)

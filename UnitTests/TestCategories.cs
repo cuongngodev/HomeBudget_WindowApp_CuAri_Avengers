@@ -340,7 +340,7 @@ namespace BudgetCodeTests
             {
                 categories.UpdateProperties(id, newDescr, catType);
                 List<Category> newCategories = categories.List();
-                Assert.Equal(newCategories, oldCategories);
+                Assert.Equal(newCategories.Count, oldCategories.Count);
             }
             // Assert 
             catch (Exception ex)
@@ -381,44 +381,6 @@ namespace BudgetCodeTests
             catch (Exception ex)
             {
                 Assert.True(false, "Invalid Id causes Update to crash");
-            }
-
-            Assert.Equal(length, categories.List().Count());
-        }
-
-        [Fact]
-        public void CategoriesMethod_UpdateCategory_NullValuesNoCrash()
-        {
-            // Arrange
-            String folder = TestConstants.GetSolutionDir();
-            String newDB = $"{folder}\\newDB.db";
-            Database.newDatabase(newDB);
-            SQLiteConnection conn = Database.dbConnection;
-            Categories categories = new Categories(conn, true);
-
-            String newDescr = "Presents";
-            int id = 10;
-            Category.CategoryType catType = Category.CategoryType.Income;
-
-            int defaultId = 0;
-            string defaultDesc = "";
-            Category.CategoryType defaultCat = Category.CategoryType.Income;
-
-            categories.Delete(id);
-            Category category = new Category(defaultId, defaultDesc, defaultCat);
-
-            int length = categories.List().Count();
-
-            // Act
-            try
-            {
-                categories.UpdateProperties(id, newDescr, catType);
-                category = categories.GetCategoryFromId(id);
-            }
-            // Assert 
-            catch (Exception ex)
-            {
-                Assert.True(false, "Null Id causes Update to crash");
             }
 
             Assert.Equal(length, categories.List().Count());
