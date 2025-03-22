@@ -64,7 +64,7 @@ namespace Budget
             _categories = new Categories(Database.dbConnection, newDB);
 
             // create the expenses object
-            _expenses = new Expenses(Database.dbConnection); // need a constructor ? the constructor need to connect to the DB
+            _expenses = new Expenses(Database.dbConnection);
         }
 
         #region GetList
@@ -317,7 +317,6 @@ namespace Budget
                 List<BudgetItem> details = GetBudgetItems(start, end, FilterFlag, CategoryID);
                 Double total = 0;
 
-                // get the details (list of items for that month)
                 foreach(BudgetItem item in details)
                 {
                     // calculate the total
@@ -399,79 +398,74 @@ namespace Budget
         /// <param name="FilterFlag">If true budget items are filtered by category, if false, list all budget items.</param>
         /// <param name="CategoryID">Category Id is used to filter the budget item.</param>
         /// <returns>The list of all budget items group by category clustered by specified category ID if filter flag is true; if the category ID is not found, returns a list of budget items</returns>
-        //public List<BudgetItemsByCategory> GetBudgetItemsByCategory(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
-        //{
-        //    Start = Start ?? new DateTime(1900, 1, 1);
-        //    End = End ?? new DateTime(2500, 1, 1);
-        //    // -----------------------------------------------------------------------
-        //    // get all items first
-        //    // -----------------------------------------------------------------------
-        //    List<BudgetItem> items = GetBudgetItems(Start, End, FilterFlag, CategoryID);
+        public List<BudgetItemsByCategory> GetBudgetItemsByCategory(DateTime? Start, DateTime? End, bool FilterFlag, int CategoryID)
+        {
+            Start = Start ?? new DateTime(1900, 1, 1);
+            End = End ?? new DateTime(2500, 1, 1);
+            // -----------------------------------------------------------------------
+            // get all items first
+            // -----------------------------------------------------------------------
+            List<BudgetItem> items = GetBudgetItems(Start, End, FilterFlag, CategoryID);
 
-        //    // -----------------------------------------------------------------------
-        //    // Get all the category Ids
-        //    // -----------------------------------------------------------------------
-        //    string stm = @"SELECT e.CategoryId
-        //                   FROM categories c, expenses e
-        //                   WHERE c.Id = e.CategoryId
-        //                        AND e.Date BETWEEN @Start AND @End
-        //                   ORDER BY c.Description";
-        //    // run the query on the db
-        //    SQLiteCommand cmd = new(stm, Database.dbConnection);
+            // -----------------------------------------------------------------------
+            // Get all the category Ids
+            // -----------------------------------------------------------------------
+            string stm = @"SELECT e.CategoryId
+                           FROM categories c, expenses e
+                           WHERE c.Id = e.CategoryId
+                                AND e.Date BETWEEN @Start AND @End
+                           ORDER BY c.Description";
+            // run the query on the db
+            SQLiteCommand cmd = new(stm, Database.dbConnection);
 
-        //    cmd.Parameters.AddWithValue("@Start", Start);
-        //    cmd.Parameters.AddWithValue("@End", End);
+            cmd.Parameters.AddWithValue("@Start", Start);
+            cmd.Parameters.AddWithValue("@End", End);
 
-        //    cmd.Prepare();
-        //    cmd.ExecuteNonQuery();
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
 
+            // -----------------------------------------------------------------------
+            // create new list
+            // -----------------------------------------------------------------------
+            List<BudgetItemsByCategory> summaryByCategory = new List<BudgetItemsByCategory>();
 
+            // start reading the result 
+            List<int> categoryIds = new List<int>();
 
-        //    // -----------------------------------------------------------------------
-        //    // create new list
-        //    // -----------------------------------------------------------------------
-        //    List<BudgetItemsByCategory> summaryByCategory = new List<BudgetItemsByCategory>();
+            SQLiteDataReader reader = cmd.ExecuteReader();
 
-        //    // start reading the result 
-        //    List<int> categoryGroup = new List<int>();
+            // get all the category
+            while (reader.Read())
+            {
+                categoryIds.Add(reader.GetInt32(0));
+            }
 
-        //    SQLiteDataReader reader = cmd.ExecuteReader();
+            foreach (int categoryId in categoryIds)
+            {
+                Double total = 0;
+                List<BudgetItem> details = GetBudgetItems(Start, End, true, categoryId);
+                // list of BudgetItems should be sorted by date.
+                details.Sort((x, y) => x.Date.CompareTo(y.Date));
 
-        //    // get all the category
-        //    while (reader.Read())
-        //    {
-        //        categoryGroup.Add(reader.GetInt32(0));
-        //    }
+                foreach (BudgetItem item in details)
+                {
+                    // calculate the total
+                    total += item.Amount;
+                }
 
-        //    foreach (int categoryId in categoryGroup)
-        //    {
-        //        List<BudgetItem> details = new List<BudgetItem>();
-        //        Double total = 0;
-        //        foreach (BudgetItem item in items)
-        //        {
-        //           if (category == item.Category)
-        //            {
-        //                details.Add(item);
-        //            }
-        //            total += item.Amount;
-        //        }
+                summaryByCategory.Add(new BudgetItemsByCategory
+                {
+                    Category = categories.GetCategoryFromId(categoryId).Description,
+                    Details = details,
+                    Total = total,
+                });
+            }
 
-        //        // list of BudgetItems should be sorted by date.
-        //        details.Sort((x, y) => x.Date.CompareTo(y.Date));
+            // sort the list by category description, alphabetically.
+            summaryByCategory.Sort((x, y) => x.Category.CompareTo(y.Category));
 
-        //        summaryByCategory.Add(new BudgetItemsByCategory
-        //        {
-        //            Category = categoryId,
-        //            Details = GetBudgetItems(),
-        //            Total = total,
-        //        });
-        //    }
-
-        //    // sort the list by category description, alphabetically.
-        //    summaryByCategory.Sort((x, y) => x.Category.CompareTo(y.Category));
-
-        //    return summaryByCategory;
-        //}
+            return summaryByCategory;
+        }
 
 
         // ============================================================================
