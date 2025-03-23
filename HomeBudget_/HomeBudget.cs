@@ -24,8 +24,8 @@ namespace Budget
     //        - etc
     // ====================================================================
     /// <summary>
-    /// Combines the Categories and Expenses classes to manage budget data. 
-    /// It provides functionality to read, save, and analyze budget information, including grouping expenses by month, category, or both.
+    /// Combines the use of the <see cref="Categories"/>, <see cref="Expenses"/>, and <see cref="Database"/> classes to manage budget data within a database file.. 
+    /// It provides functionality to read, save, and analyze budget information, such as with retrieving expenses according to given parameters.
     /// </summary>
     public class HomeBudget
     {
@@ -38,15 +38,20 @@ namespace Budget
 
         // Properties (categories and expenses object)
         /// <summary>
-        /// Gets the collection of category items.
+        /// Gets a <see cref="Categories"/> object to access and manipulate category data within the database.
         /// </summary>
         public Categories categories { get { return _categories; } }
+
         /// <summary>
-        /// Gets the collection of expense items.
+        /// Gets a <see cref="Expenses"/> object to access and manipulate expense data within the database.
         /// </summary>
         public Expenses expenses { get { return _expenses; } }
 
-
+        /// <summary>
+        /// Parameterized construtor to allow data retrieval and manipulation access to a pre-existing or newly created database file in the for of a new HomeBudget object.
+        /// </summary>
+        /// <param name="databaseFile">The file name of the chosen database.</param>
+        /// <param name="newDB">The statement of whether the database file already exists or must be created.</param>
         public HomeBudget(string databaseFile, bool newDB = false)
         {
             // if database exists, and user doesn't want a new database, open existing DB
@@ -77,20 +82,20 @@ namespace Budget
         // Reasoning: an expense of $15 is -$15 from your bank account.
         // ============================================================================
         /// <summary>
-        /// Retrieves the list of budget items within a specific time frame, optionally filtered by category.
-        /// If Start or End has null value, the generated dates will be used.
+        /// Retrieves the list of budget items from the database within a specific time frame, optionally filtered by category.
+        /// If Start or End has a null value, the generated dates will be used.
         /// </summary>
         /// <param name="Start"> The Date start (optional). If null, default to the earliest date.</param>
-        /// <param name="End"> The Date end (optional). If null, default to the latest date. </param>
+        /// <param name="End"> The Date end (optional). If null, default to the latest date.</param>
         /// <param name="FilterFlag"> If true, filters by the provided category, if false, list all budget items.</param>
-        /// <param name="CategoryID"> The Category Id is used to filter by (if FilterFlag is true). </param>
-        /// <returns>The list of all budget items sorted by date; with calculated balances</returns>
+        /// <param name="CategoryID"> The category ID is used to filter by (if FilterFlag is true).</param>
+        /// <returns>The list of all budget items sorted by date; with calculated balances.</returns>
         /// <remarks>
         /// If FilterFlag is true and the CategoryID is not found, the method returns all budget items.
         /// </remarks>
         /// <example>
         /// <code>
-        /// HomeBudget homeBudget = new HomeBudget();
+        /// HomeBudget homeBudget = new HomeBudget("myDatabase.db", false);
         /// DateTime start = new DateTime(2019,1,11);
         /// DateTime end = new DateTime(2019,2,5);
         /// List<BudgetItem> budgetItems = homeBudget.GetBudgetItems(start, end, true, 2);
@@ -220,16 +225,16 @@ namespace Budget
         // ============================================================================
 
         /// <summary>
-        /// Retrieves a list of Budget Item groupped by month (sorted by year/month)
+        /// Retrieves the list of budget items from the database grouped by month (sorted by year/month).
         /// </summary>
         /// <param name="Start"> Date start (optional). If null, default to the earliest date.</param>
         /// <param name="End"> Date end (optional). If null, default to the latest date. </param>
         /// <param name="FilterFlag"></param> If true budget items are filtered by category, if false, list all budget items.
         /// <param name="CategoryID"></param> Category Id is used to filter the budget item.
-        /// <returns>The list of all budget items group by month clustered by specified category ID if filter flag is true; if the category ID is not found,it would fall into the false case of FilterFlag, where it returns a list of budget items of all categories.</returns>
+        /// <returns>The list of all budget items group by month clustered by specified category ID if filter flag is true; if the category ID is not found, it would fall into the false case of FilterFlag, where it returns a list of budget items of all categories.</returns>
         /// <example>
         /// <code>
-        /// HomeBudget homeBudget = new HomeBudget();
+        /// HomeBudget homeBudget = new HomeBudget("myDatabase.db", false);
         /// DateTime start = new DateTime(2019,1,11);
         /// DateTime end = new DateTime(2019,2,5);
         /// List -ltBudgetItemsByMonth-gt budgetItemsByMonth = homeBudget.GetBudgetItemsByMonth(start, end, true, 2);
@@ -339,11 +344,11 @@ namespace Budget
         // ============================================================================
 
         /// <summary>
-        /// Retrieves a list of Budget Item groupped by category.
+        /// Retrieves the list of budget items from the database grouped by category.
         /// </summary>
         /// <example>
         /// <code>
-        /// HomeBudget homeBudget = new HomeBudget();
+        /// HomeBudget homeBudget = new HomeBudget("myDatabase.db", false);
         /// DateTime start = new DateTime(2019, 1, 11);
         /// DateTime end = new DateTime(2019, 2, 5);
         /// List-ltBudgetItemsByCategory-gt budgetItemsByCategory = homeBudget.GetBudgetItemsByCategory(start,end,true,2);
@@ -502,7 +507,7 @@ namespace Budget
         // ============================================================================
 
         /// <summary>
-        /// Creates a list of dictionary budget items has a colection of string and object pair by both month and category.
+        /// Creates a list of budget item dictionaries, each one consisting of a string and object pair corresponding to an expense's month and category respectively.
         /// </summary>
         /// <param name="Start"> Date start (optional). If null, default to the earliest date.</param>
         /// <param name="End"> Date end (optional). If null, default to the latest date. </param>
@@ -516,7 +521,7 @@ namespace Budget
         /// </returns>
         /// <example>
         /// <code>
-        /// HomeBudget homeBudget = new HomeBudget(filePath);
+        /// HomeBudget homeBudget = new HomeBudget("myDatabase.db", false);
         /// DateTime startDate = new DateTime(2019,1,11)
         /// DateTime endDate = new DateTime(2019,2,5)
         /// List -lt Dictionary-lt string, object -gt -gt budgetItemByCategoryAndMonth = homeBudget.GetBudgetDictionaryByCategoryAndMonth(startDate, endDate, filterFlag, categoryId);
