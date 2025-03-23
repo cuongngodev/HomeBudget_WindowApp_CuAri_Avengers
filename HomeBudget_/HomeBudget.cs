@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Data.SQLite;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -278,24 +279,37 @@ namespace Budget
             Start = Start ?? new DateTime(1900, 1, 1);
             End = End ?? new DateTime(2500, 1, 1);
 
+            string stm;
             // -----------------------------------------------------------------------
-            // Get the month group
+            // Get all the category Ids
             // -----------------------------------------------------------------------
-            
-            string stm = @"SELECT STRFTIME('%m/%d/%Y', e.Date) AS month
+            if (FilterFlag)
+            {
+                stm = @"SELECT STRFTIME('%m/%Y', e.Date) AS month
                             FROM categories c, expenses e
                             WHERE c.Id = e.CategoryId
-                            GROUP BY month
-                            AND e.Date BETWEEN @Start AND @End";
+                                AND e.CategoryId = @categoryId
+                                AND e.Date BETWEEN @Start AND @End
+                            GROUP BY month";
+            }
+            else
+            {
+                stm = @"SELECT STRFTIME('%m/%Y', e.Date) AS month
+                            FROM categories c, expenses e
+                            WHERE c.Id = e.CategoryId
+                                AND e.Date BETWEEN @Start AND @End
+                            GROUP BY month";
+            }
 
             // list of months that contain budget items
-            List<DateTime> monthGroup = new List<DateTime>();
+            List<string> monthGroup = new List<string>();
 
             // run the query on the db
             SQLiteCommand cmd = new(stm, Database.dbConnection);
 
             cmd.Parameters.AddWithValue("@Start", Start);
             cmd.Parameters.AddWithValue("@End", End);
+            cmd.Parameters.AddWithValue("@categoryId", CategoryID);
 
             cmd.Prepare();
             cmd.ExecuteNonQuery();
@@ -305,20 +319,25 @@ namespace Budget
             while (reader.Read())
             {
                 // fill in the month group all the months from the expenses
-                DateTime date = DateTime.ParseExact(reader.GetString(0), "MM/d/yyyy", CultureInfo.InvariantCulture);
-                monthGroup.Add(date);
+                //DateTime date = DateTime.ParseExact(reader.GetString(0), "MM/d/yyyy", CultureInfo.InvariantCulture);
+                monthGroup.Add(reader.GetString(0));
             }
 
-            var summaryByMonth = new List<BudgetItemsByMonth>();
+            List<BudgetItemsByMonth> summaryByMonth = new List<BudgetItemsByMonth>();
 
 
-            foreach(DateTime date in monthGroup)
+            foreach(string date in monthGroup)
+
             {
+                string[] mmYY= date.Split('/'); // Format: 01/2018
+                string year = mmYY[1];
+                string month = mmYY[0];
+
                 // get start date of that month
-                DateTime start = new DateTime(date.Year, date.Month, 1);
+                DateTime start = new DateTime(int.Parse(year), int.Parse(month), 1);
                 // get last date of that month
-                int lastDate = DateTime.DaysInMonth(date.Year, date.Month);
-                DateTime end = new DateTime(date.Year, date.Month, lastDate);
+                int lastDate = DateTime.DaysInMonth(int.Parse(year), int.Parse(month));
+                DateTime end = new DateTime(int.Parse(year), int.Parse(month), lastDate);
 
                 List<BudgetItem> details = GetBudgetItems(start, end, FilterFlag, CategoryID);
                 Double total = 0;
@@ -328,10 +347,11 @@ namespace Budget
                     // calculate the total
                     total += item.Amount;
                 }
+
                 // add new BudgetItemsByMonth to our list
                 summaryByMonth.Add(new BudgetItemsByMonth
                 {
-                    Month = date.ToString("yyyy/MM"),
+                    Month = $"{year}/{month}",
                     Details = details,
                     Total = total,
                 });
@@ -437,7 +457,6 @@ namespace Budget
             cmd.Parameters.AddWithValue("@Start", Start);
             cmd.Parameters.AddWithValue("@End", End);
             cmd.Parameters.AddWithValue("@categoryId", CategoryID);
-
 
             cmd.Prepare();
             cmd.ExecuteNonQuery();
