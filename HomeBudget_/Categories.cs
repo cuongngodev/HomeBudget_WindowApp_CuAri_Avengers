@@ -19,8 +19,6 @@ namespace Budget
     /// </summary>
     public class Categories
     {
-        private string _FileName;
-        private string _DirName;
         private SQLiteConnection _DbConnection;
 
         // ====================================================================
