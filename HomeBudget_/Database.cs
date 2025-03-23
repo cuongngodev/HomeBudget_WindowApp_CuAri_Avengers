@@ -27,7 +27,6 @@ using System.Threading;
 //
 // ===================================================================
 
-
 namespace Budget
 {
     /// <summary>

@@ -14,8 +14,8 @@ namespace Budget
     //        - etc
     // ====================================================================
     /// <summary>
-    /// Responsible for managing a collection of categories stored on a database, representing different expense categories. 
-    /// <br></br>It allows for operations including adding, deleting, and listing categories to and from the database.
+    /// Responsible for managing the categories stored on a given database, representing different expense categories. 
+    /// <br></br>It allows for operations including adding, updating, deleting, and listing categories to and from the database.
     /// </summary>
     public class Categories
     {
@@ -32,17 +32,9 @@ namespace Budget
         // Constructor
         // ====================================================================
         /// <summary>
-        /// Default constructor which takes in no parameters and instead empties the category database and resets it too its default state.
-        /// </summary>
-        public Categories()
-        {
-            SetCategoriesToDefaults();
-        }
-
-        /// <summary>
         /// Parameterized constructor which creates a <see cref="Categories"/> object by taking in input corresponding to the
         /// <br></br>
-        /// correct database connection and a boolean argument stating whether the database is new or not in the potential need to create a new one.
+        /// correct database connection and a boolean argument stating whether the database is new or not in the potential need to create a new one with default categories.
         /// </summary>
         /// <param name="dbConnection">The connection to a given database location.</param>
         /// <param name="isNewDb">An indicator to whether the desired database location is meant to be new or is pre-existing.</param>
@@ -73,10 +65,11 @@ namespace Budget
         // get a specific category from the list where the id is the one specified
         // ====================================================================
         /// <summary>
-        /// Gets a <see cref="Category"/> object from the database by a given ID number as input.
+        /// Retrieves category data from the database by a given ID number as input.
         /// </summary>
         /// <param name="i">The unique ID number of a category to retrieve.</param>
-        /// <returns>A <see cref="Category"/> object corresponding to its specified ID number.</returns>
+        /// <returns>An <see cref="Category"/> object corresponding to the database record matching its specified ID number.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Throws if an invalid ID is given.</exception>
         /// <example>
         /// <code>
         /// Categories categories = new Categories();
@@ -118,9 +111,19 @@ namespace Budget
             return new Category(id, description, categoryType);
         }
 
+        /// <summary>
+        /// Allows for parameterized updating of a chosen category record inside the database.
+        /// </summary>
+        /// <param name="categoryId">The ID number of the category to be updated.</param>
+        /// <param name="newDescription">If desired, a new description to assign the chosen category.</param>
+        /// <param name="newType">If desired, a different <see cref="Category.CategoryType"/> to assign the chosen category.</param>
+        /// /// <example>
+        /// <code>
+        /// Categories.UpdateProperties(1, "This is a new category description.");
+        /// </code>
+        /// </example>
         public void UpdateProperties(int categoryId, string newDescription, Category.CategoryType newType)
         {
-
             string checkExistenceStm = "SELECT COUNT(*) FROM categories WHERE Id = @id";
             var cmdCheck = new SQLiteCommand(checkExistenceStm, DBConnection);
             cmdCheck.Parameters.AddWithValue("@id", categoryId);
@@ -129,8 +132,7 @@ namespace Budget
             int count = Convert.ToInt32(cmdCheck.ExecuteScalar());
 
             if (count == 0)
-                return; 
-            
+                return;
 
             string stm = "UPDATE categories SET Description = @description, TypeId = @typeId WHERE Id = @id";
             var cmd = new SQLiteCommand(stm, DBConnection);
@@ -192,9 +194,6 @@ namespace Budget
         // ====================================================================
         // Add category
         // ====================================================================
-
-
-
         /// <summary>
         /// Adds a new category to the database by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.
         /// </summary>
@@ -240,15 +239,10 @@ namespace Budget
         public void Delete(int Id)
         {
             string stm = "DELETE FROM categories WHERE id=@id";
-
             SQLiteCommand cmd = new SQLiteCommand(stm, DBConnection);
-
             cmd.CommandText = stm;
-
             cmd.Parameters.AddWithValue("@id", Id);
-
             cmd.Prepare();
-
             cmd.ExecuteNonQuery();
         }
 
@@ -260,7 +254,7 @@ namespace Budget
         /// <summary>
         /// Returns a copy of the list of categories from the database. 
         /// </summary>
-        /// <returns>A list of <see cref="Category"/> objects containing all the categories found in the database.</returns>
+        /// <returns>A list of <see cref="Category"/> objects containing data of all the categories found in the database.</returns>
         /// <example>
         /// <code>
         /// Categories categories = new Categories();

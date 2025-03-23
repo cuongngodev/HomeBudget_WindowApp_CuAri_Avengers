@@ -14,7 +14,7 @@ namespace Budget
     //        - etc
     // ====================================================================
     /// <summary>
-    /// Responsible for manageing a collection of <see cref="Expense"/> objects, providing different functionality for reading from and writing to files, and managing expense entries. Uses SQLite for file operations.
+    /// Responsible for managing the expenses stored on a given database, providing different functionality for reading from and writing to files, and managing expense entries. Uses SQLite for file operations.
     /// </summary>
     public class Expenses
     {
@@ -35,10 +35,11 @@ namespace Budget
         // get a specific expense from the list where the id is the one specified
         // ====================================================================
         /// <summary>
-        /// Gets an <see cref="Expense"/> object by a given ID number as input and retrieving its data from the database.
+        /// Retrieves expense data from the database by a given ID number as input.
         /// </summary>
         /// <param name="i">The unique ID number of an expense to retrieve.</param>
-        /// <returns>An <see cref="Expense"/> object corresponding to its specified ID number.</returns>
+        /// <returns>An <see cref="Expense"/> object corresponding to the database record matching its specified ID number.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Throws if an invalid ID is given.</exception>
         /// <example>
         /// <code>
         /// Expenses expenses = new Expenses();
@@ -86,7 +87,6 @@ namespace Budget
             return new Expense(id, date, categoryId, amount, description);
         }
 
-
         /// <summary>
         /// Adds a new expense entry to the database and generates a unique id for it automatically.
         /// </summary>
@@ -95,8 +95,8 @@ namespace Budget
         /// <param name="amount">Monetary amount assigned to the expense object.</param>
         /// <param name="description">Description of the expense object.</param>
         /// <example>
-        /// Enxpenses expenses = new Expenses();
-        /// expenses.Add(date,category,amount,description)
+        /// Expenses expenses = new Expenses();
+        /// expenses.Add(expenseDate,categoryId,amount,description)
         /// </example>
         public void Add(DateTime date, int category, Double amount, String description)
         {
@@ -118,6 +118,19 @@ namespace Budget
         // ====================================================================
         // Update Expense
         // ====================================================================
+        /// <summary>
+        /// Allows for parameterized updating of a chosen expense record inside the database.
+        /// </summary>
+        /// <param name="expenseId">The ID number of the expense to be updated.</param>
+        /// <param name="newDate">If desired, a new creation date to assign the chosen expense.</param>
+        /// <param name="categoryId">If desired, a category to assign to the chosen expense.</param>
+        /// <param name="newAmount">If desired, a new monetary amount to assign the chosen expense.</param>
+        /// <param name="newDescription">If desired, a new description to assign the chosen expense.</param>
+        /// /// <example>
+        /// <code>
+        /// Expenses.UpdateProperties(1, "This is a new category description.");
+        /// </code>
+        /// </example>
         public void UpdateProperties(int expenseId, DateTime newDate, int categoryId, double newAmount, string newDescription)
         {
             string checkExistenceStm = "SELECT COUNT(*) FROM expenses WHERE Id = @id";
@@ -146,7 +159,6 @@ namespace Budget
 
                 cmd.ExecuteNonQuery();
             }
-
         }
 
         // ====================================================================
@@ -155,7 +167,6 @@ namespace Budget
         /// <summary>Deletes an expense entry from the database.
         /// </summary>
         /// <param name="id">Id of the expense to delete.</param>
-        /// <exception cref="ArgumentNullException"> Thrown if id is null. </exception>
         /// <example>
         /// <code>
         /// expenses.Delete(23)
@@ -184,7 +195,12 @@ namespace Budget
         /// <summary>
         /// Returns a copy of all the expenses in the database in the form of an <see cref="Expense"/> list.
         /// </summary>
-        /// <returns>A new list containning copies of all expenses</returns>
+        /// <returns>A new list containning copies of all expense records within the database.</returns>
+        /// <example>
+        /// <code>
+        /// List<Expenses> allExpenses = myExpenses.List();
+        /// </code>
+        /// </example>
         public List<Expense> List()
         {
             const int ID_INDEX = 0;
