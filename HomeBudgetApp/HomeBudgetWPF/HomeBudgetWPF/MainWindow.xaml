@@ -5,9 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        
-        BorderThickness="3" BorderBrush="Black">
+        Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -21,7 +19,6 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -29,10 +26,9 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Grid.Row="0" Padding="10" BorderThickness="2" BorderBrush="Black">File Selection</Button>
-            <Button Grid.Column="0" Grid.Row="1" Padding="10" BorderThickness="2" BorderBrush="Black">Expenses</Button>
-            <Button Grid.Column="0" Grid.Row="2" Padding="10" BorderThickness="2" BorderBrush="Black">Categories</Button>
-            <Button Grid.Column="0" Grid.Row="3" Padding="10" BorderThickness="2" BorderBrush="Black">Settings</Button>
+            <Button Grid.Column="0" Grid.Row="0" Padding="10" BorderThickness="2" BorderBrush="Black" Click="OpenFileSelection">File Selection</Button>
+            <Button Grid.Column="0" Grid.Row="1" Padding="10" BorderThickness="2" BorderBrush="Black" Click="OpenExpenseManagement">Expenses</Button>
+            <Button Grid.Column="0" Grid.Row="2" Padding="10" BorderThickness="2" BorderBrush="Black" Click="OpenCategoryManagement">Categories</Button>
 
             <Border Grid.Column="1" Grid.RowSpan="4" BorderThickness="2" BorderBrush="Black"></Border>
             
