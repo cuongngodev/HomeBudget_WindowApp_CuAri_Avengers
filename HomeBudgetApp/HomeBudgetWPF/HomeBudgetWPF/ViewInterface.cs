@@ -16,7 +16,5 @@ namespace HomeBudgetWPF
 
         public void DisplayCategoryTypes(List<Category.CategoryType> categories);
 
-        
-
     }
 }
