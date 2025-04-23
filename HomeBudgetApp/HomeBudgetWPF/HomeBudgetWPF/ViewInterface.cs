@@ -12,9 +12,5 @@ namespace HomeBudgetWPF
 
         public void DisplayConfirmation(string message);
 
-        public void DisplayCategories(List<Categories> categories);
-
-        public void DisplayCategoryTypes(List<Category.CategoryType> categories);
-
     }
 }
