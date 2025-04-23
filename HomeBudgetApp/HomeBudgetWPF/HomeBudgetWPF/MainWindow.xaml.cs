@@ -23,7 +23,9 @@ namespace HomeBudgetWPF
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
-
+            FileSelect fileSelect = new FileSelect();
+            fileSelect.Show();
+            
         }
 
         private void OpenExpenseManagement(object sender, RoutedEventArgs e)
