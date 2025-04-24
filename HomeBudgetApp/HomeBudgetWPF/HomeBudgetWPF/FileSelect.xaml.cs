@@ -59,7 +59,7 @@ namespace HomeBudgetWPF
             if (saveFileDialog.ShowDialog() == true)
             {
                 // Get the path where user wants to save
-                selectedLocation = saveFileDialog.FileName + "\\";
+                selectedLocation = saveFileDialog.FileName;
                 string selectedFileName = saveFileDialog.FileName;
 
                 // Update the UI with the selected location

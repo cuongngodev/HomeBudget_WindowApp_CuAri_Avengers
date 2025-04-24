@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Budget;
 using static HomeBudgetWPF.ViewInterfaces;
 
+
+
 namespace HomeBudgetWPF
 {
   
