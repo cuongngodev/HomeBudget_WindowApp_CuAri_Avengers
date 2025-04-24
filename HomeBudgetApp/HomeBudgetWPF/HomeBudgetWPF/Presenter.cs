@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Budget;
+using static HomeBudgetWPF.ViewInterfaces;
 
 namespace HomeBudgetWPF
 {
@@ -11,19 +12,35 @@ namespace HomeBudgetWPF
     public class Presenter
     {
         private HomeBudget? _model;
-        private readonly ViewInterfaces _MainView;
-        private readonly ViewInterfaces.CategoryInterface _CategoryView;
+        private ViewInterfaces.MainViewInterface _MainView;
+        private ViewInterfaces.CategoryInterface _CategoryView;
+        private ViewInterfaces.FileSelectInterface _FileSelectView;
 
-        public Presenter(ViewInterfaces v, HomeBudget ?model)
+        public Presenter(ViewInterfaces.MainViewInterface v)
         {
             _MainView = v;
-            _model = model;
         }
        
+        public void SetViews(ViewInterfaces.CategoryInterface categoryView, ViewInterfaces.FileSelectInterface fileSelectView)
+        {
+            _CategoryView = categoryView;
+            _FileSelectView = fileSelectView;
+        }
+
         public List<Budget.Category> GetAllCategories()
         {
             var boo = _model.categories.List();
             return boo; 
+        }
+
+        public void OpenCategorySelectFile()
+        {
+            _FileSelectView.OpenWindow();
+        }
+
+        public void OpenCategory()
+        {
+            _CategoryView.OpenWindow();
         }
 
         public string GetCategory(int id)
@@ -41,7 +58,7 @@ namespace HomeBudgetWPF
         public void SetDatabase(string db, bool isNew)
         {
             _model = new HomeBudget(VerifyDb(db), isNew);
-
+            
         }
 
         public string VerifyDb(string db)

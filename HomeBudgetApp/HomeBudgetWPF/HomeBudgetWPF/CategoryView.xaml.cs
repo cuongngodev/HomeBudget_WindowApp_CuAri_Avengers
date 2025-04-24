@@ -20,10 +20,10 @@ namespace HomeBudgetWPF
     public partial class CategoryView : Window, ViewInterfaces.CategoryInterface
     {
         Presenter _p;
-        public CategoryView()
+        public CategoryView(Presenter p)
         {
             InitializeComponent();
-          
+            _p = p;
         }
 
         public void OpenWindow()
@@ -38,10 +38,7 @@ namespace HomeBudgetWPF
             this.Close();
         }
 
-        public void RegisterPresenter(Presenter p)
-        {
-            _p = p;
-        }
+
 
         public void DisplayCategoryType()
         {

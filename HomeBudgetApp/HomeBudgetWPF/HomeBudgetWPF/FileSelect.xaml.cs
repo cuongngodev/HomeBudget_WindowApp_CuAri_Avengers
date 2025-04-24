@@ -21,20 +21,16 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for FileSelect.xaml
     /// </summary>
-    public partial class FileSelect : Window
+    public partial class FileSelect : Window, ViewInterfaces.FileSelectInterface
     {
         static string selectedLocation = "";
-        public FileSelect()
+        public Presenter _p;
+        public FileSelect(Presenter p)
         {
             InitializeComponent();
+            _p = p;
         }
 
-        private void SelectFile(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-       
         /// <summary>
         /// Selects the path where user want to save the new file
         /// </summary>
@@ -80,27 +76,11 @@ namespace HomeBudgetWPF
         {
             string newFileName = fileNameTextBox.Text.Trim()+".db";
 
-            // if text box empty
-            if (string.IsNullOrWhiteSpace(newFileName))
-            {
-                MessageBox.Show("Please enter a file name.");
-                return;
-            }
-            if (string.IsNullOrEmpty(selectedLocation))
-            {
-                MessageBox.Show("Please choose location to save.");
-                return;
-            }
-            
+
+
             // Start create the db
-            HomeBudget homeBudget = new HomeBudget(newFileName, true);
+            _p.SetDatabase(newFileName, true);
             MessageBox.Show("Create new DB successfully!");
-
-            BudgetApp budgetApp = new BudgetApp(homeBudget);
-
-            // Open Budget App and Start working
-            budgetApp.Show();
-            this.Close();   
         }
 
         /// <summary>
@@ -118,15 +98,31 @@ namespace HomeBudgetWPF
             {
                 // path to datbase
                 string selectedFilePath = openFileDialog.FileName;
-                HomeBudget homeBudget = new HomeBudget(selectedFilePath, false);
-                //MessageBox.Show("Selected DB file: " + selectedFilePath);
-                BudgetApp budgetApp = new BudgetApp(homeBudget);
-
-                // Open Budget App and Start working
-                budgetApp.Show();
-                this.Close();
+                _p.SetDatabase(selectedFilePath,false);
+   
             }
         }
+
    
+
+        public void OpenWindow()
+        {
+            this.Show();
+        }
+
+        public void CloseWindow()
+        {
+            this.Close();
+        }
+
+        public void ShowError(string msg)
+        {
+            MessageBox.Show(msg, "Error",MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public void ShowConfirmation(string msg)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
