@@ -60,6 +60,11 @@ namespace HomeBudgetWPF
             _View.DisplayCategoryMenu();
         }
 
+        public void CloseCategory()
+        {
+            _View.CloseCategoryMenu();
+        }
+
         /// <summary>
         /// Adds new category that has not exisited in the database yet.
         /// </summary>
@@ -112,6 +117,10 @@ namespace HomeBudgetWPF
         public void OpenExpense()
         {
             _View.DisplayExpenseMenu();
+        }
+        public void CloseExpense()
+        {
+            _View.CloseExpenseMenu();
         }
 
         public void CreateNewExpense(DateTime? date, int cat, string amount, string desc)
