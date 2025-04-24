@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Budget;
 using static HomeBudgetWPF.ViewInterfaces;
 
@@ -12,18 +13,19 @@ namespace HomeBudgetWPF
     public class Presenter
     {
         private HomeBudget? _model;
-        private ViewInterfaces.MainViewInterface _MainView;
-        private ViewInterfaces.CategoryInterface _CategoryView;
-        private ViewInterfaces.FileSelectInterface _FileSelectView;
-        private ViewInterfaces.ExpenseInterface _ExpenseView;
+        private ViewInterfaces.ViewInterface _MainView;
+        private ViewInterfaces.ViewInterface _CategoryView;
+        private ViewInterfaces.ViewInterface _FileSelectView;
+        private ViewInterfaces.ViewInterface _ExpenseView;
 
-        public Presenter(ViewInterfaces.MainViewInterface v)
+        public Presenter(ViewInterfaces.ViewInterface v)
         {
             _MainView = v;
         }
 
         #region Setup
-        public void SetViews(ViewInterfaces.CategoryInterface categoryView, ViewInterfaces.FileSelectInterface fileSelectView, ViewInterfaces.ExpenseInterface expenseView)
+
+        public void SetViews(ViewInterfaces.ViewInterface categoryView, ViewInterfaces.ViewInterface fileSelectView, ViewInterfaces.ViewInterface expenseView)
         {
             _CategoryView = categoryView;
             _FileSelectView = fileSelectView;
@@ -38,7 +40,7 @@ namespace HomeBudgetWPF
         {
             _model = new HomeBudget(VerifyDb(db), isNew);
 
-            _FileSelectView.ShowConfirmation("Db file succesfully selected");
+            _FileSelectView.DisplayConfirmation("Db file succesfully selected");
             _FileSelectView.CloseWindow();
         }
 
@@ -67,21 +69,35 @@ namespace HomeBudgetWPF
 
         public void CreateNewCategory(string desc, object type)
         {
-            foreach (Budget.Category test in _model.categories.List())
+            foreach (Budget.Category cat in _model.categories.List())
             {
-                if (test.ToString() == desc)
+                if (cat.ToString() == desc)
                 {
                     _CategoryView.DisplayError("Error");
                 }
             }
-
-
             _model.categories.Add(desc, (Budget.Category.CategoryType)type);
+            _CategoryView.DisplayConfirmation("Added Succesfully!");
+            _CategoryView.CloseWindow();
         }
 
         public List<Budget.Category> GetAllCategories()
         {
             return _model.categories.List();
+        }
+
+
+
+        public void CreateNewCategory(string name)
+        {
+            foreach (Budget.Category cat in _model.categories.List())
+            {
+                if (cat.ToString() == name)
+                {
+                    break;
+                }
+            }
+            CreateNewCategory(name,Budget.Category.CategoryType.Expense); //Default for now have to ask teacher
         }
         #endregion
 
@@ -94,6 +110,8 @@ namespace HomeBudgetWPF
         public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
         {
             _model.expenses.Add(date,cat,StringToDouble(amount),desc);
+            _ExpenseView.DisplayError("Added Succesfully!");
+            _ExpenseView.CloseWindow();
         }
         #endregion
 
@@ -102,21 +120,11 @@ namespace HomeBudgetWPF
             double result; 
             if (!double.TryParse(amount, out result))
             {
-                _ExpenseView.ShowError("Invalid Amount,\nPlease enter a number");
+                _ExpenseView.DisplayError("Invalid Amount,\nPlease enter a number");
             }
             return result;
         }
 
-
-
-
-
-
-
-        //public void AddExpense(DateTime date, int cat, double amount, string desc)
-        //{
-        //    _model.expenses.Add(date,cat,amount,desc);
-        //}
 
     }
 }

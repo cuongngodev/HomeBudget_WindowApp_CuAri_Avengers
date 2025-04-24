@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -15,7 +16,7 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, ViewInterfaces.MainViewInterface
+    public partial class MainWindow : Window, ViewInterfaces.ViewInterface
     {
         public Presenter _p;
         
@@ -23,9 +24,9 @@ namespace HomeBudgetWPF
         {
             InitializeComponent();
             _p = new(this);
-            ViewInterfaces.CategoryInterface categoryView = new CategoryView(_p);
-            ViewInterfaces.FileSelectInterface fileSelectView = new FileSelect(_p);
-            ViewInterfaces.ExpenseInterface expenseView = new ExpenseView(_p);
+            ViewInterfaces.ViewInterface categoryView = new CategoryView(_p);
+            ViewInterfaces.ViewInterface fileSelectView = new FileSelect(_p);
+            ViewInterfaces.ViewInterface expenseView = new ExpenseView(_p);
             _p.SetViews(categoryView, fileSelectView,expenseView);
         }
 
@@ -46,12 +47,22 @@ namespace HomeBudgetWPF
 
         public void DisplayError(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public void DisplayConfirmation(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message, "Success", MessageBoxButton.OK);
+        }
+
+        public void OpenWindow()
+        {
+            this.Show();
+        }
+
+        public void CloseWindow()
+        {
+            this.Close();
         }
     }
 }
