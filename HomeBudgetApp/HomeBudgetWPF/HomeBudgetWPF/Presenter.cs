@@ -11,11 +11,12 @@ namespace HomeBudgetWPF
     public class Presenter
     {
         private HomeBudget? _model;
-        private readonly ViewInterfaces _view;
+        private readonly ViewInterfaces _MainView;
+        private readonly ViewInterfaces.CategoryInterface _CategoryView;
 
         public Presenter(ViewInterfaces v, HomeBudget ?model)
         {
-            _view = v;
+            _MainView = v;
             _model = model;
         }
        
@@ -47,9 +48,17 @@ namespace HomeBudgetWPF
             return db;
         }
 
-        public void CreateNewCategory(string desc, Budget.Category.CategoryType type)
+        public void CreateNewCategory(string desc, object type)
         {
-            _model.categories.Add(desc, type);
+            foreach (Budget.Category test in _model.categories.List())
+            {
+                if (test.ToString() == desc){
+                    _MainView.
+                }
+            }
+                
+
+            _model.categories.Add(desc, (Budget.Category.CategoryType) type);
         }
         
         public void AddExpense(DateTime date, int cat, double amount, string desc)
