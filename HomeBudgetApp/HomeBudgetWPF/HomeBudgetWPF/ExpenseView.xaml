@@ -17,6 +17,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -49,6 +50,7 @@
             </DockPanel>
 
             <Button Width="auto" Grid.Row="5" HorizontalAlignment="Center" Click="ExpenseSubmitClick">Log New Expense</Button>
+            <Button Width="auto" Grid.Row="6" Margin="10" HorizontalAlignment="Center" Click="Cancel_Expense_Click">Cancel</Button>
         </Grid>
     </StackPanel>
 </Window>

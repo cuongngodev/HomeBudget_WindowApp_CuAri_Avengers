@@ -41,6 +41,10 @@ namespace HomeBudgetWPF
             
             _p.CreateNewCategory(desc, type);
         }
-      
+
+        private void Cancel_Category_Click(object sender, RoutedEventArgs e)
+        {
+            _p.CloseCategory();
+        }
     }
 }

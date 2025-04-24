@@ -53,5 +53,9 @@ namespace HomeBudgetWPF
             _p.CreateNewExpense(date, catType, amount, desc);
         }
 
+        private void Cancel_Expense_Click(object sender, RoutedEventArgs e)
+        {
+            _p.CloseExpense();
+        }
     }
 }
