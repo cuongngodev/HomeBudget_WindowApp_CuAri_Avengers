@@ -25,6 +25,8 @@ namespace HomeBudgetWPF
             void DisplayError(string message);
 
             void DisplayConfirmation(string message);
+
+            void RegisterPresenter(Presenter p);
         }
 
 

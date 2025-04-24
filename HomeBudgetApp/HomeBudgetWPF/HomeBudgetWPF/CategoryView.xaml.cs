@@ -17,14 +17,18 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for Category.xaml
     /// </summary>
-    public partial class Category : Window, ViewInterfaces.CategoryInterface
+    public partial class CategoryView : Window, ViewInterfaces.CategoryInterface
     {
         Presenter _p;
-        public Category(Presenter p)
+        public CategoryView()
         {
             InitializeComponent();
-            _p = p;
             
+        }
+
+        public void RegisterPresenter(Presenter p)
+        {
+            _p = p;
         }
 
         public void DisplayCategoryType()
@@ -45,7 +49,7 @@ namespace HomeBudgetWPF
         public void SendCategoryInfo()
         {
             string desc = TxtDescription.Text;
-           // Budget.Category.CategoryType type = CmbCatType.Text;
+            Object type = CmbCatType.SelectedItem;
             _p.CreateNewCategory(desc, type);
         }
 

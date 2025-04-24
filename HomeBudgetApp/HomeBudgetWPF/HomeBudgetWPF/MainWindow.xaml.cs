@@ -20,7 +20,10 @@ namespace HomeBudgetWPF
         public MainWindow()
         {
             InitializeComponent();
-            ViewInterfaces.CategoryInterface categoryInterface = new HomeBudgetWPF.Category(_p);
+
+            ViewInterfaces.CategoryInterface categoryView = new CategoryView();
+
+            categoryView.RegisterPresenter(_p);
         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
