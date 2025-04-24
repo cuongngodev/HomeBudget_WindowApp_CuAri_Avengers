@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="HomeBudget_">
       <HintPath>dlls\HomeBudgetModel\HomeBudget_.dll</HintPath>
     </Reference>
