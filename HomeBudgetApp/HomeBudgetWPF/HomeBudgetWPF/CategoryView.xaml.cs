@@ -17,7 +17,7 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for Category.xaml
     /// </summary>
-    public partial class CategoryView : Window, ViewInterfaces.ViewInterface
+    public partial class CategoryView : Window
     {
         Presenter _p;
         public CategoryView(Presenter p)
@@ -27,38 +27,19 @@ namespace HomeBudgetWPF
             SetupCmb();
         }
 
-        public void OpenWindow()
-        {
-            this.ShowDialog();
-        }
-
         private void SetupCmb()
         {
             CmbCatType.ItemsSource = _p.GetAllCategoryTypes();
             CmbCatType.SelectedIndex = 0;
         }
 
-        public void CloseWindow()
-        {
-            this.Close();
-        }
-
-        public void DisplayConfirmation(string message)
-        {
-            MessageBox.Show(message, "Success", MessageBoxButton.OK);
-        }
-
-        public void DisplayError(string message)
-        {
-           MessageBox.Show(message,"ERROR",MessageBoxButton.OK, MessageBoxImage.Error); 
-        }
-
+      
         private void NewCatSubmitClicked(object sender, RoutedEventArgs e)
         {
             string desc = TxtDescription.Text;
             Object type = CmbCatType.SelectedItem;
             _p.CreateNewCategory(desc, type);
         }
-
+      
     }
 }

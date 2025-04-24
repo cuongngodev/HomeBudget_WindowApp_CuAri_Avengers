@@ -16,19 +16,20 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, ViewInterfaces.ViewInterface
+    public partial class MainWindow : Window, ViewInterface
     {
         public Presenter _p;
-        
+        public Window _categoryView,_fileSelectView, _expenseView;
         public MainWindow()
         {
             InitializeComponent();
             _p = new(this);
-            ViewInterfaces.ViewInterface categoryView = new CategoryView(_p);
-            ViewInterfaces.ViewInterface fileSelectView = new FileSelect(_p);
-            ViewInterfaces.ViewInterface expenseView = new ExpenseView(_p);
-            _p.SetViews(categoryView, fileSelectView,expenseView);
-        }
+
+           
+            _p.SetupPresenter();
+
+
+         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
@@ -63,6 +64,47 @@ namespace HomeBudgetWPF
         public void CloseWindow()
         {
             this.Close();
+        }
+
+        public void DisplayCategoryMenu()
+        {
+            this.Hide();
+            _categoryView = new CategoryView(_p);
+            _categoryView.Show();
+
+        }
+
+        public void DisplayExpenseMenu()
+        {
+            this.Hide();
+            _expenseView = new ExpenseView(_p);
+            _expenseView.Show();
+        }
+
+        public void DisplaySelectFileMenu()
+        {
+             this.Hide();
+            _fileSelectView = new FileSelect(_p);
+            _fileSelectView.Show();
+        }
+
+        public void CloseCategoryMenu()
+        {
+            _categoryView.Close();
+            this.Show();
+        }
+
+        public void CloseExpenseMenu()
+        {
+            _expenseView.Close();
+            this.Show();
+
+        }
+
+        public void CloseFileSelectMenu()
+        {
+            _fileSelectView.Close();
+            this.Show();
         }
     }
 }

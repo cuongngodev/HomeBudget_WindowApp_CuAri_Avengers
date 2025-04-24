@@ -12,14 +12,14 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static HomeBudgetWPF.ViewInterfaces;
+using static HomeBudgetWPF.ViewInterface;
 
 namespace HomeBudgetWPF
 {
     /// <summary>
     /// Interaction logic for Expense.xaml
     /// </summary>
-    public partial class ExpenseView : Window, ViewInterfaces.ViewInterface
+    public partial class ExpenseView : Window
     {
         public Presenter _p;
 
@@ -27,30 +27,12 @@ namespace HomeBudgetWPF
         {
             InitializeComponent();
             _p = p;
-        }
-
-        public void CloseWindow()
-        {
-            this.Close();
-        }
-
-        public void DisplayConfirmation(string message)
-        {
-            MessageBox.Show(message, "Success", MessageBoxButton.OK);
-        }
-
-        public void DisplayError(string message)
-        {
-            MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-        public void OpenWindow()
-        {
-            this.Show();
             SetupCatCmb();
         }
 
-        public void SetupCatCmb()
+      
+
+        private void SetupCatCmb()
         {
             CmbCategory.ItemsSource = _p.GetAllCategories();
             CmbCategory.DisplayMemberPath = "Description";
@@ -66,8 +48,10 @@ namespace HomeBudgetWPF
             string desc = TxtDesc.Text;
             string amount = TxtAmount.Text;
 
-            _p.CreateNewCategory(catName);
+            _p.CreateNewCategoryFromDropDown(catName);
+            
             _p.CreateNewExpense(date, catType, amount, desc);
         }
+
     }
 }
