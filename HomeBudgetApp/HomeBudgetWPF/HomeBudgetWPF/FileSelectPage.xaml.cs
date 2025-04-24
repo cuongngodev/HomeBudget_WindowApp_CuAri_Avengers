@@ -1,0 +1,124 @@
+﻿using Budget;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace HomeBudgetWPF
+{
+    /// <summary>
+    /// Interaction logic for FileSelectPage.xaml
+    /// </summary>
+    public partial class FileSelectPage : Page
+    {
+        static string selectedLocation = "";
+        public FileSelectPage()
+        {
+            InitializeComponent();
+        }
+
+        private void SelectFile(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        /// <summary>
+        /// Selects the path where user want to save the new file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Save_To_Click(object sender, RoutedEventArgs e)
+        {
+            string newFileName = fileNameTextBox.Text.Trim();
+            // if text box empty
+            if (string.IsNullOrWhiteSpace(newFileName))
+            {
+                MessageBox.Show("Please enter a file name.");
+                return;
+            }
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Title = "Select Location to Save Database",
+                Filter = "Database files (*.db)|*.db",
+                DefaultExt = ".db",
+                FileName = newFileName,
+                CheckPathExists = true,
+                AddExtension = true
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                // Get the path where user wants to save
+                selectedLocation = saveFileDialog.FileName + "\\";
+                string selectedFileName = saveFileDialog.FileName;
+
+                // Update the UI with the selected location
+                fileLocation.Text = selectedLocation;
+
+            }
+        }
+        /// <summary>
+        /// Creates new file for new users
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CreateFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            string newFileName = fileNameTextBox.Text.Trim();
+
+            // if text box empty
+            if (string.IsNullOrWhiteSpace(newFileName))
+            {
+                MessageBox.Show("Please enter a file name.");
+                return;
+            }
+            if (string.IsNullOrEmpty(selectedLocation))
+            {
+                MessageBox.Show("Please choose location to save.");
+                return;
+            }
+
+            // Start create the db
+            Database.newDatabase(newFileName);
+            MessageBox.Show("Create new DB successfully!");
+            //this.Close();
+        }
+
+        /// <summary>
+        /// Opens current file for current user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Open_Current_Database_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void OpenDatabase(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Select File to work with";
+            openFileDialog.Filter = "Database files (*.db)|*.db";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // path to datbase
+                string selectedFilePath = openFileDialog.FileName;
+                MessageBox.Show("Selected DB file: " + selectedFilePath);
+            }
+
+        }
+    }
+}

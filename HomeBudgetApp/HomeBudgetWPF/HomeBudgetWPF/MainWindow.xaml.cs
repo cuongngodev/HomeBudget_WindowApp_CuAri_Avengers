@@ -17,30 +17,33 @@ namespace HomeBudgetWPF
     public partial class MainWindow : Window, ViewInterfaces.Basic
     {
         public Presenter _p;
+        public FileSelectPage fileSelectPage = new FileSelectPage();
+        public ExpensePage expensePage = new ExpensePage();
+        public CategoryPage categoryPage = new CategoryPage();
+        
         public MainWindow()
         {
             InitializeComponent();
 
             ViewInterfaces.CategoryInterface categoryView = new CategoryView();
+            HomePageFrame.Content = fileSelectPage;
 
             categoryView.RegisterPresenter(_p);
         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
-            FileSelect fileSelect = new FileSelect();
-            fileSelect.Show();
-            
+            HomePageFrame.Content = fileSelectPage;
         }
 
         private void OpenExpenseManagement(object sender, RoutedEventArgs e)
         {
-
+            HomePageFrame.Content = expensePage;
         }
 
         private void OpenCategoryManagement(object sender, RoutedEventArgs e)
         {
-
+            HomePageFrame.Content = categoryPage;
         }
 
         public void DisplayError(string message)

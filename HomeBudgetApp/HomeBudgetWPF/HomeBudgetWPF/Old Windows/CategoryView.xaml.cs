@@ -57,6 +57,5 @@ namespace HomeBudgetWPF
         {
             SendCategoryInfo();
         }
-
     }
 }
