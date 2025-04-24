@@ -45,7 +45,7 @@ namespace HomeBudgetWPF
         public void SendCategoryInfo()
         {
             string desc = TxtDescription.Text;
-            //Budget.Category.CategoryType type = CmbCatType.Text;
+           // Budget.Category.CategoryType type = CmbCatType.Text;
             _p.CreateNewCategory(desc, type);
         }
 
@@ -53,5 +53,6 @@ namespace HomeBudgetWPF
         {
             SendCategoryInfo();
         }
+
     }
 }

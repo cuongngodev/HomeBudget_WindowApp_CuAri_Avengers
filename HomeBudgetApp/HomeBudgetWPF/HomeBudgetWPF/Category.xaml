@@ -30,7 +30,7 @@
                 <ComboBox x:Name="CmbCatType"/>
             </DockPanel>
 
-            <Button Width="auto" Grid.Row="2" HorizontalAlignment="Center" Click="NewCatSubmitClicked" Height="20" VerticalAlignment="Top">Create New Category</Button>
+            <Button Width="auto" Grid.Row="2" HorizontalAlignment="Center" Click="NewCatSubmitClicked"  Height="20" VerticalAlignment="Top">Create New Category</Button>
         </Grid>
     </StackPanel>
 </Window>
