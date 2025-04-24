@@ -35,7 +35,7 @@
 
             <DockPanel Margin="5"  Grid.Row="2" HorizontalAlignment="Center" MinWidth="200">
                 <Label Content="Category:"/>
-                <ComboBox x:Name="CmbCategory"/>
+                <ComboBox x:Name="CmbCategory" IsEditable="True" StaysOpenOnEdit="True"/>
             </DockPanel>
 
             <DockPanel Margin="5"  Grid.Row="3" HorizontalAlignment="Center" MinWidth="200">

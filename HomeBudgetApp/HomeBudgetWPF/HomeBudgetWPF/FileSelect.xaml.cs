@@ -15,13 +15,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using Budget;
+using System.Windows.Interop;
 
 namespace HomeBudgetWPF
 {
     /// <summary>
     /// Interaction logic for FileSelect.xaml
     /// </summary>
-    public partial class FileSelect : Window, ViewInterfaces.FileSelectInterface
+    public partial class FileSelect : Window, ViewInterfaces.ViewInterface
     {
         static string selectedLocation = "";
         public Presenter _p;
@@ -106,11 +107,9 @@ namespace HomeBudgetWPF
             }
         }
 
-   
-
         public void OpenWindow()
         {
-            this.Show();
+            this.ShowDialog();
         }
 
         public void CloseWindow()
@@ -118,14 +117,14 @@ namespace HomeBudgetWPF
             this.Close();
         }
 
-        public void ShowError(string msg)
+        public void DisplayError(string message)
         {
-            MessageBox.Show(msg, "Error",MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        public void ShowConfirmation(string msg)
+        public void DisplayConfirmation(string message)
         {
-            MessageBox.Show(msg, "Success", MessageBoxButton.OK);
+            MessageBox.Show(message, "Success", MessageBoxButton.OK);
         }
     }
 }

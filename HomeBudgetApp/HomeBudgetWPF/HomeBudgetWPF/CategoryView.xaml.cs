@@ -17,19 +17,19 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for Category.xaml
     /// </summary>
-    public partial class CategoryView : Window, ViewInterfaces.CategoryInterface
+    public partial class CategoryView : Window, ViewInterfaces.ViewInterface
     {
         Presenter _p;
         public CategoryView(Presenter p)
         {
             InitializeComponent();
             _p = p;
+            SetupCmb();
         }
 
         public void OpenWindow()
         {
-            this.Show();
-            SetupCmb();
+            this.ShowDialog();
         }
 
         private void SetupCmb()

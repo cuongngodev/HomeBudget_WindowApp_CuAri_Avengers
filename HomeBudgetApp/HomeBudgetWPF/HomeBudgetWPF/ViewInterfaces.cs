@@ -8,52 +8,54 @@ namespace HomeBudgetWPF
 {
     public class ViewInterfaces
     {
-        public interface MainViewInterface
+        public interface ViewInterface
         {
             void DisplayError(string message);
 
             void DisplayConfirmation(string message);
+
+            void OpenWindow();
+
+            void CloseWindow();
 
         }
 
-        public interface CategoryInterface
-        {
-
-           
+        //public interface CategoryInterface
+        //{
             
-            void DisplayError(string message);
+        //    void DisplayError(string message);
 
-            void DisplayConfirmation(string message);
+        //    void DisplayConfirmation(string message);
         
 
-            void OpenWindow();
+        //    void OpenWindow();
 
-            void CloseWindow();
-        }
+        //    void CloseWindow();
+        //}
 
-        public interface FileSelectInterface
-        {
-            void OpenWindow();
+        //public interface FileSelectInterface
+        //{
+        //    void OpenWindow();
 
-            void CloseWindow();
+        //    void CloseWindow();
 
-            void ShowError(string msg);
+        //    void ShowError(string msg);
 
-            void ShowConfirmation(string msg);
-        }
+        //    void ShowConfirmation(string msg);
+        //}
 
-        public interface ExpenseInterface
-        {
-            void OpenWindow();
+        //public interface ExpenseInterface
+        //{
+        //    void OpenWindow();
 
-            void CloseWindow();
+        //    void CloseWindow();
 
-            void ShowError(string msg);
+        //    void ShowError(string msg);
 
-            void ShowConfirmation(string msg);
+        //    void ShowConfirmation(string msg);
 
            
-        }
+        //}
 
     }
 }

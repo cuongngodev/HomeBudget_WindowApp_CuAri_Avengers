@@ -19,7 +19,7 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for Expense.xaml
     /// </summary>
-    public partial class ExpenseView : Window, ViewInterfaces.ExpenseInterface
+    public partial class ExpenseView : Window, ViewInterfaces.ViewInterface
     {
         public Presenter _p;
 
@@ -34,15 +34,20 @@ namespace HomeBudgetWPF
             this.Close();
         }
 
+        public void DisplayConfirmation(string message)
+        {
+            MessageBox.Show(message, "Success", MessageBoxButton.OK);
+        }
+
+        public void DisplayError(string message)
+        {
+            MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
         public void OpenWindow()
         {
             this.Show();
             SetupCatCmb();
-        }
-
-        public void SendCategoryInfo()
-        {
-            throw new NotImplementedException();
         }
 
         public void SetupCatCmb()
@@ -52,26 +57,17 @@ namespace HomeBudgetWPF
             CmbCategory.SelectedIndex = 0;
         }
 
-        public void ShowConfirmation(string msg)
-        {
-            MessageBox.Show(msg, "Success", MessageBoxButton.OK);
-        }
-
-        public void ShowError(string msg)
-        {
-            MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
 
         private void ExpenseSubmitClick(object sender, RoutedEventArgs e)
         {
             DateTime date = DtDate.SelectedDate.Value;
-            int catType = CmbCategory.TabIndex;
+            int catType = CmbCategory.SelectedIndex;
+            string catName = CmbCategory.Text;
             string desc = TxtDesc.Text;
             string amount = TxtAmount.Text;
+
+            _p.CreateNewCategory(catName);
             _p.CreateNewExpense(date, catType, amount, desc);
         }
-
-   
-
     }
 }
