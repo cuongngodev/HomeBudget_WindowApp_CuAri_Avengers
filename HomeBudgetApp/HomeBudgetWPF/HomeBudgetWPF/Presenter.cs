@@ -15,50 +15,31 @@ namespace HomeBudgetWPF
         private ViewInterfaces.MainViewInterface _MainView;
         private ViewInterfaces.CategoryInterface _CategoryView;
         private ViewInterfaces.FileSelectInterface _FileSelectView;
+        private ViewInterfaces.ExpenseInterface _ExpenseView;
 
         public Presenter(ViewInterfaces.MainViewInterface v)
         {
             _MainView = v;
         }
-       
-        public void SetViews(ViewInterfaces.CategoryInterface categoryView, ViewInterfaces.FileSelectInterface fileSelectView)
+
+        #region Setup
+        public void SetViews(ViewInterfaces.CategoryInterface categoryView, ViewInterfaces.FileSelectInterface fileSelectView, ViewInterfaces.ExpenseInterface expenseView)
         {
             _CategoryView = categoryView;
             _FileSelectView = fileSelectView;
+            _ExpenseView = expenseView;
         }
+        #endregion
 
-        public List<Budget.Category> GetAllCategories()
-        {
-            var boo = _model.categories.List();
-            return boo; 
-        }
 
-        public void OpenCategorySelectFile()
-        {
-            _FileSelectView.OpenWindow();
-        }
-
-        public void OpenCategory()
-        {
-            _CategoryView.OpenWindow();
-        }
-
-        public string GetCategory(int id)
-        {
-           
-            if (id < 0)
-                throw new ArgumentException();
-            if (id > _model.categories.List().Count)
-                throw new ArgumentOutOfRangeException();
-
-            return _model.categories.List()[id].ToString();
-            
-        }
-
+        //DB STUFF 
+        #region Database
         public void SetDatabase(string db, bool isNew)
         {
             _model = new HomeBudget(VerifyDb(db), isNew);
-            
+
+            _FileSelectView.ShowConfirmation("Db file succesfully selected");
+            _FileSelectView.CloseWindow();
         }
 
         public string VerifyDb(string db)
@@ -66,23 +47,76 @@ namespace HomeBudgetWPF
             return db;
         }
 
+        public void OpenSelectFile()
+        {
+            _FileSelectView.OpenWindow();
+        }
+        #endregion
+
+        //Cat Stuff
+        #region Category
+        public List<Budget.Category.CategoryType> GetAllCategoryTypes()
+        {
+            return Enum.GetValues<Category.CategoryType>().ToList();
+        }
+
+        public void OpenCategory()
+        {
+            _CategoryView.OpenWindow();
+        }
+
         public void CreateNewCategory(string desc, object type)
         {
             foreach (Budget.Category test in _model.categories.List())
             {
-                if (test.ToString() == desc){
+                if (test.ToString() == desc)
+                {
                     _CategoryView.DisplayError("Error");
                 }
             }
-                
 
-            _model.categories.Add(desc, (Budget.Category.CategoryType) type);
+
+            _model.categories.Add(desc, (Budget.Category.CategoryType)type);
         }
-        
-        public void AddExpense(DateTime date, int cat, double amount, string desc)
+
+        public List<Budget.Category> GetAllCategories()
         {
-            _model.expenses.Add(date,cat,amount,desc);
+            return _model.categories.List();
         }
+        #endregion
+
+        #region Expenses
+        public void OpenExpense()
+        {
+            _ExpenseView.OpenWindow();
+        }
+
+        public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
+        {
+            _model.expenses.Add(date,cat,StringToDouble(amount),desc);
+        }
+        #endregion
+
+        public double StringToDouble(string amount)
+        {
+            double result; 
+            if (!double.TryParse(amount, out result))
+            {
+                _ExpenseView.ShowError("Invalid Amount,\nPlease enter a number");
+            }
+            return result;
+        }
+
+
+
+
+
+
+
+        //public void AddExpense(DateTime date, int cat, double amount, string desc)
+        //{
+        //    _model.expenses.Add(date,cat,amount,desc);
+        //}
 
     }
 }

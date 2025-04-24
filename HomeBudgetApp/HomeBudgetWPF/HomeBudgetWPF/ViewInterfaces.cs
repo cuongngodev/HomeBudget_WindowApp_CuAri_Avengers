@@ -18,15 +18,13 @@ namespace HomeBudgetWPF
 
         public interface CategoryInterface
         {
-            void DisplayCategoryType();
 
-            void SendCategoryInfo();
+           
             
             void DisplayError(string message);
 
             void DisplayConfirmation(string message);
-
-          
+        
 
             void OpenWindow();
 
@@ -42,6 +40,19 @@ namespace HomeBudgetWPF
             void ShowError(string msg);
 
             void ShowConfirmation(string msg);
+        }
+
+        public interface ExpenseInterface
+        {
+            void OpenWindow();
+
+            void CloseWindow();
+
+            void ShowError(string msg);
+
+            void ShowConfirmation(string msg);
+
+           
         }
 
     }

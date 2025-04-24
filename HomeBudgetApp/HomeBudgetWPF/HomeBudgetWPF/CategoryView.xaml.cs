@@ -29,8 +29,13 @@ namespace HomeBudgetWPF
         public void OpenWindow()
         {
             this.Show();
-            CmbCatType.ItemsSource = _p.GetAllCategories();
-            CmbCatType.DisplayMemberPath = "Description";
+            SetupCmb();
+        }
+
+        private void SetupCmb()
+        {
+            CmbCatType.ItemsSource = _p.GetAllCategoryTypes();
+            CmbCatType.SelectedIndex = 0;
         }
 
         public void CloseWindow()
@@ -38,33 +43,21 @@ namespace HomeBudgetWPF
             this.Close();
         }
 
-
-
-        public void DisplayCategoryType()
-        {
-           
-        }
-
         public void DisplayConfirmation(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message, "Success", MessageBoxButton.OK);
         }
 
         public void DisplayError(string message)
         {
-            throw new NotImplementedException();
-        }
-
-        public void SendCategoryInfo()
-        {
-            string desc = TxtDescription.Text;
-            Object type = CmbCatType.SelectedItem;
-            _p.CreateNewCategory(desc, type);
+           MessageBox.Show(message,"ERROR",MessageBoxButton.OK, MessageBoxImage.Error); 
         }
 
         private void NewCatSubmitClicked(object sender, RoutedEventArgs e)
         {
-            SendCategoryInfo();
+            string desc = TxtDescription.Text;
+            Object type = CmbCatType.SelectedItem;
+            _p.CreateNewCategory(desc, type);
         }
 
     }

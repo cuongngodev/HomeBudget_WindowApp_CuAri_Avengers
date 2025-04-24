@@ -122,7 +122,7 @@ namespace HomeBudgetWPF
 
         public void ShowConfirmation(string msg)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(msg, "Success", MessageBoxButton.OK);
         }
     }
 }

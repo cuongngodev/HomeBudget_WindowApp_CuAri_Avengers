@@ -25,18 +25,18 @@ namespace HomeBudgetWPF
             _p = new(this);
             ViewInterfaces.CategoryInterface categoryView = new CategoryView(_p);
             ViewInterfaces.FileSelectInterface fileSelectView = new FileSelect(_p);
-
-            _p.SetViews(categoryView, fileSelectView);
+            ViewInterfaces.ExpenseInterface expenseView = new ExpenseView(_p);
+            _p.SetViews(categoryView, fileSelectView,expenseView);
         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
-            _p.OpenCategorySelectFile();
+            _p.OpenSelectFile();
         }
 
         private void OpenExpenseManagement(object sender, RoutedEventArgs e)
         {
-
+            _p.OpenExpense();
         }
 
         private void OpenCategoryManagement(object sender, RoutedEventArgs e)
