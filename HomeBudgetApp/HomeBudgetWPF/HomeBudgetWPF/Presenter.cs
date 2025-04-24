@@ -103,14 +103,34 @@ namespace HomeBudgetWPF
             _View.DisplayExpenseMenu();
         }
 
-        public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
+        public void CreateNewExpense(DateTime? date, int cat, string amount, string desc)
         {
             if (cat == -1)
             {
                 cat = _model.categories.List().Count() -1;
             }
-           
-            _model.expenses.Add(date,cat + 1,StringToDouble(amount),desc);
+            
+            if (string.IsNullOrEmpty(desc))
+            {
+                _View.DisplayError("You did not enter description!");
+                return;
+            }
+
+            double expenseAmount = StringToDouble(amount);
+            if (expenseAmount<0)
+            {
+                // error message already sent
+                return;
+            }
+            if(!date.HasValue)
+            {
+                _View.DisplayError("You did not select date!");
+                return;
+            }
+            
+
+            DateTime selectedDate = date.Value;
+            _model.expenses.Add(selectedDate,cat + 1,StringToDouble(amount),desc);
             _View.DisplayConfirmation ("Added Succesfully!");
             _View.CloseExpenseMenu();
         }
@@ -119,9 +139,15 @@ namespace HomeBudgetWPF
         public double StringToDouble(string amount)
         {
             double result; 
-            if (!double.TryParse(amount, out result))
+            if (string.IsNullOrEmpty(amount))
+            {
+                _View.DisplayError("You did not enter amount!");
+                result = -1;
+            }
+            else if (!double.TryParse(amount, out result))
             {
                 _View.DisplayError("Invalid Amount,\nPlease enter a number");
+                result = -1;
             }
             return result;
         }
