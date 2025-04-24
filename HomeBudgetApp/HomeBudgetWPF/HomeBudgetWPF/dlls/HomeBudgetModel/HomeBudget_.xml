@@ -1,0 +1,555 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HomeBudget_</name>
+    </assembly>
+    <members>
+        <member name="T:Budget.BudgetItem">
+            <summary>
+            Represents a budget entry, which includes information about an expense. BudgetItem contains details such as the associated category, the amount spent, balance after the expense, and a brief description.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItem.CategoryID">
+            <summary>
+            Gets or sets the ID for the category to which the budget item belongs.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItem.ExpenseID">
+            <summary>
+            Gets or sets the ID for the budget expense item.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItem.Date">
+            <summary>
+            Gets or sets the date when the budget item was recorded.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItem.Category">
+            <summary>
+            Gets or sets the name of the category to which the budget item belongs.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItem.ShortDescription">
+            <summary>
+            Gets or sets a short description of the budget item.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItem.Amount">
+            <summary>
+            Gets or sets the amount of the expense for the budget item.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItem.Balance">
+            <summary>
+             Gets or sets the balance remaining after expense has been recorded.
+            </summary>
+        </member>
+        <member name="T:Budget.BudgetItemsByMonth">
+            <summary>
+            Represents a cist of budget items grouped by month. Includes details of all expenses for each month, and its total expenses for that month.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItemsByMonth.Month">
+            <summary>
+            Gets or sets the month for which the budget items are grouped.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItemsByMonth.Details">
+            <summary>
+            Gets or sets the list of budget item object for the certain month.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItemsByMonth.Total">
+            <summary>
+            Gets or sets the total of all budget items for that month.
+            </summary>
+        </member>
+        <member name="T:Budget.BudgetItemsByCategory">
+            <summary>
+            Represents a list of budget items grouped by category. It provides a summary of all expenses within a certain  category, and its total amount for that category.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItemsByCategory.Category">
+            <summary>
+            Gets or sets the name of the category for which budget items are grouped.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItemsByCategory.Details">
+            <summary>
+            Gets or sets the list of Budget items for the specific category.
+            </summary>
+        </member>
+        <member name="P:Budget.BudgetItemsByCategory.Total">
+            <summary>
+            Gets or sets the total amount of all the budget items within a specific category.
+            </summary>
+        </member>
+        <member name="T:Budget.Categories">
+            <summary>
+            Responsible for managing the categories stored on a given database, representing different expense categories. 
+            <br></br>It allows for operations including adding, updating, deleting, and listing categories to and from the database.
+            </summary>
+        </member>
+        <member name="M:Budget.Categories.#ctor(System.Data.SQLite.SQLiteConnection,System.Boolean)">
+            <summary>
+            Parameterized constructor which creates a <see cref="T:Budget.Categories"/> object by taking in input corresponding to the
+            <br></br>
+            correct database connection and a boolean argument stating whether the database is new or not in the potential need to create a new one with default categories.
+            </summary>
+            <param name="dbConnection">The connection to a given database location.</param>
+            <param name="isNewDb">An indicator to whether the desired database location is meant to be new or is pre-existing.</param>
+        </member>
+        <member name="M:Budget.Categories.GetCategoryFromId(System.Int32)">
+            <summary>
+            Retrieves category data from the database by a given ID number as input.
+            </summary>
+            <param name="i">The unique ID number of a category to retrieve.</param>
+            <returns>An <see cref="T:Budget.Category"/> object corresponding to the database record matching its specified ID number.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Throws if an invalid ID is given.</exception>
+            <example>
+            <code>
+            Categories categories = new Categories();
+            categories.GetCategoryFromId(1);
+            </code>
+            </example>
+        </member>
+        <member name="M:Budget.Categories.UpdateProperties(System.Int32,System.String,Budget.Category.CategoryType)">
+            <summary>
+            Allows for parameterized updating of a chosen category record inside the database.
+            </summary>
+            <param name="categoryId">The ID number of the category to be updated.</param>
+            <param name="newDescription">If desired, a new description to assign the chosen category.</param>
+            <param name="newType">If desired, a different <see cref="T:Budget.Category.CategoryType"/> to assign the chosen category.</param>
+            /// <example>
+            <code>
+            Categories.UpdateProperties(1, "This is a new category description.");
+            </code>
+            </example>
+        </member>
+        <member name="M:Budget.Categories.SetCategoriesToDefaults">
+            <summary>
+            Resets the category table within the database to a predefined set of default categories such as "Utilities", "Rent", "Education", etc.
+            </summary>
+            <example>
+            <code>
+            Categories categories = new Categories();
+            categories.SetCategoriesToDefaults();        
+            </code>
+            </example>
+        </member>
+        <member name="M:Budget.Categories.Add(System.String,Budget.Category.CategoryType)">
+            <summary>
+            Adds a new category to the database by specifying its description and type. The ID of the new category is automatically set based on the exisiting categories.
+            </summary>
+            <param name="desc">The description of the new category.</param>
+            <param name="type">The type of the category (e.g: Income, Expense, Credit, or Savings).</param>
+            <example>
+            <code>
+            Categories categories = new Categories();
+            categories.Add("Transportation", Category.CategoryType.Expense);        
+            </code>
+            </example>
+        </member>
+        <member name="M:Budget.Categories.Delete(System.Int32)">
+            <summary>
+            Deletes a category from the database based on a given ID number.
+            </summary>
+            <param name="Id">The ID number of the category to delete.</param>
+            <example>
+            <code>
+            Categories categories = new Categories();
+            categories.Delete(1);
+            </code>
+            </example>
+        </member>
+        <member name="M:Budget.Categories.List">
+            <summary>
+            Returns a copy of the list of categories from the database. 
+            </summary>
+            <returns>A list of <see cref="T:Budget.Category"/> objects containing data of all the categories found in the database.</returns>
+            <example>
+            <code>
+            Categories categories = new Categories();
+            List Category allCategories = categories.List();
+            </code>
+            </example>
+        </member>
+        <member name="T:Budget.Category">
+            <summary>
+            Represents an <see cref="T:Budget.Expense"/> object's category used in the Budget application. Each category corresponds to a budget item such as income, expense, credit, or savings.
+            </summary>
+        </member>
+        <member name="P:Budget.Category.Id">
+            <summary>
+            Gets the unique identifier of a category object.
+            </summary>
+        </member>
+        <member name="P:Budget.Category.Description">
+            <summary>
+            Gets the description of a category object.
+            </summary>
+        </member>
+        <member name="P:Budget.Category.Type">
+            <summary>
+            Gets the type of a category object.
+            </summary>
+        </member>
+        <member name="T:Budget.Category.CategoryType">
+            <summary>
+            Enumeration specifying a <see cref="T:Budget.Category"/> object's possible types.
+            </summary>
+        </member>
+        <member name="M:Budget.Category.#ctor(System.Int32,System.String,Budget.Category.CategoryType)">
+            <summary>
+            Parameterized constructor that creates a <see cref="T:Budget.Category"/> object by taking in input corresponding to the class' individual fields.
+            </summary>
+            <param name="id">The unique identifier of a category object.</param>
+            <param name="description">The description of a category object.</param>
+            <param name="type">The type of a category object.</param>
+        </member>
+        <member name="M:Budget.Category.#ctor(Budget.Category)">
+            <summary>
+            Parameterized constructor that creates a <see cref="T:Budget.Category"/> object by taking in input corresponding to another Category object.
+            </summary>
+            <param name="category">The <see cref="T:Budget.Category"/> object used to base the new object on.</param>
+        </member>
+        <member name="M:Budget.Category.ToString">
+            <summary>
+            Overrides ToString() to allow for printing out the details of a <see cref="T:Budget.Category"/> object.
+            </summary>
+            <example>
+            <code>
+            Console.WriteLine(category1);
+            </code>
+            </example>
+            <returns>The text contained within the <see cref="T:Budget.Category"/> object's <see cref="P:Budget.Category.Description"/> property.</returns>
+        </member>
+        <member name="T:Budget.Database">
+            <summary>
+            Corresponds to a new database for the Budget application to access and manage expenses from.
+            </summary>
+        </member>
+        <member name="M:Budget.Database.newDatabase(System.String)">
+            <summary>
+            Creates a new budget database at on a newly created file location, generating the necessary tables for the database itself.
+            </summary>
+            <param name="filename">The path, absolute or relative, leading to the location of the new database file.</param>
+        </member>
+        <member name="M:Budget.Database.existingDatabase(System.String)">
+            <summary>
+            Connects to a pre-existing database on a given file location.
+            </summary>
+            <param name="filename">The path, absolute or relative, leading to the location of the existing database file.</param>
+        </member>
+        <member name="M:Budget.Database.CloseDatabaseAndReleaseFile">
+            <summary>
+            Closes the database and waits for the garbage collector to release the lock.
+            </summary>
+        </member>
+        <member name="T:Budget.Expense">
+            <summary>
+            Represents an expense made and accessed on the Budget application.
+            </summary>
+        </member>
+        <member name="P:Budget.Expense.Id">
+            <summary>
+            Gets the unique identifier of an expense object.
+            </summary>
+        </member>
+        <member name="P:Budget.Expense.Date">
+            <summary>
+            Gets the date when a new expense object was created. 
+            </summary>
+        </member>
+        <member name="P:Budget.Expense.Amount">
+            <summary>
+            Gets the amount tied to an expense object.
+            </summary>
+        </member>
+        <member name="P:Budget.Expense.Description">
+            <summary>
+            Gets the description of an expense object.
+            </summary>
+        </member>
+        <member name="P:Budget.Expense.Category">
+            <summary>
+            Gets the category tied to an expense object.
+            </summary>
+        </member>
+        <member name="M:Budget.Expense.#ctor(System.Int32,System.DateTime,System.Int32,System.Double,System.String)">
+            <summary>
+            Parameterized constructor that creates an <see cref="T:Budget.Expense"/> object by taking in input corresponding to the class' individual fields.
+            </summary>
+            <param name="id">The unique identifier of the new expense object.</param>
+            <param name="date">The date when the new expense object was created.</param>
+            <param name="category">The category tied to the new expense object.</param>
+            <param name="amount">The amount tied to the new expense object.</param>
+            <param name="description">The description of the new expense object.</param>
+        </member>
+        <member name="M:Budget.Expense.#ctor(Budget.Expense)">
+            <summary>
+            Parameterized constructor that creates an <see cref="T:Budget.Expense"/> object by taking in input corresponding to another Expense object.
+            </summary>
+            <param name="obj">The <see cref="T:Budget.Expense"/> object used to base the new object on.</param>
+        </member>
+        <member name="T:Budget.Expenses">
+            <summary>
+            Responsible for managing the expenses stored on a given database, providing different functionality for reading from and writing to files, and managing expense entries. Uses SQLite for file operations.
+            </summary>
+        </member>
+        <member name="M:Budget.Expenses.#ctor(System.Data.SQLite.SQLiteConnection)">
+            <summary>
+            Parameterized constructor that takes in a database connection path as input in order to link the Expenses object to the correct database.
+            </summary>
+            <param name="dbConnection">Database connection path to link up Expense object and database.</param>
+        </member>
+        <member name="M:Budget.Expenses.GetExpenseFromId(System.Int32)">
+            <summary>
+            Retrieves expense data from the database by a given ID number as input.
+            </summary>
+            <param name="i">The unique ID number of an expense to retrieve.</param>
+            <returns>An <see cref="T:Budget.Expense"/> object corresponding to the database record matching its specified ID number.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Throws if an invalid ID is given.</exception>
+            <example>
+            <code>
+            Expenses expenses = new Expenses();
+            categories.GetExpenseFromId(1);
+            </code>
+            </example>
+        </member>
+        <member name="M:Budget.Expenses.Add(System.DateTime,System.Int32,System.Double,System.String)">
+            <summary>
+            Adds a new expense entry to the database and generates a unique id for it automatically.
+            </summary>
+            <param name="date">Creation date of the expense object.</param>
+            <param name="category">Category Id of the expense object.</param>
+            <param name="amount">Monetary amount assigned to the expense object.</param>
+            <param name="description">Description of the expense object.</param>
+            <example>
+            Expenses expenses = new Expenses();
+            expenses.Add(expenseDate,categoryId,amount,description)
+            </example>
+        </member>
+        <member name="M:Budget.Expenses.UpdateProperties(System.Int32,System.DateTime,System.Int32,System.Double,System.String)">
+            <summary>
+            Allows for parameterized updating of a chosen expense record inside the database.
+            </summary>
+            <param name="expenseId">The ID number of the expense to be updated.</param>
+            <param name="newDate">If desired, a new creation date to assign the chosen expense.</param>
+            <param name="categoryId">If desired, a category to assign to the chosen expense.</param>
+            <param name="newAmount">If desired, a new monetary amount to assign the chosen expense.</param>
+            <param name="newDescription">If desired, a new description to assign the chosen expense.</param>
+            /// <example>
+            <code>
+            Expenses.UpdateProperties(1, "This is a new category description.");
+            </code>
+            </example>
+        </member>
+        <member name="M:Budget.Expenses.Delete(System.Int32)">
+            <summary>Deletes an expense entry from the database.
+            </summary>
+            <param name="id">Id of the expense to delete.</param>
+            <example>
+            <code>
+            expenses.Delete(23)
+            </code>
+            </example> 
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Budget.Expenses.List" -->
+        <member name="T:Budget.HomeBudget">
+            <summary>
+            Combines the use of the <see cref="T:Budget.Categories"/>, <see cref="T:Budget.Expenses"/>, and <see cref="T:Budget.Database"/> classes to manage budget data within a database file.. 
+            It provides functionality to read, save, and analyze budget information, such as with retrieving expenses according to given parameters.
+            </summary>
+        </member>
+        <member name="P:Budget.HomeBudget.categories">
+            <summary>
+            Gets a <see cref="T:Budget.Categories"/> object to access and manipulate category data within the database.
+            </summary>
+        </member>
+        <member name="P:Budget.HomeBudget.expenses">
+            <summary>
+            Gets a <see cref="T:Budget.Expenses"/> object to access and manipulate expense data within the database.
+            </summary>
+        </member>
+        <member name="M:Budget.HomeBudget.#ctor(System.String,System.Boolean)">
+            <summary>
+            Parameterized construtor to allow data retrieval and manipulation access to a pre-existing or newly created database file in the for of a new HomeBudget object.
+            </summary>
+            <param name="databaseFile">The file name of the chosen database.</param>
+            <param name="newDB">The statement of whether the database file already exists or must be created.</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Budget.HomeBudget.GetBudgetItems(System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Boolean,System.Int32)" -->
+        <member name="M:Budget.HomeBudget.GetBudgetItemsByMonth(System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Boolean,System.Int32)">
+            <summary>
+            Retrieves the list of budget items from the database grouped by month (sorted by year/month).
+            </summary>
+            <param name="Start"> Date start (optional). If null, default to the earliest date.</param>
+            <param name="End"> Date end (optional). If null, default to the latest date. </param>
+            <param name="FilterFlag"></param> If true budget items are filtered by category, if false, list all budget items.
+            <param name="CategoryID"></param> Category Id is used to filter the budget item.
+            <returns>The list of all budget items group by month clustered by specified category ID if filter flag is true; if the category ID is not found, it would fall into the false case of FilterFlag, where it returns a list of budget items of all categories.</returns>
+            <example>
+            <code>
+            HomeBudget homeBudget = new HomeBudget("myDatabase.db", false);
+            DateTime start = new DateTime(2019,1,11);
+            DateTime end = new DateTime(2019,2,5);
+            List -ltBudgetItemsByMonth-gt budgetItemsByMonth = homeBudget.GetBudgetItemsByMonth(start, end, true, 2);
+            foreach(BudgetItem itemByMonth in budgetItemsByMonth)
+            {
+                Concole.Write($"{itemByMonth.Month}");
+                Concole.Write($"{itemByMonth.Total}");
+                foreach(BudgetItem item in itemByMonth.Details)
+                {
+                    Console.WriteLine($"{item.ShortDescription}");
+                }    
+            }
+            </code>
+            <code>
+            // Example of output
+            ==============================================================
+                                Budget Items by Month
+            ==============================================================
+            Month           Total                Description
+            --------------------------------------------------------------
+            2018/01         $0.00               hat (on credit)
+                                                hat
+            --------------------------------------------------------------
+            2019/01         -$15.00             scarf (on credit)
+            --------------------------------------------------------------
+            2020/01         -$55.00             scarf
+                                                McDonalds
+                                                Wendys
+            --------------------------------------------------------------
+            2020/02         -$26.66             Pizza
+                                                mittens
+                                                Hat
+                                                Pizza
+            --------------------------------------------------------------
+            2020/07         -$11.11             Cafeteria
+            --------------------------------------------------------------
+            </code>
+            </example>       
+        </member>
+        <member name="M:Budget.HomeBudget.GetBudgetItemsByCategory(System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Boolean,System.Int32)">
+            <summary>
+            Retrieves the list of budget items from the database grouped by category.
+            </summary>
+            <example>
+            <code>
+            HomeBudget homeBudget = new HomeBudget("myDatabase.db", false);
+            DateTime start = new DateTime(2019, 1, 11);
+            DateTime end = new DateTime(2019, 2, 5);
+            List-ltBudgetItemsByCategory-gt budgetItemsByCategory = homeBudget.GetBudgetItemsByCategory(start,end,true,2);
+            foreach(BudgetItemsByCategory itemByCat in budgetItemsByCategory)
+            {
+                Console.Write($"{itemByCat.Category}");
+                Console.Write($"{itemByCat.Total}");
+                foreach(BudgetItem item in itemByCat.Details)
+                {
+                    Console.WriteLine($"{item.ShortDescription}");
+                }
+            }
+            </code>
+            <code>
+            //Sample output 
+            ==============================================================
+                               Budget Items by Category
+            ==============================================================
+            Category        Total                Description
+            --------------------------------------------------------------
+            Clothes         -$25.00             hat (on credit)
+                                                scarf (on credit)
+            --------------------------------------------------------------
+            Credit Card     $65.00              hat
+                                                scarf
+                                                mittens
+                                                Hat
+            --------------------------------------------------------------
+            Eating Out      -$147.77            McDonalds
+                                                Wendys
+                                                Pizza
+                                                Pizza
+                                                Cafeteria
+            --------------------------------------------------------------
+            </code>
+            
+            <code>
+            //Example of Filter by date from 2020/1/1 to 2020/1/12
+            ==============================================================
+                               Budget Items by Category
+            ==============================================================
+            Category        Total               Description
+            --------------------------------------------------------------
+            Credit Card     $15.00              scarf
+            --------------------------------------------------------------
+            Eating Out      -$70.00             McDonalds
+                                                Wendys
+            --------------------------------------------------------------
+            </code>
+            </example>
+            <param name="Start">Date start (optional). If null, default to the earliest date.</param>
+            <param name="End">Date end (optional). If null, default to the latest date. </param>
+            <param name="FilterFlag">If true budget items are filtered by category, if false, list all budget items.</param>
+            <param name="CategoryID">Category Id is used to filter the budget item.</param>
+            <returns>The list of all budget items group by category clustered by specified category ID if filter flag is true; if the category ID is not found, returns a list of budget items</returns>
+        </member>
+        <member name="M:Budget.HomeBudget.GetBudgetDictionaryByCategoryAndMonth(System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Boolean,System.Int32)">
+            <summary>
+            Creates a list of budget item dictionaries, each one consisting of a string and object pair corresponding to an expense's month and category respectively.
+            </summary>
+            <param name="Start"> Date start (optional). If null, default to the earliest date.</param>
+            <param name="End"> Date end (optional). If null, default to the latest date. </param>
+            <param name="FilterFlag">If true budget items are filtered by category, if false, list all budget items.</param>
+            <param name="CategoryID">Category Id is used to filter the budget item.</param>
+            <returns>List of dictionaries containing budget information as follows:
+              - For each month with expenses:
+              - "details: CategoryName": A list of budget items for that category.
+              - "CategoryName": The total amount for that category in the month.
+              - A final dictionary with "Month" set to "TOTALS" provides category totals across all months.
+            </returns>
+            <example>
+            <code>
+            HomeBudget homeBudget = new HomeBudget("myDatabase.db", false);
+            DateTime startDate = new DateTime(2019,1,11)
+            DateTime endDate = new DateTime(2019,2,5)
+            List -lt Dictionary-lt string, object -gt -gt budgetItemByCategoryAndMonth = homeBudget.GetBudgetDictionaryByCategoryAndMonth(startDate, endDate, filterFlag, categoryId);
+            foreach(var budgetItemDict in budgetItemByCategoryAndMonth)
+            {
+                // Gets the month and its total 
+                Console.WriteLine(budgetItemDict["Month"].ToString());
+                // Gets total budget of this month
+                Console.WriteLine(budgetItemDict["Total"]);
+                // Gets Category
+                Console.WriteLine(budgetItemDict["categoryName"]);
+            }
+            </code>
+            
+            <code>
+            // Sameple output 
+            ==========================================================================================
+                                        Budget Items by Month and Category
+            ==========================================================================================
+            Month          Clothes             Credit Card         Eating Out          Total
+            ------------------------------------------------------------------------------------------
+            2018/01        -10.00              10.00               0.00                0.00
+            2019/01        -15.00              0.00                0.00                -15.00
+            2020/01        0.00                15.00               -70.00              -55.00
+            2020/02        0.00                40.00               -66.66              -26.66
+            2020/07        0.00                0.00                -11.11              -11.11
+            TOTALS         -25.00              65.00               -147.77             0.00
+            ------------------------------------------------------------------------------------------
+            ==========================================================================================
+            </code>
+            </example> 
+            <summary>
+            
+            </summary>
+            <param name="Start"></param>
+            <param name="End"></param>
+            <param name="FilterFlag"></param>
+            <param name="CategoryID"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
