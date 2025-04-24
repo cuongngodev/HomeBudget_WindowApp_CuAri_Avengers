@@ -18,21 +18,20 @@ namespace HomeBudgetWPF
     public partial class MainWindow : Window, ViewInterfaces.Basic
     {
         public Presenter _p;
+        public ViewInterfaces.CategoryInterface _categoryView;
         public MainWindow()
         {
             InitializeComponent();
 
-            ViewInterfaces.CategoryInterface categoryView = new CategoryView();
+            _categoryView = new CategoryView();
 
-            categoryView.RegisterPresenter(_p);
+            _categoryView.RegisterPresenter(_p);
         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
             FileSelect fileSelect = new FileSelect();
             fileSelect.Show();
-            this.Close();
-            
         }
 
         private void OpenExpenseManagement(object sender, RoutedEventArgs e)
@@ -42,7 +41,7 @@ namespace HomeBudgetWPF
 
         private void OpenCategoryManagement(object sender, RoutedEventArgs e)
         {
-
+            _categoryView.OpenWindow();
         }
 
         public void DisplayError(string message)

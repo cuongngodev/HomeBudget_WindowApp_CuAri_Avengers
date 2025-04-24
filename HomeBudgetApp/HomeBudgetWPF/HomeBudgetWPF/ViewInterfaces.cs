@@ -27,8 +27,24 @@ namespace HomeBudgetWPF
             void DisplayConfirmation(string message);
 
             void RegisterPresenter(Presenter p);
+
+            void OpenWindow();
+
+            void CloseWindow();
         }
 
+        public interface FileSelectInterface
+        {
+            void RegisterPresenter(Presenter p);
+
+            void OpenWindow();
+
+            void CloseWindow();
+
+            void ShowError(string msg);
+
+            void ShowConfirmation(string msg);
+        }
 
     }
 }

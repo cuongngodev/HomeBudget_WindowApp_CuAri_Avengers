@@ -23,7 +23,19 @@ namespace HomeBudgetWPF
         public CategoryView()
         {
             InitializeComponent();
-            
+          
+        }
+
+        public void OpenWindow()
+        {
+            this.Show();
+            CmbCatType.ItemsSource = _p.GetAllCategories();
+            CmbCatType.DisplayMemberPath = "Description";
+        }
+
+        public void CloseWindow()
+        {
+            this.Close();
         }
 
         public void RegisterPresenter(Presenter p)
@@ -33,7 +45,7 @@ namespace HomeBudgetWPF
 
         public void DisplayCategoryType()
         {
-            throw new NotImplementedException();
+           
         }
 
         public void DisplayConfirmation(string message)
