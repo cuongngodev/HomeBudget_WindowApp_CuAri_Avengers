@@ -41,6 +41,7 @@ namespace HomeBudgetWPF
         public void SetDatabase(string db, bool isNew)
         {
             _model = new HomeBudget(VerifyDb(db), isNew);
+
         }
 
         public string VerifyDb(string db)
@@ -53,7 +54,7 @@ namespace HomeBudgetWPF
             foreach (Budget.Category test in _model.categories.List())
             {
                 if (test.ToString() == desc){
-                    _MainView.
+                    _CategoryView.DisplayError("Error");
                 }
             }
                 
