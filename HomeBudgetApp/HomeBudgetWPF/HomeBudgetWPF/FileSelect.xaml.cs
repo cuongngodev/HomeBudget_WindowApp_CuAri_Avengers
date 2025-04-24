@@ -74,13 +74,16 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void CreateFileButton_Click(object sender, RoutedEventArgs e)
         {
-            string newFileName = fileNameTextBox.Text.Trim()+".db";
+            string newFileName =  fileLocation.Text;
 
 
-
+            if (string.IsNullOrEmpty(selectedLocation))
+            {
+                MessageBox.Show("Please choose location to save file.");
+                return;
+            }
             // Start create the db
             _p.SetDatabase(newFileName, true);
-            MessageBox.Show("Create new DB successfully!");
         }
 
         /// <summary>
