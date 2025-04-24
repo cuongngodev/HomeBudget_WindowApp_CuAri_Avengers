@@ -21,18 +21,23 @@ namespace HomeBudgetWPF
             _MainView = v;
         }
 
-        //Setup Stuff 
+        #region Setup
         public void SetViews(ViewInterfaces.CategoryInterface categoryView, ViewInterfaces.FileSelectInterface fileSelectView)
         {
             _CategoryView = categoryView;
             _FileSelectView = fileSelectView;
         }
+        #endregion
+
 
         //DB STUFF 
+        #region Database
         public void SetDatabase(string db, bool isNew)
         {
             _model = new HomeBudget(VerifyDb(db), isNew);
 
+            _FileSelectView.ShowConfirmation("Db file succesfully selected");
+            _FileSelectView.CloseWindow();
         }
 
         public string VerifyDb(string db)
@@ -44,13 +49,15 @@ namespace HomeBudgetWPF
         {
             _FileSelectView.OpenWindow();
         }
+        #endregion
 
         //Cat Stuff
-        public List<Budget.Category> GetAllCategories()
+        #region Category
+        public List<Budget.Category.CategoryType> GetAllCategoryTypes()
         {
-            var boo = _model.categories.List();
-            return boo;
+            return Enum.GetValues<Category.CategoryType>().ToList();
         }
+
         public void OpenCategory()
         {
             _CategoryView.OpenWindow();
@@ -68,17 +75,17 @@ namespace HomeBudgetWPF
 
             _model.categories.Add(desc, (Budget.Category.CategoryType)type);
         }
-      
-   
-
-       
-
-       
+        #endregion
 
 
 
-      
-        
+
+
+
+
+
+
+
         //public void AddExpense(DateTime date, int cat, double amount, string desc)
         //{
         //    _model.expenses.Add(date,cat,amount,desc);

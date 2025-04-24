@@ -34,8 +34,7 @@ namespace HomeBudgetWPF
 
         private void SetupCmb()
         {
-            CmbCatType.ItemsSource = _p.GetAllCategories();
-            CmbCatType.DisplayMemberPath = "Description";
+            CmbCatType.ItemsSource = _p.GetAllCategoryTypes();
             CmbCatType.SelectedIndex = 0;
         }
 
@@ -53,12 +52,12 @@ namespace HomeBudgetWPF
 
         public void DisplayConfirmation(string message)
         {
-            throw new NotImplementedException();
+            MessageBox.Show(message, "Success", MessageBoxButton.OK);
         }
 
         public void DisplayError(string message)
         {
-            throw new NotImplementedException();
+           MessageBox.Show(message,"ERROR",MessageBoxButton.OK, MessageBoxImage.Error); 
         }
 
         public void SendCategoryInfo()
