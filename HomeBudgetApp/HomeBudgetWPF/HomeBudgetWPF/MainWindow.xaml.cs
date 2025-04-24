@@ -94,6 +94,37 @@ namespace HomeBudgetWPF
             this.Show();
         }
 
+        private void ChangeColorTheme(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
+        private void SetDefaultTheme(object sender, RoutedEventArgs e)
+        {
+            RadioButton li = (sender as RadioButton);
+            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+
+
+        }
+
+        private void SetProtanopiaTheme(object sender, RoutedEventArgs e)
+        {
+            RadioButton li = (sender as RadioButton);
+            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+        }
+
+        private void SetDeuteranopiaTheme(object sender, RoutedEventArgs e)
+        {
+            RadioButton li = (sender as RadioButton);
+            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+        }
+
+        private void SetTritanopiaTheme(object sender, RoutedEventArgs e)
+        {
+            RadioButton li = (sender as RadioButton);
+            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+        }
+
         public void CloseExpenseMenu()
         {
             _expenseView.Close();

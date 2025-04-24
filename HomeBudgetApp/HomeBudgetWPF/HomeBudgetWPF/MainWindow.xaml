@@ -36,10 +36,10 @@
                 <Label Foreground="#82b74b" x:Name="ThemeTitleLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Color Themes</Label>
 
                 <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b">Default</RadioButton>
-                    <RadioButton x:Name="ProtanopiaThemeBtn" Margin="5" Foreground="#82b74b">Protanopia</RadioButton>
-                    <RadioButton x:Name="DeuteranopiaThemeBtn" Margin="5" Foreground="#82b74b">Deuteranopia</RadioButton>
-                    <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b">Tritanopia</RadioButton>
+                    <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetDefaultTheme">Default</RadioButton>
+                    <RadioButton x:Name="ProtanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetProtanopiaTheme">Protanopia</RadioButton>
+                    <RadioButton x:Name="DeuteranopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetDeuteranopiaTheme">Deuteranopia</RadioButton>
+                    <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetTritanopiaTheme">Tritanopia</RadioButton>
                 </StackPanel>
 
                 <Label Foreground="#82b74b" x:Name="CurrentThemeLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Content=""/>

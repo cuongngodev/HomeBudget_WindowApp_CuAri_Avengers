@@ -1,4 +1,6 @@
-﻿namespace HomeBudgetWPF
+﻿using System.Windows;
+
+namespace HomeBudgetWPF
 {
 
     public interface ViewInterface
@@ -18,6 +20,8 @@
         void CloseExpenseMenu();
 
         void CloseFileSelectMenu();
+
+        void ChangeColorTheme(object sender, RoutedEventArgs e);
     }
 
 
