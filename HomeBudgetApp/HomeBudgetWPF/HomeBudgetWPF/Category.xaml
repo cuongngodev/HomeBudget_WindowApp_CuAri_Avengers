@@ -22,15 +22,15 @@
 
             <DockPanel Margin="5" Grid.Row="0" HorizontalAlignment="Center" MinWidth="200">
                 <Label Content="Description"/>
-                <TextBox></TextBox>
+                <TextBox x:Name="TxtDescription"></TextBox>
             </DockPanel>
 
             <DockPanel Margin="5"  Grid.Row="1" HorizontalAlignment="Center" MinWidth="200">
                 <Label Content="Type"/>
-                <ComboBox x:Name="New_Category_Type_CmbBox"/>
+                <ComboBox x:Name="CmbCatType"/>
             </DockPanel>
 
-            <Button Width="auto" Grid.Row="2" HorizontalAlignment="Center" Click="CreateCategory">Create New Category</Button>
+            <Button Width="auto" Grid.Row="2" HorizontalAlignment="Center" Click="NewCatSubmitClicked"  Height="20" VerticalAlignment="Top">Create New Category</Button>
         </Grid>
     </StackPanel>
 </Window>

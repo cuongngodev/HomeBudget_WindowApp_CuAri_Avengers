@@ -17,16 +17,42 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for Category.xaml
     /// </summary>
-    public partial class Category : Window
+    public partial class Category : Window, ViewInterfaces.CategoryInterface
     {
-        public Category()
+        Presenter _p;
+        public Category(Presenter p)
         {
             InitializeComponent();
+            _p = p;
+            
         }
 
-        private void CreateCategory(object sender, RoutedEventArgs e)
+        public void DisplayCategoryType()
         {
-
+            throw new NotImplementedException();
         }
+
+        public void DisplayConfirmation(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisplayError(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendCategoryInfo()
+        {
+            string desc = TxtDescription.Text;
+           // Budget.Category.CategoryType type = CmbCatType.Text;
+            _p.CreateNewCategory(desc, type);
+        }
+
+        private void NewCatSubmitClicked(object sender, RoutedEventArgs e)
+        {
+            SendCategoryInfo();
+        }
+
     }
 }
