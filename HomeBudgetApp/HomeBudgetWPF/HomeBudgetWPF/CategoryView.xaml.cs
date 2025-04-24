@@ -29,8 +29,14 @@ namespace HomeBudgetWPF
         public void OpenWindow()
         {
             this.Show();
+            SetupCmb();
+        }
+
+        private void SetupCmb()
+        {
             CmbCatType.ItemsSource = _p.GetAllCategories();
             CmbCatType.DisplayMemberPath = "Description";
+            CmbCatType.SelectedIndex = 0;
         }
 
         public void CloseWindow()

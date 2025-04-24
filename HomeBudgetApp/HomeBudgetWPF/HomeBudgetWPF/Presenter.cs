@@ -20,45 +20,19 @@ namespace HomeBudgetWPF
         {
             _MainView = v;
         }
-       
+
+        //Setup Stuff 
         public void SetViews(ViewInterfaces.CategoryInterface categoryView, ViewInterfaces.FileSelectInterface fileSelectView)
         {
             _CategoryView = categoryView;
             _FileSelectView = fileSelectView;
         }
 
-        public List<Budget.Category> GetAllCategories()
-        {
-            var boo = _model.categories.List();
-            return boo; 
-        }
-
-        public void OpenCategorySelectFile()
-        {
-            _FileSelectView.OpenWindow();
-        }
-
-        public void OpenCategory()
-        {
-            _CategoryView.OpenWindow();
-        }
-
-        public string GetCategory(int id)
-        {
-           
-            if (id < 0)
-                throw new ArgumentException();
-            if (id > _model.categories.List().Count)
-                throw new ArgumentOutOfRangeException();
-
-            return _model.categories.List()[id].ToString();
-            
-        }
-
+        //DB STUFF 
         public void SetDatabase(string db, bool isNew)
         {
             _model = new HomeBudget(VerifyDb(db), isNew);
-            
+
         }
 
         public string VerifyDb(string db)
@@ -66,23 +40,49 @@ namespace HomeBudgetWPF
             return db;
         }
 
+        public void OpenSelectFile()
+        {
+            _FileSelectView.OpenWindow();
+        }
+
+        //Cat Stuff
+        public List<Budget.Category> GetAllCategories()
+        {
+            var boo = _model.categories.List();
+            return boo;
+        }
+        public void OpenCategory()
+        {
+            _CategoryView.OpenWindow();
+        }
         public void CreateNewCategory(string desc, object type)
         {
             foreach (Budget.Category test in _model.categories.List())
             {
-                if (test.ToString() == desc){
+                if (test.ToString() == desc)
+                {
                     _CategoryView.DisplayError("Error");
                 }
             }
-                
 
-            _model.categories.Add(desc, (Budget.Category.CategoryType) type);
+
+            _model.categories.Add(desc, (Budget.Category.CategoryType)type);
         }
+      
+   
+
+       
+
+       
+
+
+
+      
         
-        public void AddExpense(DateTime date, int cat, double amount, string desc)
-        {
-            _model.expenses.Add(date,cat,amount,desc);
-        }
+        //public void AddExpense(DateTime date, int cat, double amount, string desc)
+        //{
+        //    _model.expenses.Add(date,cat,amount,desc);
+        //}
 
     }
 }
