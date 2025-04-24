@@ -10,38 +10,38 @@
         <Label x:Name="Category_Page_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
 
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            
+
             <StackPanel>
-                <TextBlock Text="Enter filename (without extension):" Margin="0,0,0,5"/>
-                <TextBox x:Name="FileNameTextBox" Height="25" Margin="0,0,0,10"/>
+                <TextBlock Text="Enter filename (without extension):" Margin="0,0,0,5"
+                           HorizontalAlignment="Center"
+                           />
+                <TextBox x:Name="fileNameTextBox" HorizontalAlignment="Center" Height="25" Width ="100" Margin="0,0,0,10"/>
                 <Button Content="Save To" 
                         Click="Save_To_Click" 
                         Height="30" Width="100" 
-                        HorizontalAlignment="Left"/>
+                        HorizontalAlignment="Center"
+                     
+                />
+                <TextBox x:Name="fileLocation" HorizontalAlignment="Center" Height="25" Width ="500" Margin="20"/>
+
                 <Button 
                     Content="Create" 
                     Click="CreateFileButton_Click" 
                     Height="30" Width="100" 
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Center"
+                    Margin="20"/>
                 <Button 
                     Content="Open Current File" Click="Open_Current_Database_Click" 
                     Grid.Row="1" Grid.Column="0" 
                     Height="30" Width="100" 
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Center"
+                    Margin="20"/>
 
             </StackPanel>
 
-            
-           
-            
+
+
         </Grid>
     </StackPanel>
 </Window>

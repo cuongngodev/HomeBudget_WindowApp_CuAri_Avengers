@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using Budget;
 
 namespace HomeBudgetWPF
 {
@@ -41,19 +42,33 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void Save_To_Click(object sender, RoutedEventArgs e)
         {
-           
+            string newFileName = fileNameTextBox.Text.Trim();
+            // if text box empty
+            if (string.IsNullOrWhiteSpace(newFileName))
+            {
+                MessageBox.Show("Please enter a file name.");
+                return;
+            }
 
-            // Open dialog
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                CheckFileExists = false, // Disable file selection
-                CheckPathExists = true,  // Ensure the path exists
-                FileName = ""            // Set filename to empty
+                Title = "Select Location to Save Database",
+                Filter = "Database files (*.db)|*.db",
+                DefaultExt = ".db",
+                FileName = newFileName, 
+                CheckPathExists = true,
+                AddExtension = true
             };
-            if (openFileDialog.ShowDialog() == true)
+
+            if (saveFileDialog.ShowDialog() == true)
             {
-                // get the path where user want to save
-                selectedLocation = openFileDialog.FileName;    
+                // Get the path where user wants to save
+                selectedLocation = saveFileDialog.FileName + "\\";
+                string selectedFileName = saveFileDialog.FileName;
+
+                // Update the UI with the selected location
+                fileLocation.Text = selectedLocation;
+
             }
         }
         /// <summary>
@@ -63,7 +78,7 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void CreateFileButton_Click(object sender, RoutedEventArgs e)
         {
-            string newFileName = FileNameTextBox.Text.Trim();
+            string newFileName = fileNameTextBox.Text.Trim();
 
             // if text box empty
             if (string.IsNullOrWhiteSpace(newFileName))
@@ -71,11 +86,16 @@ namespace HomeBudgetWPF
                 MessageBox.Show("Please enter a file name.");
                 return;
             }
-
-            string newFile = selectedLocation + newFileName + ".db";
+            if (string.IsNullOrEmpty(selectedLocation))
+            {
+                MessageBox.Show("Please choose location to save.");
+                return;
+            }
 
             // Start create the db
-            MessageBox.Show("Create new DB successfully!" + newFile);
+            Database.newDatabase(newFileName);
+            MessageBox.Show("Create new DB successfully!");
+            this.Close();   
         }
 
         /// <summary>
