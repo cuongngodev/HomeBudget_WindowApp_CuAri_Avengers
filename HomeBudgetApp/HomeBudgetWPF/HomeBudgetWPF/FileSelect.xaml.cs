@@ -22,7 +22,7 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for FileSelect.xaml
     /// </summary>
-    public partial class FileSelect : Window, ViewInterfaces.ViewInterface
+    public partial class FileSelect : Window
     {
         static string selectedLocation = "";
         public Presenter _p;
@@ -31,6 +31,7 @@ namespace HomeBudgetWPF
             InitializeComponent();
             _p = p;
         }
+
 
         /// <summary>
         /// Selects the path where user want to save the new file
@@ -77,8 +78,6 @@ namespace HomeBudgetWPF
         {
             string newFileName = fileNameTextBox.Text.Trim()+".db";
 
-
-
             // Start create the db
             _p.SetDatabase(newFileName, true);
             MessageBox.Show("Create new DB successfully!");
@@ -104,24 +103,6 @@ namespace HomeBudgetWPF
             }
         }
 
-        public void OpenWindow()
-        {
-            this.ShowDialog();
-        }
-
-        public void CloseWindow()
-        {
-            this.Close();
-        }
-
-        public void DisplayError(string message)
-        {
-            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-        public void DisplayConfirmation(string message)
-        {
-            MessageBox.Show(message, "Success", MessageBoxButton.OK);
-        }
+  
     }
 }

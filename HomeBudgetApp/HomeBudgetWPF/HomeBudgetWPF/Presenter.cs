@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Budget;
-using static HomeBudgetWPF.ViewInterfaces;
+using static HomeBudgetWPF.ViewInterface;
 
 namespace HomeBudgetWPF
 {
@@ -13,26 +13,17 @@ namespace HomeBudgetWPF
     public class Presenter
     {
         private HomeBudget? _model;
-        private ViewInterfaces.ViewInterface _MainView;
-        private ViewInterfaces.ViewInterface _CategoryView;
-        private ViewInterfaces.ViewInterface _FileSelectView;
-        private ViewInterfaces.ViewInterface _ExpenseView;
+        private ViewInterface _View;
 
-        public Presenter(ViewInterfaces.ViewInterface v)
+        public Presenter(ViewInterface v)
         {
-            _MainView = v;
+            _View = v;
         }
 
-        #region Setup
-
-        public void SetViews(ViewInterfaces.ViewInterface categoryView, ViewInterfaces.ViewInterface fileSelectView, ViewInterfaces.ViewInterface expenseView)
+        public void SetupPresenter()
         {
-            _CategoryView = categoryView;
-            _FileSelectView = fileSelectView;
-            _ExpenseView = expenseView;
+            _View.DisplaySelectFileMenu();
         }
-        #endregion
-
 
         //DB STUFF 
         #region Database
@@ -40,8 +31,8 @@ namespace HomeBudgetWPF
         {
             _model = new HomeBudget(VerifyDb(db), isNew);
 
-            _FileSelectView.DisplayConfirmation("Db file succesfully selected");
-            _FileSelectView.CloseWindow();
+            _View.DisplayConfirmation("Db file succesfully selected");
+            _View.CloseFileSelectMenu();
         }
 
         public string VerifyDb(string db)
@@ -51,7 +42,7 @@ namespace HomeBudgetWPF
 
         public void OpenSelectFile()
         {
-            _FileSelectView.OpenWindow();
+            _View.DisplaySelectFileMenu();
         }
         #endregion
 
@@ -64,7 +55,7 @@ namespace HomeBudgetWPF
 
         public void OpenCategory()
         {
-            _CategoryView.OpenWindow();
+            _View.DisplayCategoryMenu();
         }
 
         public void CreateNewCategory(string desc, object type)
@@ -73,12 +64,12 @@ namespace HomeBudgetWPF
             {
                 if (cat.ToString() == desc)
                 {
-                    _CategoryView.DisplayError("Error");
+                    _View.DisplayError("Error");
                 }
             }
             _model.categories.Add(desc, (Budget.Category.CategoryType)type);
-            _CategoryView.DisplayConfirmation("Added Succesfully!");
-            _CategoryView.CloseWindow();
+            _View.DisplayConfirmation("Added Succesfully!");
+            _View.CloseCategoryMenu();
         }
 
         public List<Budget.Category> GetAllCategories()
@@ -87,31 +78,39 @@ namespace HomeBudgetWPF
         }
 
 
-
-        public void CreateNewCategory(string name)
+        //needs to be fixed
+        public void CreateNewCategoryFromDropDown(string name)
         {
             foreach (Budget.Category cat in _model.categories.List())
             {
                 if (cat.ToString() == name)
                 {
-                    break;
+                    return;
                 }
             }
+
+            
             CreateNewCategory(name,Budget.Category.CategoryType.Expense); //Default for now have to ask teacher
+
         }
         #endregion
 
         #region Expenses
         public void OpenExpense()
         {
-            _ExpenseView.OpenWindow();
+            _View.DisplayExpenseMenu();
         }
 
         public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
         {
-            _model.expenses.Add(date,cat,StringToDouble(amount),desc);
-            _ExpenseView.DisplayError("Added Succesfully!");
-            _ExpenseView.CloseWindow();
+            if (cat == -1)
+            {
+                cat = _model.categories.List().Count() -1;
+            }
+           
+            _model.expenses.Add(date,cat + 1,StringToDouble(amount),desc);
+            _View.DisplayConfirmation ("Added Succesfully!");
+            _View.CloseExpenseMenu();
         }
         #endregion
 
@@ -120,7 +119,7 @@ namespace HomeBudgetWPF
             double result; 
             if (!double.TryParse(amount, out result))
             {
-                _ExpenseView.DisplayError("Invalid Amount,\nPlease enter a number");
+                _View.DisplayError("Invalid Amount,\nPlease enter a number");
             }
             return result;
         }
