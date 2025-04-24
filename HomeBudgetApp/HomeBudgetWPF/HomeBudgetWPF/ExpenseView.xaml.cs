@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.TextFormatting;
 using System.Windows.Shapes;
 using static HomeBudgetWPF.ViewInterface;
 
@@ -27,16 +29,25 @@ namespace HomeBudgetWPF
         {
             InitializeComponent();
             _p = p;
-            SetupCatCmb();
+            SetupUI();
+            this.Closing += MainWindow_Closing;
         }
 
       
-
-        private void SetupCatCmb()
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            //if (Application.Current.Windows.Count <= 2)
+            //{
+            //    Application.Current.Shutdown();
+            //}
+        }
+        private void SetupUI()
         {
             CmbCategory.ItemsSource = _p.GetAllCategories();
             CmbCategory.DisplayMemberPath = "Description";
             CmbCategory.SelectedIndex = 0;
+
+            DtDate.SelectedDate = DateTime.Now;
         }
 
 
@@ -48,9 +59,10 @@ namespace HomeBudgetWPF
             string desc = TxtDesc.Text;
             string amount = TxtAmount.Text;
 
-            _p.CreateNewCategoryFromDropDown(catName);
-            
-            _p.CreateNewExpense(date, catType, amount, desc);
+            if (!_p.CreateNewCategoryFromDropDown(catName))
+                _p.CreateNewExpense(date, catType, amount, desc);
+
+       
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Budget;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,8 +29,18 @@ namespace HomeBudgetWPF
            
             _p.SetupPresenter();
 
+            this.Closing += MainWindow_Closing;
 
-         }
+
+        }
+
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            if (Application.Current.Windows.Count <= 1)
+            {
+                Application.Current.Shutdown();
+            }
+        }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
@@ -68,37 +79,36 @@ namespace HomeBudgetWPF
 
         public void DisplayCategoryMenu()
         {
-            this.Hide();
             _categoryView = new CategoryView(_p);
             _categoryView.Show();
-
+            this.Hide();
+            
         }
 
         public void DisplayExpenseMenu()
         {
-            this.Hide();
             _expenseView = new ExpenseView(_p);
             _expenseView.Show();
+            this.Hide();
         }
 
         public void DisplaySelectFileMenu()
         {
-             this.Hide();
             _fileSelectView = new FileSelect(_p);
             _fileSelectView.Show();
+            this.Hide();
         }
 
         public void CloseCategoryMenu()
         {
-            _categoryView.Close();
             this.Show();
+            _categoryView.Close();
         }
 
         public void CloseExpenseMenu()
         {
-            _expenseView.Close();
             this.Show();
-
+            _expenseView.Close();
         }
 
         public void CloseFileSelectMenu()
@@ -106,5 +116,18 @@ namespace HomeBudgetWPF
             _fileSelectView.Close();
             this.Show();
         }
+
+        public void DisplayCategoryMenuWithName(string name)
+        {
+            _categoryView = new CategoryView(_p, name);
+            _categoryView.Show();
+
+        }
+
+        public void CloseMain()
+        {
+            this.Hide();
+        }
+
     }
 }

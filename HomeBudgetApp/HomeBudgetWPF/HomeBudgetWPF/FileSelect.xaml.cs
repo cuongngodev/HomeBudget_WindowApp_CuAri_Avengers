@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 
 using Budget;
 using System.Windows.Interop;
+using System.ComponentModel;
 
 namespace HomeBudgetWPF
 {
@@ -26,12 +27,21 @@ namespace HomeBudgetWPF
     {
         static string selectedLocation = "";
         public Presenter _p;
+        private bool _closeProgram = false;
         public FileSelect(Presenter p)
         {
             InitializeComponent();
             _p = p;
+            this.Closing += MainWindow_Closing;
         }
 
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            if (Application.Current.Windows.Count <= 2)
+            {
+                Application.Current.Shutdown();
+            }
+        }
 
         /// <summary>
         /// Selects the path where user want to save the new file
@@ -99,7 +109,6 @@ namespace HomeBudgetWPF
                 // path to datbase
                 string selectedFilePath = openFileDialog.FileName;
                 _p.SetDatabase(selectedFilePath,false);
-   
             }
         }
 

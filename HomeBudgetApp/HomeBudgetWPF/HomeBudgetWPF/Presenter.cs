@@ -18,6 +18,7 @@ namespace HomeBudgetWPF
         public Presenter(ViewInterface v)
         {
             _View = v;
+  
         }
 
         public void SetupPresenter()
@@ -58,7 +59,7 @@ namespace HomeBudgetWPF
             _View.DisplayCategoryMenu();
         }
 
-        public void CreateNewCategory(string desc, object type)
+        public void CreateNewCategory(string desc, object type, bool fromExpense = false)
         {
             foreach (Budget.Category cat in _model.categories.List())
             {
@@ -70,6 +71,12 @@ namespace HomeBudgetWPF
             _model.categories.Add(desc, (Budget.Category.CategoryType)type);
             _View.DisplayConfirmation("Added Succesfully!");
             _View.CloseCategoryMenu();
+            
+            if (fromExpense)
+            {
+                _View.CloseMain();
+                //_View.DisplayExpenseMenu();
+            }
         }
 
         public List<Budget.Category> GetAllCategories()
@@ -79,19 +86,18 @@ namespace HomeBudgetWPF
 
 
         //needs to be fixed
-        public void CreateNewCategoryFromDropDown(string name)
+        public bool CreateNewCategoryFromDropDown(string name)
         {
             foreach (Budget.Category cat in _model.categories.List())
             {
                 if (cat.ToString() == name)
                 {
-                    return;
+                    return false;
                 }
             }
 
-            
-            CreateNewCategory(name,Budget.Category.CategoryType.Expense); //Default for now have to ask teacher
-
+            _View.DisplayCategoryMenuWithName(name);
+            return true;
         }
         #endregion
 
