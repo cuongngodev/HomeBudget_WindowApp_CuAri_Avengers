@@ -20,7 +20,7 @@ namespace HomeBudgetWPF
         {
             void DisplayCategoryType();
 
-            void SendCategoryInfo(string desc, Budget.Category.CategoryType type);
+            void SendCategoryInfo();
             
             void DisplayError(string message);
 

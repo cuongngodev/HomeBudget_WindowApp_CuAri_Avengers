@@ -16,9 +16,11 @@ namespace HomeBudgetWPF
     /// </summary>
     public partial class MainWindow : Window, ViewInterfaces.Basic
     {
+        public Presenter _p;
         public MainWindow()
         {
             InitializeComponent();
+            ViewInterfaces.CategoryInterface categoryInterface = new HomeBudgetWPF.Category(_p);
         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
