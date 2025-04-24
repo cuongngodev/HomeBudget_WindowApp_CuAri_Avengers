@@ -60,14 +60,25 @@ namespace HomeBudgetWPF
             _View.DisplayCategoryMenu();
         }
 
-        public void CreateNewCategory(string desc, object type)
+        /// <summary>
+        /// Adds new category that has not exisited in the database yet.
+        /// </summary>
+        /// <param name="desc"></param>
+        /// <param name="type"></param>
+        public void CreateNewCategory(string desc, object type)          
         {
             foreach (Budget.Category cat in _model.categories.List())
             {
-                if (cat.ToString() == desc)
+                if (cat.ToString().ToLower() == desc.ToLower())
                 {
-                    _View.DisplayError("Error");
+                    _View.DisplayError("Category already exisited");
+                    return;
                 }
+            }
+            if (string.IsNullOrEmpty(desc))
+            {
+                _View.DisplayError("You did not enter description!");
+                return;
             }
             _model.categories.Add(desc, (Budget.Category.CategoryType)type);
             _View.DisplayConfirmation("Added Succesfully!");

@@ -38,6 +38,7 @@ namespace HomeBudgetWPF
         {
             string desc = TxtDescription.Text;
             Object type = CmbCatType.SelectedItem;
+            
             _p.CreateNewCategory(desc, type);
         }
       
