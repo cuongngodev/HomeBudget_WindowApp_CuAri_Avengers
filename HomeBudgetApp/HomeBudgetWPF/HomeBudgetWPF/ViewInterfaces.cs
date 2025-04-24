@@ -8,7 +8,7 @@ namespace HomeBudgetWPF
 {
     public class ViewInterfaces
     {
-        public interface Basic
+        public interface MainViewInterface
         {
             void DisplayError(string message);
 
@@ -26,7 +26,7 @@ namespace HomeBudgetWPF
 
             void DisplayConfirmation(string message);
 
-            void RegisterPresenter(Presenter p);
+          
 
             void OpenWindow();
 
@@ -35,8 +35,6 @@ namespace HomeBudgetWPF
 
         public interface FileSelectInterface
         {
-            void RegisterPresenter(Presenter p);
-
             void OpenWindow();
 
             void CloseWindow();
