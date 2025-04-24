@@ -26,7 +26,7 @@ namespace HomeBudgetWPF
 
         private void CreateCategory(object sender, RoutedEventArgs e)
         {
-
+            //p.CreateNewCategory
         }
     }
 }

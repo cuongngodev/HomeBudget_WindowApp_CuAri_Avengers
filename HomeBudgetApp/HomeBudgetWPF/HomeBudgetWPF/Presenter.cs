@@ -10,16 +10,16 @@ namespace HomeBudgetWPF
   
     public class Presenter
     {
-        private readonly HomeBudget _model;
+        private HomeBudget? _model;
         private readonly ViewInterfaces _view;
 
-        public Presenter(ViewInterfaces v)
+        public Presenter(ViewInterfaces v, HomeBudget ?model)
         {
             _view = v;
-            _model = new HomeBudget("../../../../../../HomeBudgetAPI/UnitTests/messyDB.db",false);
+            _model = model;
         }
        
-        public List<Category> GetAllCategories()
+        public List<Budget.Category> GetAllCategories()
         {
             var boo = _model.categories.List();
             return boo; 
@@ -27,6 +27,7 @@ namespace HomeBudgetWPF
 
         public string GetCategory(int id)
         {
+           
             if (id < 0)
                 throw new ArgumentException();
             if (id > _model.categories.List().Count)
@@ -36,7 +37,25 @@ namespace HomeBudgetWPF
             
         }
 
+        public void SetDatabase(string db, bool isNew)
+        {
+            _model = new HomeBudget(VerifyDb(db), isNew);
+        }
+
+        public string VerifyDb(string db)
+        {
+            return db;
+        }
+
+        public void CreateNewCategory(string desc, Budget.Category.CategoryType type)
+        {
+            _model.categories.Add(desc, type);
+        }
         
+        public void AddExpense(DateTime date, int cat, double amount, string desc)
+        {
+            _model.expenses.Add(date,cat,amount,desc);
+        }
 
     }
 }

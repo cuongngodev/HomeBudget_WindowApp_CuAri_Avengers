@@ -14,7 +14,7 @@ namespace HomeBudgetWPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ViewInterfaces.Basic
     {
         public MainWindow()
         {
@@ -34,6 +34,16 @@ namespace HomeBudgetWPF
         private void OpenCategoryManagement(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        public void DisplayError(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisplayConfirmation(string message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

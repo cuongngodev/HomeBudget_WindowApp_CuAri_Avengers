@@ -10,10 +10,23 @@ namespace HomeBudgetWPF
     {
         public interface Basic
         {
-            public void DisplayError(string message);
+            void DisplayError(string message);
 
-            public void DisplayConfirmation(string message);
+            void DisplayConfirmation(string message);
 
         }
+
+        public interface CategoryInterface
+        {
+            void DisplayCategoryType();
+
+            void SendCategoryInfo(string desc, Budget.Category.CategoryType type);
+            
+            void DisplayError(string message);
+
+            void DisplayConfirmation(string message);
+        }
+
+
     }
 }
