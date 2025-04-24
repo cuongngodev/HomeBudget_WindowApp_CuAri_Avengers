@@ -15,6 +15,7 @@ namespace HomeBudgetWPF
         private ViewInterfaces.MainViewInterface _MainView;
         private ViewInterfaces.CategoryInterface _CategoryView;
         private ViewInterfaces.FileSelectInterface _FileSelectView;
+        private ViewInterfaces.ExpenseInterface _ExpenseView;
 
         public Presenter(ViewInterfaces.MainViewInterface v)
         {
@@ -22,10 +23,11 @@ namespace HomeBudgetWPF
         }
 
         #region Setup
-        public void SetViews(ViewInterfaces.CategoryInterface categoryView, ViewInterfaces.FileSelectInterface fileSelectView)
+        public void SetViews(ViewInterfaces.CategoryInterface categoryView, ViewInterfaces.FileSelectInterface fileSelectView, ViewInterfaces.ExpenseInterface expenseView)
         {
             _CategoryView = categoryView;
             _FileSelectView = fileSelectView;
+            _ExpenseView = expenseView;
         }
         #endregion
 
@@ -62,6 +64,7 @@ namespace HomeBudgetWPF
         {
             _CategoryView.OpenWindow();
         }
+
         public void CreateNewCategory(string desc, object type)
         {
             foreach (Budget.Category test in _model.categories.List())
@@ -75,10 +78,34 @@ namespace HomeBudgetWPF
 
             _model.categories.Add(desc, (Budget.Category.CategoryType)type);
         }
+
+        public List<Budget.Category> GetAllCategories()
+        {
+            return _model.categories.List();
+        }
         #endregion
 
+        #region Expenses
+        public void OpenExpense()
+        {
+            _ExpenseView.OpenWindow();
+        }
 
+        public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
+        {
+            _model.expenses.Add(date,cat,StringToDouble(amount),desc);
+        }
+        #endregion
 
+        public double StringToDouble(string amount)
+        {
+            double result; 
+            if (!double.TryParse(amount, out result))
+            {
+                _ExpenseView.ShowError("Invalid Amount,\nPlease enter a number");
+            }
+            return result;
+        }
 
 
 

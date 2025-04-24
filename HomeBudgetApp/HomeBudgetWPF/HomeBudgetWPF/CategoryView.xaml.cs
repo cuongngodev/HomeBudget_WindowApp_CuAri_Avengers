@@ -43,13 +43,6 @@ namespace HomeBudgetWPF
             this.Close();
         }
 
-
-
-        public void DisplayCategoryType()
-        {
-           
-        }
-
         public void DisplayConfirmation(string message)
         {
             MessageBox.Show(message, "Success", MessageBoxButton.OK);
@@ -60,16 +53,11 @@ namespace HomeBudgetWPF
            MessageBox.Show(message,"ERROR",MessageBoxButton.OK, MessageBoxImage.Error); 
         }
 
-        public void SendCategoryInfo()
+        private void NewCatSubmitClicked(object sender, RoutedEventArgs e)
         {
             string desc = TxtDescription.Text;
             Object type = CmbCatType.SelectedItem;
             _p.CreateNewCategory(desc, type);
-        }
-
-        private void NewCatSubmitClicked(object sender, RoutedEventArgs e)
-        {
-            SendCategoryInfo();
         }
 
     }
