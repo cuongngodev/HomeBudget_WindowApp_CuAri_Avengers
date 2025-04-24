@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Budget;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,6 +26,7 @@ namespace HomeBudgetWPF
         {
             FileSelect fileSelect = new FileSelect();
             fileSelect.Show();
+            this.Close();
             
         }
 

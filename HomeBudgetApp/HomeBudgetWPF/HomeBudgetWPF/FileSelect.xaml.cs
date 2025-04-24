@@ -78,7 +78,7 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void CreateFileButton_Click(object sender, RoutedEventArgs e)
         {
-            string newFileName = fileNameTextBox.Text.Trim();
+            string newFileName = fileNameTextBox.Text.Trim()+".db";
 
             // if text box empty
             if (string.IsNullOrWhiteSpace(newFileName))
@@ -91,10 +91,15 @@ namespace HomeBudgetWPF
                 MessageBox.Show("Please choose location to save.");
                 return;
             }
-
+            
             // Start create the db
-            Database.newDatabase(newFileName);
+            HomeBudget homeBudget = new HomeBudget(newFileName, true);
             MessageBox.Show("Create new DB successfully!");
+
+            BudgetApp budgetApp = new BudgetApp(homeBudget);
+
+            // Open Budget App and Start working
+            budgetApp.Show();
             this.Close();   
         }
 
@@ -105,21 +110,23 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void Open_Current_Database_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-        private void OpenDatabase(object sender, RoutedEventArgs e)
-        {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "Select File to work with";
-            openFileDialog.Filter = "Database files (*.db)|*.db";
+            openFileDialog.Filter = "Database files (*.db;*.sqlite;*.mdb;*.accdb)|*.db;*.sqlite";
 
             if (openFileDialog.ShowDialog() == true)
             {
                 // path to datbase
                 string selectedFilePath = openFileDialog.FileName;
-                MessageBox.Show("Selected DB file: " + selectedFilePath);
-            }
+                HomeBudget homeBudget = new HomeBudget(selectedFilePath, false);
+                //MessageBox.Show("Selected DB file: " + selectedFilePath);
+                BudgetApp budgetApp = new BudgetApp(homeBudget);
 
+                // Open Budget App and Start working
+                budgetApp.Show();
+                this.Close();
+            }
         }
+   
     }
 }
