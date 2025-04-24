@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using Budget;
+using System.Windows.Interop;
 
 namespace HomeBudgetWPF
 {
@@ -24,17 +25,14 @@ namespace HomeBudgetWPF
     public partial class FileSelect : Window
     {
         static string selectedLocation = "";
-        public FileSelect()
+        public Presenter _p;
+        public FileSelect(Presenter p)
         {
             InitializeComponent();
+            _p = p;
         }
 
-        private void SelectFile(object sender, RoutedEventArgs e)
-        {
 
-        }
-
-       
         /// <summary>
         /// Selects the path where user want to save the new file
         /// </summary>
@@ -63,7 +61,7 @@ namespace HomeBudgetWPF
             if (saveFileDialog.ShowDialog() == true)
             {
                 // Get the path where user wants to save
-                selectedLocation = saveFileDialog.FileName + "\\";
+                selectedLocation = saveFileDialog.FileName;
                 string selectedFileName = saveFileDialog.FileName;
 
                 // Update the UI with the selected location
@@ -78,24 +76,11 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void CreateFileButton_Click(object sender, RoutedEventArgs e)
         {
-            string newFileName = fileNameTextBox.Text.Trim();
-
-            // if text box empty
-            if (string.IsNullOrWhiteSpace(newFileName))
-            {
-                MessageBox.Show("Please enter a file name.");
-                return;
-            }
-            if (string.IsNullOrEmpty(selectedLocation))
-            {
-                MessageBox.Show("Please choose location to save.");
-                return;
-            }
+            string newFileName = fileNameTextBox.Text.Trim()+".db";
 
             // Start create the db
-            Database.newDatabase(newFileName);
+            _p.SetDatabase(newFileName, true);
             MessageBox.Show("Create new DB successfully!");
-            this.Close();   
         }
 
         /// <summary>
@@ -105,21 +90,19 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void Open_Current_Database_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-        private void OpenDatabase(object sender, RoutedEventArgs e)
-        {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "Select File to work with";
-            openFileDialog.Filter = "Database files (*.db)|*.db";
+            openFileDialog.Filter = "Database files (*.db;*.sqlite;*.mdb;*.accdb)|*.db;*.sqlite";
 
             if (openFileDialog.ShowDialog() == true)
             {
                 // path to datbase
                 string selectedFilePath = openFileDialog.FileName;
-                MessageBox.Show("Selected DB file: " + selectedFilePath);
+                _p.SetDatabase(selectedFilePath,false);
+   
             }
-
         }
+
+  
     }
 }

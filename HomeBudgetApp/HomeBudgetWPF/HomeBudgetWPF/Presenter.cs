@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Budget;
+using static HomeBudgetWPF.ViewInterface;
 
 namespace HomeBudgetWPF
 {
@@ -11,36 +13,26 @@ namespace HomeBudgetWPF
     public class Presenter
     {
         private HomeBudget? _model;
-        private readonly ViewInterfaces _MainView;
-        private readonly ViewInterfaces.CategoryInterface _CategoryView;
+        private ViewInterface _View;
 
-        public Presenter(ViewInterfaces v, HomeBudget ?model)
+        public Presenter(ViewInterface v)
         {
-            _MainView = v;
-            _model = model;
-        }
-       
-        public List<Budget.Category> GetAllCategories()
-        {
-            var boo = _model.categories.List();
-            return boo; 
+            _View = v;
         }
 
-        public string GetCategory(int id)
+        public void SetupPresenter()
         {
-           
-            if (id < 0)
-                throw new ArgumentException();
-            if (id > _model.categories.List().Count)
-                throw new ArgumentOutOfRangeException();
-
-            return _model.categories.List()[id].ToString();
-            
+            _View.DisplaySelectFileMenu();
         }
 
+        //DB STUFF 
+        #region Database
         public void SetDatabase(string db, bool isNew)
         {
             _model = new HomeBudget(VerifyDb(db), isNew);
+
+            _View.DisplayConfirmation("Db file succesfully selected");
+            _View.CloseFileSelectMenu();
         }
 
         public string VerifyDb(string db)
@@ -48,23 +40,90 @@ namespace HomeBudgetWPF
             return db;
         }
 
+        public void OpenSelectFile()
+        {
+            _View.DisplaySelectFileMenu();
+        }
+        #endregion
+
+        //Cat Stuff
+        #region Category
+        public List<Budget.Category.CategoryType> GetAllCategoryTypes()
+        {
+            return Enum.GetValues<Category.CategoryType>().ToList();
+        }
+
+        public void OpenCategory()
+        {
+            _View.DisplayCategoryMenu();
+        }
+
         public void CreateNewCategory(string desc, object type)
         {
-            foreach (Budget.Category test in _model.categories.List())
+            foreach (Budget.Category cat in _model.categories.List())
             {
-                if (test.ToString() == desc){
-                    _MainView.
+                if (cat.ToString() == desc)
+                {
+                    _View.DisplayError("Error");
                 }
             }
-                
+            _model.categories.Add(desc, (Budget.Category.CategoryType)type);
+            _View.DisplayConfirmation("Added Succesfully!");
+            _View.CloseCategoryMenu();
+        }
 
-            _model.categories.Add(desc, (Budget.Category.CategoryType) type);
-        }
-        
-        public void AddExpense(DateTime date, int cat, double amount, string desc)
+        public List<Budget.Category> GetAllCategories()
         {
-            _model.expenses.Add(date,cat,amount,desc);
+            return _model.categories.List();
         }
+
+
+        //needs to be fixed
+        public void CreateNewCategoryFromDropDown(string name)
+        {
+            foreach (Budget.Category cat in _model.categories.List())
+            {
+                if (cat.ToString() == name)
+                {
+                    return;
+                }
+            }
+
+            
+            CreateNewCategory(name,Budget.Category.CategoryType.Expense); //Default for now have to ask teacher
+
+        }
+        #endregion
+
+        #region Expenses
+        public void OpenExpense()
+        {
+            _View.DisplayExpenseMenu();
+        }
+
+        public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
+        {
+            if (cat == -1)
+            {
+                cat = _model.categories.List().Count() -1;
+            }
+           
+            _model.expenses.Add(date,cat + 1,StringToDouble(amount),desc);
+            _View.DisplayConfirmation ("Added Succesfully!");
+            _View.CloseExpenseMenu();
+        }
+        #endregion
+
+        public double StringToDouble(string amount)
+        {
+            double result; 
+            if (!double.TryParse(amount, out result))
+            {
+                _View.DisplayError("Invalid Amount,\nPlease enter a number");
+            }
+            return result;
+        }
+
 
     }
 }
