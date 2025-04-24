@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
-        Title="FileSelect" Height="450" Width="800">
+        Title="FileSelect" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <StackPanel>
         <Label x:Name="Category_Page_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
 
