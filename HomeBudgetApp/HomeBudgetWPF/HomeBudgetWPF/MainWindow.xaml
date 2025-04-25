@@ -19,15 +19,15 @@
         <StackPanel Grid.Row="1">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenFileSelection" Margin="10">
+                <Button x:Name="FileSelectBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenFileSelection" Margin="10">
                     File Selection
                 </Button>
 
-                <Button FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenExpenseManagement" Margin="10">
+                <Button x:Name="ExpensesBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenExpenseManagement" Margin="10">
                     Expenses
                 </Button>
-                
-                <Button FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenCategoryManagement" Margin="10">
+
+                <Button x:Name="CategoriesBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenCategoryManagement" Margin="10">
                     Categories
                 </Button>
             </StackPanel>
@@ -36,24 +36,23 @@
                 <Label Foreground="#82b74b" x:Name="ThemeTitleLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Color Themes</Label>
 
                 <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetDefaultTheme">Default</RadioButton>
-                    <RadioButton x:Name="ProtanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetProtanopiaTheme">Protanopia</RadioButton>
-                    <RadioButton x:Name="DeuteranopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetDeuteranopiaTheme">Deuteranopia</RadioButton>
-                    <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetTritanopiaTheme">Tritanopia</RadioButton>
+                    <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="ChangeColorTheme">Default</RadioButton>
+                    <RadioButton x:Name="ProDeuterThemeBtn" Margin="5" Foreground="#82b74b" Checked="ChangeColorTheme">Protanopia / Deuteranopia</RadioButton>
+                    <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="ChangeColorTheme">Tritanopia</RadioButton>
                 </StackPanel>
-
-                <Label Foreground="#82b74b" x:Name="CurrentThemeLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Content=""/>
             </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
 
 <!--
-Text Outline: #405d27
+Button Text: #82b74b, #FFC107
 
-Buttons: #c1946a
+Button Background: #405d27, #1E88E5, #D81B60
     
-Text Color: #82b74b
+Button Outline: White, 
     
-Background: #3e4444
+Text Color: #82b74b, #FFC107, 
+    
+Background: #3e4444, #004D40, 
 -->

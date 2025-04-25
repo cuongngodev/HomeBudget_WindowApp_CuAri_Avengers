@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 
 using Budget;
 using System.Windows.Interop;
+using System.ComponentModel;
 
 namespace HomeBudgetWPF
 {
@@ -26,12 +27,21 @@ namespace HomeBudgetWPF
     {
         static string selectedLocation = "";
         public Presenter _p;
+        private bool _closeProgram = false;
         public FileSelect(Presenter p)
         {
             InitializeComponent();
             _p = p;
+            this.Closing += MainWindow_Closing;
         }
 
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            if (Application.Current.Windows.Count <= 2)
+            {
+                Application.Current.Shutdown();
+            }
+        }
 
         /// <summary>
         /// Selects the path where user want to save the new file
@@ -44,7 +54,7 @@ namespace HomeBudgetWPF
             // if text box empty
             if (string.IsNullOrWhiteSpace(newFileName))
             {
-                MessageBox.Show("Please enter a file name.");
+                MessageBox.Show("Please enter a file name.", "File name empty", MessageBoxButton.OK,MessageBoxImage.Error);
                 return;
             }
 
@@ -69,6 +79,7 @@ namespace HomeBudgetWPF
 
             }
         }
+
         /// <summary>
         /// Creates new file for new users
         /// </summary>
@@ -76,11 +87,10 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void CreateFileButton_Click(object sender, RoutedEventArgs e)
         {
-            string newFileName = fileNameTextBox.Text.Trim()+".db";
+            string newFileName =  fileLocation.Text;
 
             // Start create the db
             _p.SetDatabase(newFileName, true);
-            MessageBox.Show("Create new DB successfully!");
         }
 
         /// <summary>
@@ -99,7 +109,6 @@ namespace HomeBudgetWPF
                 // path to datbase
                 string selectedFilePath = openFileDialog.FileName;
                 _p.SetDatabase(selectedFilePath,false);
-   
             }
         }
 

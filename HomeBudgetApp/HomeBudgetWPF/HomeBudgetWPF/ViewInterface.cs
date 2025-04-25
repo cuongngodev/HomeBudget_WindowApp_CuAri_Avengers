@@ -1,19 +1,26 @@
-﻿using System.Windows;
+﻿using Budget;
+
+using System.Windows;
 
 namespace HomeBudgetWPF
 {
 
     public interface ViewInterface
     {
+
         void DisplayError(string message);
 
         void DisplayConfirmation(string message);
+
+        bool AskConfirmation(string message);
 
         void DisplayCategoryMenu();
 
         void DisplayExpenseMenu();
 
         void DisplaySelectFileMenu();
+
+        void DisplayCategoryMenuWithName(string name);
 
         void CloseCategoryMenu();
 
@@ -22,6 +29,19 @@ namespace HomeBudgetWPF
         void CloseFileSelectMenu();
 
         void ChangeColorTheme(object sender, RoutedEventArgs e);
+
+        void SetDefaultTheme();
+
+        void SetProtanopiaDeuteranopiaTheme();
+
+        void SetTritanopiaTheme();
+
+        void CloseMain();
+
+        void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes);
+
+        void DisplayCategories(List<Category> categories);
+
     }
 
 

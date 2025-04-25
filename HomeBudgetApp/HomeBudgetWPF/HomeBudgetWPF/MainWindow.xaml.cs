@@ -1,4 +1,6 @@
 ﻿using Budget;
+using System.ComponentModel;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HomeBudgetWPF
 {
@@ -19,17 +22,24 @@ namespace HomeBudgetWPF
     public partial class MainWindow : Window, ViewInterface
     {
         public Presenter _p;
-        public Window _categoryView,_fileSelectView, _expenseView;
+        public Window _fileSelectView;
+        public CategoryView _categoryView;
+        public ExpenseView _expenseView;
+
         public MainWindow()
         {
             InitializeComponent();
             _p = new(this);
 
-           
             _p.SetupPresenter();
 
+            this.Closing += MainWindow_Closing;
+        }
 
-         }
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        { 
+            //Application.Current.Shutdown();    
+        }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
@@ -68,68 +78,126 @@ namespace HomeBudgetWPF
 
         public void DisplayCategoryMenu()
         {
-            this.Hide();
             _categoryView = new CategoryView(_p);
             _categoryView.Show();
-
+            this.Hide();
+            
         }
 
         public void DisplayExpenseMenu()
         {
-            this.Hide();
             _expenseView = new ExpenseView(_p);
             _expenseView.Show();
+            this.Hide();
         }
 
         public void DisplaySelectFileMenu()
         {
-             this.Hide();
             _fileSelectView = new FileSelect(_p);
             _fileSelectView.Show();
+            this.Hide();
         }
 
         public void CloseCategoryMenu()
         {
-            _categoryView.Close();
             this.Show();
+            _categoryView.Close();
         }
 
-        private void ChangeColorTheme(object sender, RoutedEventArgs e)
-        {
-
-        }
-        
-        private void SetDefaultTheme(object sender, RoutedEventArgs e)
+        public void ChangeColorTheme(object sender, RoutedEventArgs e)
         {
             RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
-
-
+            string selectedTheme = li.Content as string;
+            
+            _p.ChangeColorTheme(selectedTheme);
         }
 
-        private void SetProtanopiaTheme(object sender, RoutedEventArgs e)
+        public void SetDefaultTheme()
         {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+            BrushConverter brushConverter = new BrushConverter();
+            this.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
+
+            #region DefaultHome
+            this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+
+            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+
+            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+
+            this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+
+            this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            #endregion
         }
 
-        private void SetDeuteranopiaTheme(object sender, RoutedEventArgs e)
+        //Button Text: #82b74b, #FFC107
+
+        //Button Background: #405d27, #1E88E5, #D81B60
+
+        //Button Outline: White, 
+
+        //Text Color: #82b74b, #FFC107, 
+
+        //Background: #3e4444, #004D40, 
+
+        public void SetProtanopiaDeuteranopiaTheme()
         {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+            BrushConverter brushConverter = new BrushConverter();
+            this.Background = (Brush)brushConverter.ConvertFrom("#004D40");
+
+            #region ProDeuterHome
+            this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+
+            this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            #endregion
         }
 
-        private void SetTritanopiaTheme(object sender, RoutedEventArgs e)
+        public void SetTritanopiaTheme()
         {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+            BrushConverter brushConverter = new BrushConverter();
+            this.Background = (Brush)brushConverter.ConvertFrom("#004D40");
+
+            #region TritanHome
+            this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+
+            this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            #endregion
         }
 
         public void CloseExpenseMenu()
         {
-            _expenseView.Close();
             this.Show();
-
+            _expenseView.Close();
         }
 
         public void CloseFileSelectMenu()
@@ -137,5 +205,33 @@ namespace HomeBudgetWPF
             _fileSelectView.Close();
             this.Show();
         }
+
+        public void DisplayCategoryMenuWithName(string name)
+        {
+            _categoryView = new CategoryView(_p, name);
+            _categoryView.Show();
+
+        }
+
+        public void CloseMain()
+        {
+            this.Hide();
+        }
+
+        public void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes)
+        {
+            _categoryView.SetupInputBoxes(categoryTypes);
+        }
+
+        public void DisplayCategories(List<Category> categories)
+        {
+            _expenseView.SetupInputBoxes(categories);
+        }
+
+        public bool AskConfirmation(string message)
+        {
+            return MessageBox.Show(message, "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }
+
     }
 }
