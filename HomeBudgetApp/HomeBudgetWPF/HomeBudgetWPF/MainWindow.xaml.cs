@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HomeBudgetWPF
 {
@@ -27,8 +28,6 @@ namespace HomeBudgetWPF
 
            
             _p.SetupPresenter();
-
-
          }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
@@ -94,35 +93,91 @@ namespace HomeBudgetWPF
             this.Show();
         }
 
-        private void ChangeColorTheme(object sender, RoutedEventArgs e)
-        {
-
-        }
-        
-        private void SetDefaultTheme(object sender, RoutedEventArgs e)
+        public void ChangeColorTheme(object sender, RoutedEventArgs e)
         {
             RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
-
-
+            string selectedTheme = li.Content as string;
+            
+            _p.ChangeColorTheme(selectedTheme);
         }
 
-        private void SetProtanopiaTheme(object sender, RoutedEventArgs e)
+        public void SetDefaultTheme()
         {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+            BrushConverter brushConverter = new BrushConverter();
+            this.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
+
+            this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+
+            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+
+            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+
+            this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+
+            this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
         }
 
-        private void SetDeuteranopiaTheme(object sender, RoutedEventArgs e)
+        //Button Text: #82b74b, #FFC107
+
+        //Button Background: #405d27, #1E88E5, #D81B60
+
+        //Button Outline: White, 
+
+        //Text Color: #82b74b, #FFC107, 
+
+        //Background: #3e4444, #004D40, 
+
+        public void SetProtanopiaDeuteranopiaTheme()
         {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+            BrushConverter brushConverter = new BrushConverter();
+            this.Background = (Brush)brushConverter.ConvertFrom("#004D40");
+
+            this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+
+            this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
         }
 
-        private void SetTritanopiaTheme(object sender, RoutedEventArgs e)
+        public void SetTritanopiaTheme()
         {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
+            BrushConverter brushConverter = new BrushConverter();
+            this.Background = (Brush)brushConverter.ConvertFrom("#004D40");
+
+            this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+
+            this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+
+            this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
         }
 
         public void CloseExpenseMenu()

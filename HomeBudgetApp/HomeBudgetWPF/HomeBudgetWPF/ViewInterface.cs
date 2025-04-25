@@ -22,6 +22,12 @@ namespace HomeBudgetWPF
         void CloseFileSelectMenu();
 
         void ChangeColorTheme(object sender, RoutedEventArgs e);
+
+        void SetDefaultTheme();
+
+        void SetProtanopiaDeuteranopiaTheme();
+
+        void SetTritanopiaTheme();
     }
 
 
