@@ -15,16 +15,16 @@ namespace HomeBudgetWPF
     public class Presenter
     {
         private HomeBudget? _model;
-        private ViewInterface _View;
+        private ViewInterface _view;
 
         public Presenter(ViewInterface v)
         {
-            _View = v;
+            _view = v;
         }
 
         public void SetupPresenter()
         {
-            _View.DisplaySelectFileMenu();
+            _view.DisplaySelectFileMenu();
         }
 
         //DB STUFF 
@@ -33,19 +33,19 @@ namespace HomeBudgetWPF
         {
             if(string.IsNullOrEmpty(db))
             {
-                _View.DisplayError("You did not select location to save to.");
+                _view.DisplayError("You did not select location to save to.");
                 return;
             }
             _model = new HomeBudget(db, isNew);
 
-            _View.DisplayConfirmation("Db file succesfully selected");
-            _View.CloseFileSelectMenu();
+            _view.DisplayConfirmation("Db file succesfully selected");
+            _view.CloseFileSelectMenu();
         }
 
         public void OpenSelectFile()
         {
-            _View.DisplaySelectFileMenu();
-            _View.DisplayCategories(_model.categories.List());
+            _view.DisplaySelectFileMenu();
+            _view.DisplayCategories(_model.categories.List());
         }
         #endregion
 
@@ -54,14 +54,14 @@ namespace HomeBudgetWPF
 
         public void OpenCategory()
         {
-            _View.DisplayCategoryMenu();
-            _View.DisplayCategoryTypes(Enum.GetValues<Category.CategoryType>().ToList());
+            _view.DisplayCategoryMenu();
+            _view.DisplayCategoryTypes(Enum.GetValues<Category.CategoryType>().ToList());
         }
 
 
         public void CloseCategory()
         {
-            _View.CloseCategoryMenu();
+            _view.CloseCategoryMenu();
         }
 
         /// <summary>
@@ -70,29 +70,37 @@ namespace HomeBudgetWPF
         /// <param name="desc"></param>
         /// <param name="type"></param>
         public void CreateNewCategory(string desc, object type, bool fromExpense = false)
-
         {
             foreach (Budget.Category cat in _model.categories.List())
             {
                 if (cat.ToString().ToLower() == desc.ToLower())
                 {
-                    _View.DisplayError("Category already exisited");
+                    _view.DisplayError("Category already exisited");
                     return;
                 }
             }
             if (string.IsNullOrEmpty(desc))
             {
-                _View.DisplayError("You did not enter description!");
+                _view.DisplayError("You did not enter description!");
                 return;
             }
-            _model.categories.Add(desc, (Budget.Category.CategoryType)type);
-            _View.DisplayConfirmation("Added Succesfully!");
-            _View.CloseCategoryMenu();
-            
+            try
+            {
+                _model.categories.Add(desc, (Budget.Category.CategoryType)type);
+                _view.DisplayConfirmation("Added Succesfully!");
+
+            }
+            catch (Exception ex)
+            {
+                _view.DisplayError(ex.Message);
+            }
+
+            _view.CloseCategoryMenu();
             if (fromExpense)
             {
-                _View.CloseMain();
+                _view.CloseMain();
             }
+
         }
 
         public bool CreateNewCategoryFromDropDown(string name)
@@ -104,7 +112,8 @@ namespace HomeBudgetWPF
                     return false;
                 }
             }
-            _View.DisplayCategoryMenuWithName(name);
+            _view.DisplayCategoryMenuWithName(name);
+            _view.DisplayCategoryTypes(Enum.GetValues<Category.CategoryType>().ToList());
             return true;
         }
         #endregion
@@ -112,11 +121,12 @@ namespace HomeBudgetWPF
         #region Expenses
         public void OpenExpense()
         {
-            _View.DisplayExpenseMenu();
+            _view.DisplayExpenseMenu();
+            _view.DisplayCategories(_model.categories.List());
         }
         public void CloseExpense()
         {
-            _View.CloseExpenseMenu();
+            _view.CloseExpenseMenu();
         }
 
         public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
@@ -129,7 +139,7 @@ namespace HomeBudgetWPF
             
             if (string.IsNullOrEmpty(desc))
             {
-                _View.DisplayError("You did not enter description!");
+                _view.DisplayError("You did not enter description!");
                 return;
             }
 
@@ -140,18 +150,18 @@ namespace HomeBudgetWPF
 
             if (newAmount == -1)
             {
-                _View.DisplayError("Invalid Amount,\nPlease enter a number");
+                _view.DisplayError("Invalid Amount,\nPlease enter a number");
                 return;
             }
 
-            if (!MakeIdenticalExpense(date,cat,newAmount,desc))
+            if (MakeIdenticalExpense(date,cat,newAmount,desc))
                 return;
 
             
             _model.expenses.Add(date,cat, newAmount, desc);
 
-            _View.DisplayConfirmation ("Added Succesfully!");
-            _View.CloseExpenseMenu();
+            _view.DisplayConfirmation ("Added Succesfully!");
+            _view.CloseExpenseMenu();
         }
 
         public bool MakeIdenticalExpense(DateTime date, int cat, double amount, string desc)
@@ -162,7 +172,7 @@ namespace HomeBudgetWPF
 
             if (expense.Date == date && expense.Category == cat && expense.Amount == amount && expense.Description == desc)
             {
-                makeIdenticalExpense = _View.AskConfirmation("This expense is identical to the one you just entered\nAre you sure you want to make it again?");
+                makeIdenticalExpense = _view.AskConfirmation("This expense is identical to the one you just entered\nAre you sure you want to make it again?");
             }
 
             return makeIdenticalExpense;
@@ -174,7 +184,7 @@ namespace HomeBudgetWPF
             double result; 
             if (string.IsNullOrEmpty(amount))
             {
-                _View.DisplayError("You did not enter amount!");
+                _view.DisplayError("You did not enter amount!");
                 result = -1;
             }
             else if (!double.TryParse(amount, out result))

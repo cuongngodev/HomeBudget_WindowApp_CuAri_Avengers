@@ -31,28 +31,29 @@ namespace HomeBudgetWPF
             _fromExpense = false;
         }
 
-        public CategoryView(Presenter p, string name)
+        public void ShowView()
         {
-            InitializeComponent();
-            _p = p;
-            this.Closing += MainWindow_Closing;
-            _fromExpense = true;
+            this.Show();
         }
+
+        public void ShowView(string name)
+        {
+            this.Show();
+            _fromExpense = true;
+            TxtDescription.Text = name;
+        }
+
+
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (Application.Current.Windows.Count <= 2)
-            {
-                Application.Current.Shutdown();
-            }
+            Application.Current.Shutdown();
         }
 
-        public void SetupInputBoxes(List<Category.CategoryType> categoryTypes,string name = "")
+        public void SetupInputBoxes(List<Category.CategoryType> categoryTypes)
         {
             CmbCatType.ItemsSource = categoryTypes;
             CmbCatType.SelectedIndex = 0;
-
-            TxtDescription.Text = name;
         }
 
       
@@ -62,7 +63,7 @@ namespace HomeBudgetWPF
             string desc = TxtDescription.Text;
             Object type = CmbCatType.SelectedItem;
             
-            _p.CreateNewCategory(desc, type);
+
 
             if (_fromExpense)
             {   
