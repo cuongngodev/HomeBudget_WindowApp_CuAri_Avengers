@@ -45,6 +45,7 @@ namespace HomeBudgetWPF
             if (string.IsNullOrWhiteSpace(newFileName))
             {
                 MessageBox.Show("Please enter a file name.", "File name empty", MessageBoxButton.OK,MessageBoxImage.Error);
+                return;
             }
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
