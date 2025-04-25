@@ -26,6 +26,11 @@
                         HorizontalAlignment="Center"
                         FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
                 />
+                <TextBox x:Name="fileLocation" 
+                         HorizontalAlignment="Center" 
+                         Height="25" Width ="500" 
+                         Margin="20"
+                         IsReadOnly="True"/>
                 <TextBox x:Name="fileLocation" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" HorizontalAlignment="Center" Height="25" Width ="500" Margin="20"/>
 
                 <Button 

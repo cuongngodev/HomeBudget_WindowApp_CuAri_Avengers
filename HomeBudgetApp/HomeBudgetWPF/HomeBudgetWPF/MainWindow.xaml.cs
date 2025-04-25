@@ -1,4 +1,6 @@
 ﻿using Budget;
+using System.ComponentModel;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +22,9 @@ namespace HomeBudgetWPF
     public partial class MainWindow : Window, ViewInterface
     {
         public Presenter _p;
-        public Window _categoryView,_fileSelectView, _expenseView;
+        public Window _fileSelectView;
+        public CategoryView _categoryView;
+        public ExpenseView _expenseView;
         public MainWindow()
         {
             InitializeComponent();
@@ -28,7 +32,16 @@ namespace HomeBudgetWPF
 
            
             _p.SetupPresenter();
-         }
+
+            this.Closing += MainWindow_Closing;
+
+
+        }
+
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        { 
+            Application.Current.Shutdown();    
+        }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
@@ -67,30 +80,30 @@ namespace HomeBudgetWPF
 
         public void DisplayCategoryMenu()
         {
-            this.Hide();
             _categoryView = new CategoryView(_p);
             _categoryView.Show();
-
+            this.Hide();
+            
         }
 
         public void DisplayExpenseMenu()
         {
-            this.Hide();
             _expenseView = new ExpenseView(_p);
             _expenseView.Show();
+            this.Hide();
         }
 
         public void DisplaySelectFileMenu()
         {
-             this.Hide();
             _fileSelectView = new FileSelect(_p);
             _fileSelectView.Show();
+            this.Hide();
         }
 
         public void CloseCategoryMenu()
         {
-            _categoryView.Close();
             this.Show();
+            _categoryView.Close();
         }
 
         public void ChangeColorTheme(object sender, RoutedEventArgs e)
@@ -188,9 +201,8 @@ namespace HomeBudgetWPF
 
         public void CloseExpenseMenu()
         {
-            _expenseView.Close();
             this.Show();
-
+            _expenseView.Close();
         }
 
         public void CloseFileSelectMenu()
@@ -198,5 +210,33 @@ namespace HomeBudgetWPF
             _fileSelectView.Close();
             this.Show();
         }
+
+        public void DisplayCategoryMenuWithName(string name)
+        {
+            _categoryView = new CategoryView(_p, name);
+            _categoryView.Show();
+
+        }
+
+        public void CloseMain()
+        {
+            this.Hide();
+        }
+
+        public void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes)
+        {
+            _categoryView.SetupInputBoxes(categoryTypes);
+        }
+
+        public void DisplayCategories(List<Category> categories)
+        {
+            _expenseView.SetupInputBoxes(categories);
+        }
+
+        public bool AskConfirmation(string message)
+        {
+            return MessageBox.Show(message, "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }
+
     }
 }
