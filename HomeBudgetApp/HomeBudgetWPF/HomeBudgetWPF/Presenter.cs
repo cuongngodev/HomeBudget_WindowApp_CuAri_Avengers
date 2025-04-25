@@ -31,15 +31,15 @@ namespace HomeBudgetWPF
         #region Database
         public void SetDatabase(string db, bool isNew)
         {
-            _model = new HomeBudget(VerifyDb(db), isNew);
+            if(string.IsNullOrEmpty(db))
+            {
+                _View.DisplayError("You did not select location to save to.");
+                return;
+            }
+            _model = new HomeBudget(db, isNew);
 
             _View.DisplayConfirmation("Db file succesfully selected");
             _View.CloseFileSelectMenu();
-        }
-
-        public string VerifyDb(string db)
-        {
-            return db;
         }
 
         public void OpenSelectFile()
