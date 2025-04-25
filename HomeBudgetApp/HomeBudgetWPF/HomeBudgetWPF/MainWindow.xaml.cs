@@ -21,7 +21,9 @@ namespace HomeBudgetWPF
     public partial class MainWindow : Window, ViewInterface
     {
         public Presenter _p;
-        public Window _categoryView,_fileSelectView, _expenseView;
+        public Window _fileSelectView;
+        public CategoryView _categoryView;
+        public ExpenseView _expenseView;
         public MainWindow()
         {
             InitializeComponent();
@@ -125,6 +127,16 @@ namespace HomeBudgetWPF
         public void CloseMain()
         {
             this.Hide();
+        }
+
+        public void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes)
+        {
+            _categoryView.SetupInputBoxes(categoryTypes);
+        }
+
+        public void DisplayCategories(List<Category> categories)
+        {
+            _expenseView.SetupInputBoxes(categories);
         }
 
         public bool AskConfirmation(string message)

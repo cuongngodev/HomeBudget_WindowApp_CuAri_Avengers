@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Budget;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -26,7 +27,6 @@ namespace HomeBudgetWPF
         {
             InitializeComponent();
             _p = p;
-            SetupInputBoxes();
             this.Closing += MainWindow_Closing;
             _fromExpense = false;
         }
@@ -35,7 +35,6 @@ namespace HomeBudgetWPF
         {
             InitializeComponent();
             _p = p;
-            SetupInputBoxes(name);
             this.Closing += MainWindow_Closing;
             _fromExpense = true;
         }
@@ -48,9 +47,9 @@ namespace HomeBudgetWPF
             }
         }
 
-        private void SetupInputBoxes(string name = "")
+        public void SetupInputBoxes(List<Category.CategoryType> categoryTypes,string name = "")
         {
-            CmbCatType.ItemsSource = _p.GetAllCategoryTypes();
+            CmbCatType.ItemsSource = categoryTypes;
             CmbCatType.SelectedIndex = 0;
 
             TxtDescription.Text = name;

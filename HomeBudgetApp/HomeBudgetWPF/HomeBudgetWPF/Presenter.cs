@@ -18,7 +18,6 @@ namespace HomeBudgetWPF
         public Presenter(ViewInterface v)
         {
             _View = v;
-  
         }
 
         public void SetupPresenter()
@@ -44,19 +43,17 @@ namespace HomeBudgetWPF
         public void OpenSelectFile()
         {
             _View.DisplaySelectFileMenu();
+            _View.DisplayCategories(_model.categories.List());
         }
         #endregion
 
         //Cat Stuff
         #region Category
-        public List<Budget.Category.CategoryType> GetAllCategoryTypes()
-        {
-            return Enum.GetValues<Category.CategoryType>().ToList();
-        }
 
         public void OpenCategory()
         {
             _View.DisplayCategoryMenu();
+            _View.DisplayCategoryTypes(Enum.GetValues<Category.CategoryType>().ToList());
         }
 
         public void CreateNewCategory(string desc, object type, bool fromExpense = false)
@@ -78,13 +75,6 @@ namespace HomeBudgetWPF
             }
         }
 
-        public List<Budget.Category> GetAllCategories()
-        {
-            return _model.categories.List();
-        }
-
-
-        //needs to be fixed
         public bool CreateNewCategoryFromDropDown(string name)
         {
             foreach (Budget.Category cat in _model.categories.List())
@@ -94,7 +84,6 @@ namespace HomeBudgetWPF
                     return false;
                 }
             }
-
             _View.DisplayCategoryMenuWithName(name);
             return true;
         }
