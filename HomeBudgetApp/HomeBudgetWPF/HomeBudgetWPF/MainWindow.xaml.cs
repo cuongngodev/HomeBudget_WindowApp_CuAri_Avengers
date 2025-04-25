@@ -1,5 +1,6 @@
 ﻿using Budget;
 using System.ComponentModel;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,11 +38,8 @@ namespace HomeBudgetWPF
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
-        {
-            if (Application.Current.Windows.Count <= 1)
-            {
-                Application.Current.Shutdown();
-            }
+        { 
+            Application.Current.Shutdown();    
         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
@@ -140,5 +138,11 @@ namespace HomeBudgetWPF
         {
             _expenseView.SetupInputBoxes(categories);
         }
+
+        public bool AskConfirmation(string message)
+        {
+            return MessageBox.Show(message, "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }
+
     }
 }
