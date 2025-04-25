@@ -37,10 +37,7 @@ namespace HomeBudgetWPF
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (Application.Current.Windows.Count <= 2)
-            {
-                Application.Current.Shutdown();
-            }
+            Application.Current.Shutdown();
         }
 
         /// <summary>

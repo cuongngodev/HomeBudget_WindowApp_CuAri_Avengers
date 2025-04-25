@@ -31,9 +31,19 @@ namespace HomeBudgetWPF
             InitializeComponent();
             _p = new(this);
 
+            _fileSelectView = new FileSelect(_p);
+            _categoryView = new CategoryView(_p);
+            _expenseView = new ExpenseView(_p);
+
+            _expenseView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            _categoryView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            _fileSelectView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+           
             _p.SetupPresenter();
 
             this.Closing += MainWindow_Closing;
+
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -78,22 +88,19 @@ namespace HomeBudgetWPF
 
         public void DisplayCategoryMenu()
         {
-            _categoryView = new CategoryView(_p);
-            _categoryView.Show();
+            _categoryView.ShowView();
             this.Hide();
             
         }
 
         public void DisplayExpenseMenu()
         {
-            _expenseView = new ExpenseView(_p);
             _expenseView.Show();
             this.Hide();
         }
 
         public void DisplaySelectFileMenu()
         {
-            _fileSelectView = new FileSelect(_p);
             _fileSelectView.Show();
             this.Hide();
         }
@@ -101,7 +108,7 @@ namespace HomeBudgetWPF
         public void CloseCategoryMenu()
         {
             this.Show();
-            _categoryView.Close();
+            _categoryView.Hide();
         }
 
         public void ChangeColorTheme(object sender, RoutedEventArgs e)
@@ -197,19 +204,18 @@ namespace HomeBudgetWPF
         public void CloseExpenseMenu()
         {
             this.Show();
-            _expenseView.Close();
+            _expenseView.Hide();
         }
 
         public void CloseFileSelectMenu()
         {
-            _fileSelectView.Close();
             this.Show();
+            _fileSelectView.Hide();
         }
 
         public void DisplayCategoryMenuWithName(string name)
         {
-            _categoryView = new CategoryView(_p, name);
-            _categoryView.Show();
+            _categoryView.ShowView(name);
 
         }
 
