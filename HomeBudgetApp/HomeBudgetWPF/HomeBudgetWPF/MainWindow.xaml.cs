@@ -106,6 +106,7 @@ namespace HomeBudgetWPF
             BrushConverter brushConverter = new BrushConverter();
             this.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
 
+            #region DefaultHome
             this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
             this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
@@ -122,6 +123,7 @@ namespace HomeBudgetWPF
             this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            #endregion
         }
 
         //Button Text: #82b74b, #FFC107
@@ -139,6 +141,7 @@ namespace HomeBudgetWPF
             BrushConverter brushConverter = new BrushConverter();
             this.Background = (Brush)brushConverter.ConvertFrom("#004D40");
 
+            #region ProDeuterHome
             this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
@@ -155,6 +158,7 @@ namespace HomeBudgetWPF
             this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            #endregion
         }
 
         public void SetTritanopiaTheme()
@@ -162,6 +166,7 @@ namespace HomeBudgetWPF
             BrushConverter brushConverter = new BrushConverter();
             this.Background = (Brush)brushConverter.ConvertFrom("#004D40");
 
+            #region TritanHome
             this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
@@ -178,6 +183,7 @@ namespace HomeBudgetWPF
             this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            #endregion
         }
 
         public void CloseExpenseMenu()

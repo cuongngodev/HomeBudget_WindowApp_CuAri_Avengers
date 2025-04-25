@@ -5,43 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
-        Title="FileSelect" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="FileSelect" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#3e4444">
     <StackPanel>
-        <Label x:Name="Category_Page_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
+        <Label x:Name="FileSelectPageTitle" FontWeight="Bold" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
 
         <Grid>
-
-
             <StackPanel>
-                <TextBlock Text="Enter filename (without extension):" Margin="0,0,0,5"
+                <TextBlock FontWeight="Bold" Foreground="#82b74b"
+                           x:Name="TxtBlEnterFile"
+                           Text="Enter filename (without extension):" Margin="0,0,0,5"
                            HorizontalAlignment="Center"
                            />
-                <TextBox x:Name="fileNameTextBox" HorizontalAlignment="Center" Height="25" Width ="100" Margin="0,0,0,10"/>
-                <Button Content="Save To" 
+                <TextBox x:Name="fileNameTextBox" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" HorizontalAlignment="Center" Height="25" Width ="100" Margin="0,0,0,10"/>
+                <Button x:Name="BtnSaveTo"
+                        Content="Save To" 
                         Click="Save_To_Click" 
-                        Height="30" Width="100" 
+                        Padding="10"
                         HorizontalAlignment="Center"
-                     
+                        FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
                 />
-                <TextBox x:Name="fileLocation" HorizontalAlignment="Center" Height="25" Width ="500" Margin="20"/>
+                <TextBox x:Name="fileLocation" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" HorizontalAlignment="Center" Height="25" Width ="500" Margin="20"/>
 
                 <Button 
+                    x:Name="BtnCreate"
                     Content="Create" 
                     Click="CreateFileButton_Click" 
-                    Height="30" Width="100" 
+                    Padding="10"
                     HorizontalAlignment="Center"
-                    Margin="20"/>
+                    Margin="20"
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
                 <Button 
+                    x:Name="BtnOpenCurrent"
                     Content="Open Current File" Click="Open_Current_Database_Click" 
                     Grid.Row="1" Grid.Column="0" 
-                    Height="30" Width="100" 
+                    Padding="10"
                     HorizontalAlignment="Center"
-                    Margin="20"/>
+                    Margin="20"
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
 
             </StackPanel>
-
-
-
         </Grid>
     </StackPanel>
 </Window>

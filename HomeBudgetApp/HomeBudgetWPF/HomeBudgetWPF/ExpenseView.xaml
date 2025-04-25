@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
-        Title="ExpenseView" Height="450" Width="800">
+        Title="ExpenseView" Height="450" Width="800"
+        Background="#3e4444">
     <StackPanel>
-        <Label x:Name="Category_Page_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30">Log Expense</Label>
+        <Label x:Name="ExpensePageTitle" FontWeight="Bold" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30">Log Expense</Label>
 
         <Grid>
             <Grid.RowDefinitions>
@@ -24,31 +25,31 @@
             </Grid.ColumnDefinitions>
 
             <DockPanel Margin="5" Grid.Row="0" HorizontalAlignment="Center" MinWidth="200">
-                <Label Content="Description:" Width="73"/>
-                <TextBox x:Name="TxtDesc" Width="100"></TextBox>
+                <Label x:Name="LblExpenseDesc" FontWeight="Bold" Foreground="#82b74b" Content="Description:"/>
+                <TextBox x:Name="TxtDesc" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" Width="100"></TextBox>
             </DockPanel>
 
             <DockPanel Margin="5"  Grid.Row="1" HorizontalAlignment="Center" MinWidth="200">
-                <Label Content="Amount:"/>
-                <TextBox x:Name="TxtAmount"></TextBox>
+                <Label x:Name="LblExpenseAmount" FontWeight="Bold" Foreground="#82b74b" Content="Amount:"/>
+                <TextBox x:Name="TxtAmount" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"></TextBox>
             </DockPanel>
 
             <DockPanel Margin="5"  Grid.Row="2" HorizontalAlignment="Center" MinWidth="200">
-                <Label Content="Category:"/>
-                <ComboBox x:Name="CmbCategory" IsEditable="True" StaysOpenOnEdit="True"/>
+                <Label x:Name="LblExpenseCat" FontWeight="Bold" Foreground="#82b74b" Content="Category:"/>
+                <ComboBox x:Name="CmbCategory" Foreground="#82b74b" BorderThickness="2" BorderBrush="#405d27" IsEditable="True" StaysOpenOnEdit="True"/>
             </DockPanel>
 
             <DockPanel Margin="5"  Grid.Row="3" HorizontalAlignment="Center" MinWidth="200">
-                <Label Content="Date:"/>
-                <DatePicker x:Name="DtDate"/>
+                <Label x:Name="LblExpenseDescDate" FontWeight="Bold" Foreground="#82b74b" Content="Date:"/>
+                <DatePicker x:Name="DtDate" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
             </DockPanel>
             
             <DockPanel Margin="5"  Grid.Row="4" HorizontalAlignment="Center" MinWidth="200">
-                <Label Content="On Credit Card:"/>
+                <Label x:Name="LblExpenseCredit" FontWeight="Bold" Foreground="#82b74b" Content="On Credit Card:"/>
                 <CheckBox x:Name="New_Expense_OnCredit_ChkBox" VerticalAlignment="Center"/>
             </DockPanel>
 
-            <Button Width="auto" Grid.Row="5" HorizontalAlignment="Center" Click="ExpenseSubmitClick">Log New Expense</Button>
+            <Button x:Name="BtnLogExpense" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" Width="auto" Grid.Row="5" HorizontalAlignment="Center" Click="ExpenseSubmitClick" Padding="3">Log New Expense</Button>
         </Grid>
     </StackPanel>
 </Window>
