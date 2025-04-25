@@ -47,14 +47,6 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void Save_To_Click(object sender, RoutedEventArgs e)
         {
-            //string newFileName = fileNameTextBox.Text.Trim();
-            //// if text box empty
-            //if (string.IsNullOrWhiteSpace(newFileName))
-            //{
-            //    MessageBox.Show("Please enter a file name.", "File name empty", MessageBoxButton.OK,MessageBoxImage.Error);
-            //    return;
-            //}
-
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Title = "Select Location to Save Database",
@@ -67,27 +59,10 @@ namespace HomeBudgetWPF
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                // Get the path where user wants to save
-                selectedLocation = saveFileDialog.FileName;
-                string selectedFileName = saveFileDialog.FileName;
-
-                // Update the UI with the selected location
-                fileLocation.Text = selectedLocation;
-
+                _p.SetDatabase(saveFileDialog.FileName, true);
             }
         }
-        /// <summary>
-        /// Creates new file for new users
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CreateFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            string newFileName =  fileLocation.Text;
 
-            // Start create the db
-            _p.SetDatabase(newFileName, true);
-        }
 
         /// <summary>
         /// Opens current file for current user
