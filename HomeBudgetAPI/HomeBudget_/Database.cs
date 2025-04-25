@@ -52,7 +52,7 @@ namespace Budget
                 CloseDatabaseAndReleaseFile();
 
                 // your code
-                SQLiteConnection.CreateFile(filename);
+                // SQLiteConnection.CreateFile(filename);
                 string cs = $"URI=file:{filename}";
                 _connection = new SQLiteConnection(cs);
 

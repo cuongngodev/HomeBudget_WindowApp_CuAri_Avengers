@@ -58,6 +58,12 @@ namespace HomeBudgetWPF
       
         private void NewCatSubmitClicked(object sender, RoutedEventArgs e)
         {
+
+            string desc = TxtDescription.Text;
+            Object type = CmbCatType.SelectedItem;
+            
+            _p.CreateNewCategory(desc, type);
+
             if (_fromExpense)
             {
                 string desc = TxtDescription.Text;
@@ -70,8 +76,11 @@ namespace HomeBudgetWPF
                 Object type = CmbCatType.SelectedItem;
                 _p.CreateNewCategory(desc, type);
             }
-    
         }
-      
+
+        private void Cancel_Category_Click(object sender, RoutedEventArgs e)
+        {
+            _p.CloseCategory();
+        }
     }
 }

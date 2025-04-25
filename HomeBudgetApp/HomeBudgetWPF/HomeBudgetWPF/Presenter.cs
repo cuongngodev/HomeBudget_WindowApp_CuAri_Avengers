@@ -7,6 +7,8 @@ using System.Windows;
 using Budget;
 using static HomeBudgetWPF.ViewInterface;
 
+
+
 namespace HomeBudgetWPF
 {
   
@@ -29,15 +31,15 @@ namespace HomeBudgetWPF
         #region Database
         public void SetDatabase(string db, bool isNew)
         {
-            _model = new HomeBudget(VerifyDb(db), isNew);
+            if(string.IsNullOrEmpty(db))
+            {
+                _View.DisplayError("You did not select location to save to.");
+                return;
+            }
+            _model = new HomeBudget(db, isNew);
 
             _View.DisplayConfirmation("Db file succesfully selected");
             _View.CloseFileSelectMenu();
-        }
-
-        public string VerifyDb(string db)
-        {
-            return db;
         }
 
         public void OpenSelectFile()
@@ -56,14 +58,32 @@ namespace HomeBudgetWPF
             _View.DisplayCategoryTypes(Enum.GetValues<Category.CategoryType>().ToList());
         }
 
+
+        public void CloseCategory()
+        {
+            _View.CloseCategoryMenu();
+        }
+
+        /// <summary>
+        /// Adds new category that has not exisited in the database yet.
+        /// </summary>
+        /// <param name="desc"></param>
+        /// <param name="type"></param>
         public void CreateNewCategory(string desc, object type, bool fromExpense = false)
+
         {
             foreach (Budget.Category cat in _model.categories.List())
             {
-                if (cat.ToString() == desc)
+                if (cat.ToString().ToLower() == desc.ToLower())
                 {
-                    _View.DisplayError("Error");
+                    _View.DisplayError("Category already exisited");
+                    return;
                 }
+            }
+            if (string.IsNullOrEmpty(desc))
+            {
+                _View.DisplayError("You did not enter description!");
+                return;
             }
             _model.categories.Add(desc, (Budget.Category.CategoryType)type);
             _View.DisplayConfirmation("Added Succesfully!");
@@ -94,14 +114,32 @@ namespace HomeBudgetWPF
         {
             _View.DisplayExpenseMenu();
         }
+        public void CloseExpense()
+        {
+            _View.CloseExpenseMenu();
+        }
 
-        public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
+        public void CreateNewExpense(DateTime? date, int cat, string amount, string desc)
         {
             if (cat == -1)
             {
                 cat = _model.categories.List().Count() -1;
             }
 
+            
+            if (string.IsNullOrEmpty(desc))
+            {
+                _View.DisplayError("You did not enter description!");
+                return;
+            }
+
+          
+            if(!date.HasValue)
+            {
+                _View.DisplayError("You did not select date!");
+                return;
+            }
+            
             cat += 1;
 
             double newAmount = StringToDouble(amount);
@@ -113,10 +151,11 @@ namespace HomeBudgetWPF
             }
 
             if (!MakeIdenticalExpense(date,cat,newAmount,desc))
-                return; //should there be a message
+                return;
 
             
             _model.expenses.Add(date,cat, newAmount, desc);
+
             _View.DisplayConfirmation ("Added Succesfully!");
             _View.CloseExpenseMenu();
         }
@@ -139,7 +178,12 @@ namespace HomeBudgetWPF
         public double StringToDouble(string amount)
         {
             double result; 
-            if (!double.TryParse(amount, out result))
+            if (string.IsNullOrEmpty(amount))
+            {
+                _View.DisplayError("You did not enter amount!");
+                result = -1;
+            }
+            else if (!double.TryParse(amount, out result))
             {
                 return -1;
             }

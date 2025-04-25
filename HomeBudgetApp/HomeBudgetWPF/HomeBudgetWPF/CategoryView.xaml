@@ -14,6 +14,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -31,6 +32,7 @@
             </DockPanel>
 
             <Button Width="auto" Grid.Row="2" HorizontalAlignment="Center" Click="NewCatSubmitClicked"  Height="20" VerticalAlignment="Top">Create New Category</Button>
+            <Button Width="auto" Margin="10" Grid.Row="3" HorizontalAlignment="Center" Click="Cancel_Category_Click"  Height="20" VerticalAlignment="Top">Cancel</Button>
         </Grid>
     </StackPanel>
 </Window>

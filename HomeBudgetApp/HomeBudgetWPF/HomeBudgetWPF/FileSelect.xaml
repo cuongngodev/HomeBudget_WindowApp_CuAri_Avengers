@@ -23,7 +23,11 @@
                         HorizontalAlignment="Center"
                      
                 />
-                <TextBox x:Name="fileLocation" HorizontalAlignment="Center" Height="25" Width ="500" Margin="20"/>
+                <TextBox x:Name="fileLocation" 
+                         HorizontalAlignment="Center" 
+                         Height="25" Width ="500" 
+                         Margin="20"
+                         IsReadOnly="True"/>
 
                 <Button 
                     Content="Create" 

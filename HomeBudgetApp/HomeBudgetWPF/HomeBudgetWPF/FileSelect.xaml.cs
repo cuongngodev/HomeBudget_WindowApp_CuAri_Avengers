@@ -54,7 +54,7 @@ namespace HomeBudgetWPF
             // if text box empty
             if (string.IsNullOrWhiteSpace(newFileName))
             {
-                MessageBox.Show("Please enter a file name.");
+                MessageBox.Show("Please enter a file name.", "File name empty", MessageBoxButton.OK,MessageBoxImage.Error);
                 return;
             }
 
@@ -86,11 +86,10 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void CreateFileButton_Click(object sender, RoutedEventArgs e)
         {
-            string newFileName = fileNameTextBox.Text.Trim()+".db";
+            string newFileName =  fileLocation.Text;
 
             // Start create the db
             _p.SetDatabase(newFileName, true);
-            MessageBox.Show("Create new DB successfully!");
         }
 
         /// <summary>
