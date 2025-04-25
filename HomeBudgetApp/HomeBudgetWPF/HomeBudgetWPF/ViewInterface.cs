@@ -1,4 +1,6 @@
-﻿namespace HomeBudgetWPF
+﻿using Budget;
+
+namespace HomeBudgetWPF
 {
 
     public interface ViewInterface
@@ -21,7 +23,12 @@
         void CloseExpenseMenu();
 
         void CloseFileSelectMenu();
+
         void CloseMain();
+
+        void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes);
+
+        void DisplayCategories(List<Category> categories);
 
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Budget;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -29,21 +30,18 @@ namespace HomeBudgetWPF
         {
             InitializeComponent();
             _p = p;
-            SetupUI();
             this.Closing += MainWindow_Closing;
         }
 
       
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            //if (Application.Current.Windows.Count <= 2)
-            //{
-            //    Application.Current.Shutdown();
-            //}
+   
         }
-        private void SetupUI()
+
+        public void SetupInputBoxes(List<Category> categoryList)
         {
-            CmbCategory.ItemsSource = _p.GetAllCategories();
+            CmbCategory.ItemsSource = categoryList;
             CmbCategory.DisplayMemberPath = "Description";
             CmbCategory.SelectedIndex = 0;
 
