@@ -75,7 +75,6 @@ namespace HomeBudgetWPF
             if (fromExpense)
             {
                 _View.CloseMain();
-                //_View.DisplayExpenseMenu();
             }
         }
 
@@ -113,10 +112,38 @@ namespace HomeBudgetWPF
             {
                 cat = _model.categories.List().Count() -1;
             }
-           
-            _model.expenses.Add(date,cat + 1,StringToDouble(amount),desc);
+
+            cat += 1;
+
+            double newAmount = StringToDouble(amount);
+
+            if (newAmount == -1)
+            {
+                _View.DisplayError("Invalid Amount,\nPlease enter a number");
+                return;
+            }
+
+            if (!MakeIdenticalExpense(date,cat,newAmount,desc))
+                return; //should there be a message
+
+            
+            _model.expenses.Add(date,cat, newAmount, desc);
             _View.DisplayConfirmation ("Added Succesfully!");
             _View.CloseExpenseMenu();
+        }
+
+        public bool MakeIdenticalExpense(DateTime date, int cat, double amount, string desc)
+        {
+            bool makeIdenticalExpense = false;
+
+            Budget.Expense expense = _model.expenses.List()[_model.expenses.List().Count() - 1];
+
+            if (expense.Date == date && expense.Category == cat && expense.Amount == amount && expense.Description == desc)
+            {
+                makeIdenticalExpense = _View.AskConfirmation("This expense is identical to the one you just entered\nAre you sure you want to make it again?");
+            }
+
+            return makeIdenticalExpense;
         }
         #endregion
 
@@ -125,7 +152,7 @@ namespace HomeBudgetWPF
             double result; 
             if (!double.TryParse(amount, out result))
             {
-                _View.DisplayError("Invalid Amount,\nPlease enter a number");
+                return -1;
             }
             return result;
         }
