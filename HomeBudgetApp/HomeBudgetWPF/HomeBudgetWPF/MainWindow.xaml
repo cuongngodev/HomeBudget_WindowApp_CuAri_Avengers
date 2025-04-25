@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
         Background="#3e4444">
-    <Grid>
+    <Grid x:Name="MainWindowContainer">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -36,10 +36,10 @@
                 <Label Foreground="#82b74b" x:Name="ThemeTitleLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Color Themes</Label>
 
                 <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetDefaultTheme">Default</RadioButton>
-                    <RadioButton x:Name="ProtanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetProtanopiaTheme">Protanopia</RadioButton>
-                    <RadioButton x:Name="DeuteranopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetDeuteranopiaTheme">Deuteranopia</RadioButton>
-                    <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="SetTritanopiaTheme">Tritanopia</RadioButton>
+                    <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="ChangeColorTheme">Default</RadioButton>
+                    <RadioButton x:Name="ProtanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="ChangeColorTheme">Protanopia</RadioButton>
+                    <RadioButton x:Name="DeuteranopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="ChangeColorTheme">Deuteranopia</RadioButton>
+                    <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="ChangeColorTheme">Tritanopia</RadioButton>
                 </StackPanel>
 
                 <Label Foreground="#82b74b" x:Name="CurrentThemeLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Content=""/>
@@ -49,9 +49,9 @@
 </Window>
 
 <!--
-Text Outline: #405d27
-
-Buttons: #c1946a
+Button Background: #405d27
+    
+Button Outline: White
     
 Text Color: #82b74b
     

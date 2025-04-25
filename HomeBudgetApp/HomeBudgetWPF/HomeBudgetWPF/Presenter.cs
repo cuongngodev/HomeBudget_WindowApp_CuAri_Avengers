@@ -124,6 +124,26 @@ namespace HomeBudgetWPF
             return result;
         }
 
-
+        public void ChangeColorScheme(string colorScheme)
+        {
+            switch (colorScheme)
+            {
+                case "Default":
+                    _View.DefaultTheme();
+                    break;
+                case "Protanopia":
+                    _View.ProtanopiaTheme();
+                    break;
+                case "Deuteranopia":
+                    _View.DeuteranopiaTheme();
+                    break;
+                case "Tritanopia":
+                    _View.TritanopiaTheme();
+                    break;
+                default:
+                    _View.DefaultTheme();
+                    break;
+            }
+        }
     }
 }

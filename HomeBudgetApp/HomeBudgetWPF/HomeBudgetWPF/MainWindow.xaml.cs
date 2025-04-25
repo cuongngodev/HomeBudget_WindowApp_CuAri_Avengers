@@ -94,37 +94,6 @@ namespace HomeBudgetWPF
             this.Show();
         }
 
-        private void ChangeColorTheme(object sender, RoutedEventArgs e)
-        {
-
-        }
-        
-        private void SetDefaultTheme(object sender, RoutedEventArgs e)
-        {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
-
-
-        }
-
-        private void SetProtanopiaTheme(object sender, RoutedEventArgs e)
-        {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
-        }
-
-        private void SetDeuteranopiaTheme(object sender, RoutedEventArgs e)
-        {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
-        }
-
-        private void SetTritanopiaTheme(object sender, RoutedEventArgs e)
-        {
-            RadioButton li = (sender as RadioButton);
-            CurrentThemeLbl.Content = "You clicked " + li.Content.ToString() + ".";
-        }
-
         public void CloseExpenseMenu()
         {
             _expenseView.Close();
@@ -137,5 +106,126 @@ namespace HomeBudgetWPF
             _fileSelectView.Close();
             this.Show();
         }
+
+        public void ChangeColorTheme(object sender, RoutedEventArgs e)
+        {
+            RadioButton li = (sender as RadioButton);
+            string colorTheme = li.Content.ToString();
+
+            _p.ChangeColorScheme(colorTheme);
+        }
+
+        public void DefaultTheme()
+        {
+            BrushConverter converter = new BrushConverter();
+            this.Background = (Brush)converter.ConvertFrom("#3e4444");
+
+            foreach (var element in MainWindowContainer.Children)
+            {
+                if (element is RadioButton)
+                {
+                    RadioButton radioButton = element as RadioButton;
+                    radioButton.Foreground = (Brush)converter.ConvertFrom("#82b74b");
+                }
+                else if (element is Button)
+                {
+                    Button button = element as Button;
+                    button.Background = (Brush)converter.ConvertFrom("#405d27");
+                    button.Foreground = (Brush)converter.ConvertFrom("#82b74b");
+                }
+                else if (element is Label)
+                {
+                    Label label = element as Label;
+                    label.Foreground = (Brush)converter.ConvertFrom("#82b74b");
+                }
+            }
+        }
+
+        public void ProtanopiaTheme()
+        {
+            BrushConverter converter = new BrushConverter();
+            this.Background = (Brush)converter.ConvertFrom("#004D40");
+
+            foreach (var element in MainWindowContainer.Children)
+            {
+                if (element is RadioButton)
+                {
+                    RadioButton radioButton = element as RadioButton;
+                    radioButton.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+                else if (element is Button)
+                {
+                    Button button = element as Button;
+                    button.Background = (Brush)converter.ConvertFrom("#1E88E5");
+                    button.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+                else if (element is Label)
+                {
+                    Label label = element as Label;
+                    label.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+            }
+        }
+
+        public void DeuteranopiaTheme()
+        {
+            BrushConverter converter = new BrushConverter();
+            this.Background = (Brush)converter.ConvertFrom("#004D40");
+
+            foreach (var element in MainWindowContainer.Children)
+            {
+                if (element is RadioButton)
+                {
+                    RadioButton radioButton = element as RadioButton;
+                    radioButton.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+                else if (element is Button)
+                {
+                    Button button = element as Button;
+                    button.Background = (Brush)converter.ConvertFrom("#1E88E5");
+                    button.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+                else if (element is Label)
+                {
+                    Label label = element as Label;
+                    label.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+            }
+        }
+
+        public void TritanopiaTheme()
+        {
+            BrushConverter converter = new BrushConverter();
+            this.Background = (Brush)converter.ConvertFrom("#004D40");
+
+            foreach (var element in MainWindowContainer.Children)
+            {
+                if (element is RadioButton)
+                {
+                    RadioButton radioButton = element as RadioButton;
+                    radioButton.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+                else if (element is Button)
+                {
+                    Button button = element as Button;
+                    button.Background = (Brush)converter.ConvertFrom("#1E88E5");
+                    button.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+                else if (element is Label)
+                {
+                    Label label = element as Label;
+                    label.Foreground = (Brush)converter.ConvertFrom("#FFC107");
+                }
+            }
+        }
+
+        //Button Background: #405d27
+    
+        //Button Outline: White
+
+        //Text Color: #82b74b
+    
+        //Background: #3e4444
+
     }
 }
