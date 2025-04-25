@@ -1,0 +1,36 @@
+﻿<Window x:Class="HomeBudgetWPF.CategoryView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HomeBudgetWPF"
+        mc:Ignorable="d"
+        Title="CategoryView" Height="450" Width="800">
+    <StackPanel>
+        <Label x:Name="Category_Page_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30">Create Category</Label>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <DockPanel Margin="5" Grid.Row="0" HorizontalAlignment="Center" MinWidth="200">
+                <Label Content="Description"/>
+                <TextBox x:Name="TxtDescription"></TextBox>
+            </DockPanel>
+
+            <DockPanel Margin="5"  Grid.Row="1" HorizontalAlignment="Center" MinWidth="200">
+                <Label Content="Type"/>
+                <ComboBox x:Name="CmbCatType"/>
+            </DockPanel>
+
+            <Button Width="auto" Grid.Row="2" HorizontalAlignment="Center" Click="NewCatSubmitClicked"  Height="20" VerticalAlignment="Top">Create New Category</Button>
+        </Grid>
+    </StackPanel>
+</Window>

@@ -1,0 +1,54 @@
+﻿<Window x:Class="HomeBudgetWPF.ExpenseView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HomeBudgetWPF"
+        mc:Ignorable="d"
+        Title="ExpenseView" Height="450" Width="800">
+    <StackPanel>
+        <Label x:Name="Category_Page_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30">Log Expense</Label>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <DockPanel Margin="5" Grid.Row="0" HorizontalAlignment="Center" MinWidth="200">
+                <Label Content="Description:" Width="73"/>
+                <TextBox x:Name="TxtDesc" Width="100"></TextBox>
+            </DockPanel>
+
+            <DockPanel Margin="5"  Grid.Row="1" HorizontalAlignment="Center" MinWidth="200">
+                <Label Content="Amount:"/>
+                <TextBox x:Name="TxtAmount"></TextBox>
+            </DockPanel>
+
+            <DockPanel Margin="5"  Grid.Row="2" HorizontalAlignment="Center" MinWidth="200">
+                <Label Content="Category:"/>
+                <ComboBox x:Name="CmbCategory" IsEditable="True" StaysOpenOnEdit="True"/>
+            </DockPanel>
+
+            <DockPanel Margin="5"  Grid.Row="3" HorizontalAlignment="Center" MinWidth="200">
+                <Label Content="Date:"/>
+                <DatePicker x:Name="DtDate"/>
+            </DockPanel>
+            
+            <DockPanel Margin="5"  Grid.Row="4" HorizontalAlignment="Center" MinWidth="200">
+                <Label Content="On Credit Card:"/>
+                <CheckBox x:Name="New_Expense_OnCredit_ChkBox" VerticalAlignment="Center"/>
+            </DockPanel>
+
+            <Button Width="auto" Grid.Row="5" HorizontalAlignment="Center" Click="ExpenseSubmitClick">Log New Expense</Button>
+        </Grid>
+    </StackPanel>
+</Window>

@@ -1,16 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Budget;
-namespace HomeBudgetWPF
+﻿namespace HomeBudgetWPF
 {
-    internal interface ViewInterface
-    {
-        public void DisplayError(string message);
 
-        public void DisplayConfirmation(string message);
+    public interface ViewInterface
+    {
+
+        void DisplayError(string message);
+
+        void DisplayConfirmation(string message);
+
+        void DisplayCategoryMenu();
+
+        void DisplayExpenseMenu();
+
+        void DisplaySelectFileMenu();
+
+        void DisplayCategoryMenuWithName(string name);
+
+        void CloseCategoryMenu();
+
+        void CloseExpenseMenu();
+
+        void CloseFileSelectMenu();
+        void CloseMain();
 
     }
+
+
 }
