@@ -19,6 +19,7 @@
                            HorizontalAlignment="Center"
                            />
                 <TextBox x:Name="fileNameTextBox" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" HorizontalAlignment="Center" Height="25" Width ="100" Margin="0,0,0,10"/>
+                
                 <Button x:Name="BtnSaveTo"
                         Content="Save To" 
                         Click="Save_To_Click" 
@@ -26,12 +27,15 @@
                         HorizontalAlignment="Center"
                         FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
                 />
-                <TextBox x:Name="fileLocation" 
+                
+                <TextBox x:Name="fileLocation"
+                         Background="#405d27" 
+                         Foreground="#82b74b" 
+                         BorderThickness="2" 
+                         BorderBrush="White" 
                          HorizontalAlignment="Center" 
-                         Height="25" Width ="500" 
-                         Margin="20"
+                         Height="25" Width ="500" Margin="20"
                          IsReadOnly="True"/>
-                <TextBox x:Name="fileLocation" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" HorizontalAlignment="Center" Height="25" Width ="500" Margin="20"/>
 
                 <Button 
                     x:Name="BtnCreate"
@@ -41,6 +45,7 @@
                     HorizontalAlignment="Center"
                     Margin="20"
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
+
                 <Button 
                     x:Name="BtnOpenCurrent"
                     Content="Open Current File" Click="Open_Current_Database_Click" 
@@ -49,7 +54,6 @@
                     HorizontalAlignment="Center"
                     Margin="20"
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
-
             </StackPanel>
         </Grid>
     </StackPanel>

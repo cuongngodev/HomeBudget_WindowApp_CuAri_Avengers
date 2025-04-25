@@ -79,6 +79,7 @@ namespace HomeBudgetWPF
 
             }
         }
+
         /// <summary>
         /// Creates new file for new users
         /// </summary>

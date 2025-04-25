@@ -25,22 +25,20 @@ namespace HomeBudgetWPF
         public Window _fileSelectView;
         public CategoryView _categoryView;
         public ExpenseView _expenseView;
+
         public MainWindow()
         {
             InitializeComponent();
             _p = new(this);
 
-           
             _p.SetupPresenter();
 
             this.Closing += MainWindow_Closing;
-
-
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         { 
-            Application.Current.Shutdown();    
+            //Application.Current.Shutdown();    
         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
@@ -133,8 +131,7 @@ namespace HomeBudgetWPF
             this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
             this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             #endregion
         }
@@ -168,8 +165,7 @@ namespace HomeBudgetWPF
             this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             #endregion
         }
@@ -193,8 +189,7 @@ namespace HomeBudgetWPF
             this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.ProtanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.DeuteranopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             #endregion
         }

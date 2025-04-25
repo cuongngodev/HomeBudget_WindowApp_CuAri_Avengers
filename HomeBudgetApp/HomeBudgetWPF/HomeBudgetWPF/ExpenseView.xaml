@@ -50,9 +50,16 @@
                 <CheckBox x:Name="New_Expense_OnCredit_ChkBox" VerticalAlignment="Center"/>
             </DockPanel>
 
-            <Button x:Name="BtnLogExpense" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" Width="auto" Grid.Row="5" HorizontalAlignment="Center" Click="ExpenseSubmitClick" Padding="3">Log New Expense</Button>
-            <Button Width="auto" Grid.Row="5" HorizontalAlignment="Center" Click="ExpenseSubmitClick">Log New Expense</Button>
-            <Button Width="auto" Grid.Row="6" Margin="10" HorizontalAlignment="Center" Click="Cancel_Expense_Click">Cancel</Button>
+            <Button x:Name="BtnLogExpense" 
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
+                    Width="auto" Padding="3"
+                    Grid.Row="5" 
+                    HorizontalAlignment="Center" 
+                    Click="ExpenseSubmitClick">Log New Expense</Button>
+            
+            <Button Width="auto" Grid.Row="6" Margin="10" 
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
+                    HorizontalAlignment="Center" Click="Cancel_Expense_Click">Cancel</Button>
         </Grid>
     </StackPanel>
 </Window>

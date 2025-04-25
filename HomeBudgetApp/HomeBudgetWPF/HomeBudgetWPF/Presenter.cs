@@ -191,10 +191,7 @@ namespace HomeBudgetWPF
                 case "Default":
                     _View.SetDefaultTheme();
                     break;
-                case "Protanopia":
-                    _View.SetProtanopiaDeuteranopiaTheme();
-                    break;
-                case "Deuteranopia":
+                case "Protanopia / Deuteranopia":
                     _View.SetProtanopiaDeuteranopiaTheme();
                     break;
                 case "Tritanopia":

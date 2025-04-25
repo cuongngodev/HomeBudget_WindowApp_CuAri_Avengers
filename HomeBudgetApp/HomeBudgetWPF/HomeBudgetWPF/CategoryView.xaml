@@ -32,9 +32,16 @@
                 <ComboBox x:Name="CmbCatType" Foreground="#82b74b" BorderThickness="2" BorderBrush="#405d27"/>
             </DockPanel>
 
-            <Button Width="auto" Grid.Row="2" HorizontalAlignment="Center" Click="NewCatSubmitClicked"  Height="20" VerticalAlignment="Top">Create New Category</Button>
-            <Button Width="auto" Margin="10" Grid.Row="3" HorizontalAlignment="Center" Click="Cancel_Category_Click"  Height="20" VerticalAlignment="Top">Cancel</Button>
-            <Button x:Name="BtnCreateCategory" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" Grid.Row="2" HorizontalAlignment="Center" Click="NewCatSubmitClicked" VerticalAlignment="Top" Padding="3">Create New Category</Button>
+            <Button x:Name="BtnCreateCategory" 
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
+                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="3"
+                    Click="NewCatSubmitClicked">Create New Category</Button>
+            
+            <Button Width="auto" Margin="10" Grid.Row="3" 
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
+                    HorizontalAlignment="Center" Click="Cancel_Category_Click"  
+                    Height="20" VerticalAlignment="Top">Cancel</Button>
+            
         </Grid>
     </StackPanel>
 </Window>
