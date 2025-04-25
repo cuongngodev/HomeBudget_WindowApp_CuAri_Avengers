@@ -33,7 +33,6 @@ namespace HomeBudgetWPF
             this.Closing += MainWindow_Closing;
         }
 
-
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             Application.Current.Shutdown();
@@ -46,6 +45,9 @@ namespace HomeBudgetWPF
             CmbCategory.SelectedIndex = 0;
 
             DtDate.SelectedDate = DateTime.Now;
+
+            TxtAmount.Text = "0";
+            TxtDesc.Text = "";
         }
 
 
