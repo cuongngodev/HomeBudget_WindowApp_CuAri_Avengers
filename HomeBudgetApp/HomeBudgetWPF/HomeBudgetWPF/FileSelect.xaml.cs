@@ -47,20 +47,20 @@ namespace HomeBudgetWPF
         /// <param name="e"></param>
         private void Save_To_Click(object sender, RoutedEventArgs e)
         {
-            string newFileName = fileNameTextBox.Text.Trim();
-            // if text box empty
-            if (string.IsNullOrWhiteSpace(newFileName))
-            {
-                MessageBox.Show("Please enter a file name.", "File name empty", MessageBoxButton.OK,MessageBoxImage.Error);
-                return;
-            }
+            //string newFileName = fileNameTextBox.Text.Trim();
+            //// if text box empty
+            //if (string.IsNullOrWhiteSpace(newFileName))
+            //{
+            //    MessageBox.Show("Please enter a file name.", "File name empty", MessageBoxButton.OK,MessageBoxImage.Error);
+            //    return;
+            //}
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Title = "Select Location to Save Database",
                 Filter = "Database files (*.db)|*.db",
                 DefaultExt = ".db",
-                FileName = newFileName, 
+                FileName = "database", 
                 CheckPathExists = true,
                 AddExtension = true
             };
