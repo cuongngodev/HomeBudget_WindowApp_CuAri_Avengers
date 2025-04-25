@@ -7,6 +7,7 @@
         void DisplayError(string message);
 
         void DisplayConfirmation(string message);
+        bool AskConfirmation(string message);
 
         void DisplayCategoryMenu();
 
@@ -22,6 +23,7 @@
 
         void CloseFileSelectMenu();
         void CloseMain();
+
 
     }
 
