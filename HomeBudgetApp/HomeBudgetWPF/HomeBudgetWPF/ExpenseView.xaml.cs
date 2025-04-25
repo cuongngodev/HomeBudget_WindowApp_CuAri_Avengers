@@ -51,7 +51,7 @@ namespace HomeBudgetWPF
 
         private void ExpenseSubmitClick(object sender, RoutedEventArgs e)
         {
-            DateTime? date = DtDate.SelectedDate;
+            DateTime date = DtDate.SelectedDate.Value;
             int catType = CmbCategory.SelectedIndex;
             string catName = CmbCategory.Text;
             string desc = TxtDesc.Text;

@@ -65,15 +65,11 @@ namespace HomeBudgetWPF
             _p.CreateNewCategory(desc, type);
 
             if (_fromExpense)
-            {
-                string desc = TxtDescription.Text;
-                Object type = CmbCatType.SelectedItem;
+            {   
                 _p.CreateNewCategory(desc, type, _fromExpense);
             }
             else
             {
-                string desc = TxtDescription.Text;
-                Object type = CmbCatType.SelectedItem;
                 _p.CreateNewCategory(desc, type);
             }
         }

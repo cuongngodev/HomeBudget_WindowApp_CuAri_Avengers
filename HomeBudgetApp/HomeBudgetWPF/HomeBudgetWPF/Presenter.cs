@@ -119,7 +119,7 @@ namespace HomeBudgetWPF
             _View.CloseExpenseMenu();
         }
 
-        public void CreateNewExpense(DateTime? date, int cat, string amount, string desc)
+        public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
         {
             if (cat == -1)
             {
@@ -133,12 +133,6 @@ namespace HomeBudgetWPF
                 return;
             }
 
-          
-            if(!date.HasValue)
-            {
-                _View.DisplayError("You did not select date!");
-                return;
-            }
             
             cat += 1;
 
