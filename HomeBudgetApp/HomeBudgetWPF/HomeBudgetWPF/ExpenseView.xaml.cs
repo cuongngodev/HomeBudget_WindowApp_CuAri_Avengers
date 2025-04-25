@@ -33,10 +33,10 @@ namespace HomeBudgetWPF
             this.Closing += MainWindow_Closing;
         }
 
-      
+
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-   
+            Application.Current.Shutdown();
         }
 
         public void SetupInputBoxes(List<Category> categoryList)
