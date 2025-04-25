@@ -54,6 +54,11 @@ namespace HomeBudgetWPF
         {
             CmbCatType.ItemsSource = categoryTypes;
             CmbCatType.SelectedIndex = 0;
+
+            if (!_fromExpense)
+            {
+                TxtDescription.Text = "";
+            }
         }
 
       

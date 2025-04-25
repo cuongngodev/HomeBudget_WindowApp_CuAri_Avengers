@@ -165,9 +165,15 @@ namespace HomeBudgetWPF
 
         public bool MakeIdenticalExpense(DateTime date, int cat, double amount, string desc)
         {
+
             bool makeIdenticalExpense = false;
 
-            Budget.Expense expense = _model.expenses.List()[_model.expenses.List().Count() - 1];
+            List<Expense> expenses = _model.expenses.List();
+
+            if (expenses.Count() <= 0)
+                return makeIdenticalExpense;
+
+            Budget.Expense expense = expenses[expenses.Count() - 1];
 
             if (expense.Date == date && expense.Category == cat && expense.Amount == amount && expense.Description == desc)
             {
