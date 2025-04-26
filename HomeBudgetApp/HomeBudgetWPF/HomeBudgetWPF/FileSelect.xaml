@@ -13,30 +13,16 @@
 
 
             <StackPanel>
-                <TextBlock Text="Enter filename (without extension):" Margin="0,0,0,5"
-                           HorizontalAlignment="Center"
-                           />
-                <TextBox x:Name="fileNameTextBox" HorizontalAlignment="Center" Height="25" Width ="100" Margin="0,0,0,10"/>
-                <Button Content="Save To" 
+               
+                <Button Content="Create New File" 
                         Click="Save_To_Click" 
                         Height="30" Width="100" 
                         HorizontalAlignment="Center"
-                     
+                        Margin="0,10,0,0"
                 />
-                <TextBox x:Name="fileLocation" 
-                         HorizontalAlignment="Center" 
-                         Height="25" Width ="500" 
-                         Margin="20"
-                         IsReadOnly="True"/>
 
                 <Button 
-                    Content="Create" 
-                    Click="CreateFileButton_Click" 
-                    Height="30" Width="100" 
-                    HorizontalAlignment="Center"
-                    Margin="20"/>
-                <Button 
-                    Content="Open Current File" Click="Open_Current_Database_Click" 
+                    Content="Open Existing File" Click="Open_Current_Database_Click" 
                     Grid.Row="1" Grid.Column="0" 
                     Height="30" Width="100" 
                     HorizontalAlignment="Center"
