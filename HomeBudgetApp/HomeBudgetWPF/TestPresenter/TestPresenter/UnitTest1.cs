@@ -1,17 +1,28 @@
 namespace TestPresenter;
 using HomeBudgetWPF;
 using Budget;
+using System.Security.Policy;
 
 public class MockView : ViewInterface
 {
     public bool calledDisplayError;
     public bool calledDisplayConfirmation;
+    public bool calledAskConfirmation;
+    public bool responseToAskConfirmation = false;
+    public bool calledDisplayCategoryMenuWithName;
     public bool calledDisplayCategoryMenu;
+    public bool calledDisplayCategoryTypes;
+    public bool calledDisplayCategories;
     public bool calledDisplayExpenseMenu;
     public bool calledDisplaySelectFileMenu;
     public bool calledCloseCategoryMenu;
     public bool calledCloseExpenseMenu;
     public bool calledCloseFileSelectMenu;
+    public bool calledChangeColorTheme;
+    public bool calledSetDefaultTheme;
+    public bool calledSetProtanopiaDeuteranopiaTheme;
+    public bool calledSetTritanopiaTheme;
+    public bool calledCloseMain;
 
     public void DisplayError(string message)
     {
@@ -22,7 +33,11 @@ public class MockView : ViewInterface
     {
         calledDisplayConfirmation = true;
     }
-
+    public bool AskConfirmation(string message)
+    {
+        calledAskConfirmation = true;
+        return responseToAskConfirmation;
+    }
     public void DisplayCategoryMenu()
     {
         calledDisplayCategoryMenu = true;
@@ -49,6 +64,39 @@ public class MockView : ViewInterface
     {
         calledCloseFileSelectMenu = true;
     }
+    public void ChangeColorTheme(string option)
+    {
+        calledChangeColorTheme = true;
+    }
+    public void SetDefaultTheme()
+    {
+        calledSetDefaultTheme = true;
+    }
+    public void SetProtanopiaDeuteranopiaTheme()
+    {
+        calledSetProtanopiaDeuteranopiaTheme = true;
+    }
+    public void SetTritanopiaTheme()
+    {
+        calledSetTritanopiaTheme = true;
+    }
+    public void CloseMain()
+    {
+        calledCloseMain = true;
+    }
+    public void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes)
+    {
+        calledDisplayCategoryTypes = true;
+    }
+    public void DisplayCategories(List<Category> categories)
+    {
+        calledDisplayCategories = true;
+    }
+    public void DisplayCategoryMenuWithName(string name)
+    {
+        calledDisplayCategoryMenuWithName = true;
+    }   
+
 }
 public class UnitTest1
 {
@@ -113,29 +161,17 @@ public class UnitTest1
         // Arrange
         MockView view = new MockView();
         Presenter presenter = new Presenter(view);
-        view.calledDisplaySelectFileMenu = false;
+        view.calledDisplaySelectFileMenu = false;  
+        view.calledDisplayCategories = false;
+        presenter.SetDatabase("Test.db", true);
         // Act
         presenter.OpenSelectFile();
         // Assert
 
         Assert.True(view.calledDisplaySelectFileMenu);
+        Assert.True(view.calledDisplayCategories);
     }
-    [Fact]
-    public void Test_GetAllCategoryTypes()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        // Act
-        var result = presenter.GetAllCategoryTypes();
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(4, result.Count);
-        Assert.Contains(result, type => type == Category.CategoryType.Income);
-        Assert.Contains(result, type => type == Category.CategoryType.Savings);
-        Assert.Contains(result, type => type == Category.CategoryType.Expense);
-        Assert.Contains(result, type => type == Category.CategoryType.Credit);
-    }
+   
     [Fact]
     public void Test_OpenCategory()
     {
@@ -155,6 +191,7 @@ public class UnitTest1
         MockView view = new MockView();
         Presenter presenter = new Presenter(view);
         view.calledDisplayExpenseMenu = false;
+        presenter.SetDatabase("Test.db", true);
         // Act
         presenter.OpenExpense();
         // Assert
@@ -206,9 +243,10 @@ public class UnitTest1
         string amount = "100notgood";
         int categoryId = 1;
 
-        view.calledDisplayError  = false;
-        // Act
         presenter.SetDatabase("Test.db", true);
+        view.calledDisplayError = false;
+        // Act
+
         presenter.CreateNewExpense( date, categoryId, amount, description);
         // Assert
         Assert.True(view.calledDisplayError);
@@ -268,7 +306,7 @@ public class UnitTest1
         // Assert
         Assert.True(view.calledDisplayConfirmation);
         Assert.True(view.calledCloseExpenseMenu);
-    } 
+    }
     [Fact]
     public void Test_CreateNewCategory_Valid()
     {
@@ -277,17 +315,146 @@ public class UnitTest1
         Presenter presenter = new Presenter(view);
         string description = "Test New Category";
         Category.CategoryType type = Category.CategoryType.Income;
-        view.calledDisplayConfirmation  = false;
+        view.calledDisplayConfirmation = false;
         view.calledCloseExpenseMenu = false;
         // Act
         presenter.SetDatabase("Test.db", true);
-        int numberOfCategory = presenter.GetAllCategories().Count;
 
-        presenter.CreateNewCategory( description, type);
+        presenter.CreateNewCategory(description, type);
         // Assert
         Assert.True(view.calledDisplayConfirmation);
         Assert.True(view.calledCloseCategoryMenu);
-        Assert.Equal(numberOfCategory + 1, presenter.GetAllCategories().Count);
     }
-   
+    [Fact]
+    public void Test_CreateDuplicateExpense_DisplayError()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string description = "Test Duplicate Category";
+        Category.CategoryType type = Category.CategoryType.Income;
+        view.calledDisplayError = false;
+        // Act
+        presenter.SetDatabase("Test.db", true);
+
+        presenter.CreateNewCategory(description, type);
+        presenter.CreateNewCategory(description, type);
+        // Assert
+        Assert.True(view.calledDisplayError);
+    }
+    [Fact]
+    public void Test_CreateEmptyCategory_DisplayError()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string description = "";
+        Category.CategoryType type = Category.CategoryType.Income;
+        view.calledDisplayError = false;
+        // Act
+        presenter.SetDatabase("Test.db", true);
+
+        presenter.CreateNewCategory(description, type);
+        presenter.CreateNewCategory(description, type);
+        // Assert
+        Assert.True(view.calledDisplayError);
+    }
+    
+    [Fact]
+    public void Test_CreateCategoryFromDropDown()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string description = "Test Create Category From Dropdown";
+        Category.CategoryType type = Category.CategoryType.Income;
+        view.calledDisplayCategoryMenuWithName = false;
+        view.calledDisplayCategoryTypes = false;
+        presenter.SetDatabase("Test.db", true);
+        // Act
+
+        presenter.CreateNewCategoryFromDropDown(description);
+        // Assert
+        Assert.True(view.calledDisplayCategoryMenuWithName);
+        Assert.True(view.calledDisplayCategoryTypes);
+    }
+
+    [Fact]
+    public void Test_CreateCategoryFromExpense()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string description = "Test Create Category From Expense";
+        bool isCreateFromExpense = true;
+        Category.CategoryType type = Category.CategoryType.Income;
+        view.calledCloseMain = false;
+        // Act
+        presenter.SetDatabase("Test.db", true);
+
+        presenter.CreateNewCategory(description, type, isCreateFromExpense);
+        // Assert
+        Assert.True(view.calledCloseMain);
+    }
+    [Fact]
+    public void Test_MakeIdenticalExpense_AskForConfirmation()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string description = "Test Duplicate Expense";
+        DateTime date = new DateTime(2023, 10, 1);
+        string amount = "100";
+        int categoryId = 1;
+
+        view.calledAskConfirmation = false;
+        // Act
+        presenter.SetDatabase("Test.db", true);
+        presenter.CreateNewExpense(date, categoryId, amount, description);
+        presenter.CreateNewExpense(date, categoryId, amount, description);
+        // Assert
+        Assert.True(view.calledAskConfirmation);
+    }
+  
+    [Fact]
+    public void Test_ChangeColorTheme_Default()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string colorOfChoice = "Default";
+        view.calledSetDefaultTheme = false;
+        //Act
+        presenter.ChangeColorTheme(colorOfChoice);
+        // Assert
+        Assert.True(view.calledSetDefaultTheme);
+
+    }
+    [Fact]
+    public void Test_ChangeColorTheme_Protanopia()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string colorOfChoice = "Protanopia / Deuteranopia";
+        view.calledSetProtanopiaDeuteranopiaTheme = false;
+        //Act
+        presenter.ChangeColorTheme(colorOfChoice);
+        // Assert
+        Assert.True(view.calledSetProtanopiaDeuteranopiaTheme);
+    }
+      [Fact]
+    public void Test_ChangeColorTheme_Tritanopia()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string colorOfChoice = "Tritanopia";
+        view.calledSetTritanopiaTheme = false;
+        //Act
+        presenter.ChangeColorTheme(colorOfChoice);
+        // Assert
+        Assert.True(view.calledSetTritanopiaTheme);
+    }
+
 }
