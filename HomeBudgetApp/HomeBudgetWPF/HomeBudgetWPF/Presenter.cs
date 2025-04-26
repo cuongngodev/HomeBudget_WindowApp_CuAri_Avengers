@@ -204,13 +204,13 @@ namespace HomeBudgetWPF
             switch (theme)
             {
                 case "Default":
-                    _View.SetDefaultTheme();
+                    _view.SetDefaultTheme();
                     break;
                 case "Protanopia / Deuteranopia":
-                    _View.SetProtanopiaDeuteranopiaTheme();
+                    _view.SetProtanopiaDeuteranopiaTheme();
                     break;
                 case "Tritanopia":
-                    _View.SetTritanopiaTheme();
+                    _view.SetTritanopiaTheme();
                     break;
                 default:
                     break;

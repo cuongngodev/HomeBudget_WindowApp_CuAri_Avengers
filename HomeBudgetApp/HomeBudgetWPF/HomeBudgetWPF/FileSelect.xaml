@@ -8,13 +8,13 @@
         Title="FileSelect" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
         Background="#3e4444">
-    <StackPanel>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <Label x:Name="FileSelectPageTitle" FontWeight="Bold" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
 
         <Grid>
             <StackPanel>
-               
-                <Button Content="Create New File" 
+                <Button x:Name="BtnCreateFile"
+                        Content="Create New File" 
                         Click="Save_To_Click" 
                         Padding="10"
                         HorizontalAlignment="Center"
@@ -22,12 +22,14 @@
                 />
 
                 <Button 
-                    Content="Open Existing File" Click="Open_Current_Database_Click" 
-                    Grid.Row="1" Grid.Column="0" 
-                    Padding="10"
-                    HorizontalAlignment="Center"
-                    Margin="20"
-                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
+                        x:Name="BtnOpenFile"
+                        Content="Open Existing File" Click="Open_Current_Database_Click" 
+                        Grid.Row="1" Grid.Column="0" 
+                        Padding="10"
+                        HorizontalAlignment="Center"
+                        Margin="20"
+                        FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
+                />
             </StackPanel>
         </Grid>
     </StackPanel>

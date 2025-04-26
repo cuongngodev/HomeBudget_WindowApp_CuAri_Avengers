@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="CategoryView" Height="450" Width="800"
         Background="#3e4444">
-    <StackPanel>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <Label x:Name="CategoryPageTitle" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" FontWeight="Bold">Create Category</Label>
 
         <Grid>
@@ -22,26 +22,27 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <DockPanel Margin="5" Grid.Row="0" HorizontalAlignment="Center" MinWidth="200">
+            <DockPanel Margin="10" Grid.Row="0" HorizontalAlignment="Center" MinWidth="200">
                 <Label x:Name="LblCatDescription" Foreground="#82b74b" Content="Description" FontWeight="Bold"/>
                 <TextBox x:Name="TxtDescription" Background="#405d27" Foreground="#82b74b" BorderBrush="White" BorderThickness="2"></TextBox>
             </DockPanel>
 
-            <DockPanel Margin="5"  Grid.Row="1" HorizontalAlignment="Center" MinWidth="200">
+            <DockPanel Margin="10"  Grid.Row="1" HorizontalAlignment="Center" MinWidth="200">
                 <Label x:Name="LblCatType" Foreground="#82b74b" Content="Type" FontWeight="Bold"/>
                 <ComboBox x:Name="CmbCatType" Foreground="#82b74b" BorderThickness="2" BorderBrush="#405d27"/>
             </DockPanel>
 
             <Button x:Name="BtnCreateCategory" 
+                    Margin="10"
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
-                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="3"
+                    Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="5"
                     Click="NewCatSubmitClicked">Create New Category</Button>
             
             <Button x:Name="BtnCancelCategory"
                     Width="auto" Margin="10" Grid.Row="3" 
-                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" Padding="5" BorderBrush="White"
                     HorizontalAlignment="Center" Click="Cancel_Category_Click"  
-                    Height="20" VerticalAlignment="Top">Cancel</Button>
+                    VerticalAlignment="Top">Cancel</Button>
             
         </Grid>
     </StackPanel>
