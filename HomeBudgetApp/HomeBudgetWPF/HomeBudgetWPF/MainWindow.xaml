@@ -16,9 +16,9 @@
 
         <Label Foreground="#82b74b" x:Name="Home_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" FontWeight="Bold">C. A. A.</Label>
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" x:Name="MainStack">
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="SecondStack">
                 <Button x:Name="FileSelectBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenFileSelection" Margin="10">
                     File Selection
                 </Button>

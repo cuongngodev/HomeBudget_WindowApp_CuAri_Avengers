@@ -23,12 +23,12 @@
             </Grid.ColumnDefinitions>
 
             <DockPanel Margin="5" Grid.Row="0" HorizontalAlignment="Center" MinWidth="200">
-                <Label x:Name="LblCatDescription" Foreground="#82b74b" Content="Description"/>
-                <TextBox x:Name="TxtDescription" Background="#405d27" Foreground="#82b74b"></TextBox>
+                <Label x:Name="LblCatDescription" Foreground="#82b74b" Content="Description" FontWeight="Bold"/>
+                <TextBox x:Name="TxtDescription" Background="#405d27" Foreground="#82b74b" BorderBrush="White" BorderThickness="2"></TextBox>
             </DockPanel>
 
             <DockPanel Margin="5"  Grid.Row="1" HorizontalAlignment="Center" MinWidth="200">
-                <Label x:Name="LblCatType" Foreground="#82b74b" Content="Type"/>
+                <Label x:Name="LblCatType" Foreground="#82b74b" Content="Type" FontWeight="Bold"/>
                 <ComboBox x:Name="CmbCatType" Foreground="#82b74b" BorderThickness="2" BorderBrush="#405d27"/>
             </DockPanel>
 
@@ -37,7 +37,8 @@
                     Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="3"
                     Click="NewCatSubmitClicked">Create New Category</Button>
             
-            <Button Width="auto" Margin="10" Grid.Row="3" 
+            <Button x:Name="BtnCancelCategory"
+                    Width="auto" Margin="10" Grid.Row="3" 
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
                     HorizontalAlignment="Center" Click="Cancel_Category_Click"  
                     Height="20" VerticalAlignment="Top">Cancel</Button>

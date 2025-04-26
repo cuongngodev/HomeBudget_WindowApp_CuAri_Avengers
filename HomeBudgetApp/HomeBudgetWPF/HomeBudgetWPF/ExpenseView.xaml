@@ -41,13 +41,13 @@
             </DockPanel>
 
             <DockPanel Margin="5"  Grid.Row="3" HorizontalAlignment="Center" MinWidth="200">
-                <Label x:Name="LblExpenseDescDate" FontWeight="Bold" Foreground="#82b74b" Content="Date:"/>
+                <Label x:Name="LblExpenseDate" FontWeight="Bold" Foreground="#82b74b" Content="Date:"/>
                 <DatePicker x:Name="DtDate" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
             </DockPanel>
             
-            <DockPanel Margin="5"  Grid.Row="4" HorizontalAlignment="Center" MinWidth="200">
+            <DockPanel Margin="5" Grid.Row="4" HorizontalAlignment="Center" MinWidth="200">
                 <Label x:Name="LblExpenseCredit" FontWeight="Bold" Foreground="#82b74b" Content="On Credit Card:"/>
-                <CheckBox x:Name="New_Expense_OnCredit_ChkBox" VerticalAlignment="Center"/>
+                <CheckBox x:Name="NewExpenseOnCreditChkBox" Foreground="#82b74b" Background="#405d27" BorderThickness="2" BorderBrush="White" VerticalAlignment="Center"/>
             </DockPanel>
 
             <Button x:Name="BtnLogExpense" 
@@ -57,7 +57,7 @@
                     HorizontalAlignment="Center" 
                     Click="ExpenseSubmitClick">Log New Expense</Button>
             
-            <Button Width="auto" Grid.Row="6" Margin="10" 
+            <Button x:Name="BtnCancelExpense" Width="auto" Grid.Row="6" Margin="10" 
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
                     HorizontalAlignment="Center" Click="Cancel_Expense_Click">Cancel</Button>
         </Grid>
