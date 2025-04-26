@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Security.Policy;
 using System.Text;
 using System.Windows;
+using static System.Windows.Application;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -47,7 +48,7 @@ namespace HomeBudgetWPF
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         { 
-            //Application.Current.Shutdown();    
+            Current.Shutdown();    
         }
 
         private void OpenFileSelection(object sender, RoutedEventArgs e)
@@ -100,6 +101,8 @@ namespace HomeBudgetWPF
 
         public void DisplaySelectFileMenu()
         {
+            this.DefaultThemeBtn.IsChecked = true;
+            
             _fileSelectView.Show();
             this.Hide();
         }
