@@ -1,5 +1,7 @@
 ﻿using Budget;
 
+using System.Windows;
+
 namespace HomeBudgetWPF
 {
 
@@ -9,6 +11,7 @@ namespace HomeBudgetWPF
         void DisplayError(string message);
 
         void DisplayConfirmation(string message);
+
         bool AskConfirmation(string message);
 
         void DisplayCategoryMenu();
@@ -24,6 +27,14 @@ namespace HomeBudgetWPF
         void CloseExpenseMenu();
 
         void CloseFileSelectMenu();
+
+        void ChangeColorTheme(string option);
+
+        void SetDefaultTheme();
+
+        void SetProtanopiaDeuteranopiaTheme();
+
+        void SetTritanopiaTheme();
 
         void CloseMain();
 

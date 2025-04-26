@@ -5,33 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
-        Title="FileSelect" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <StackPanel>
-        <Label x:Name="Category_Page_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
+        Title="FileSelect" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#3e4444">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label x:Name="FileSelectPageTitle" FontWeight="Bold" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
 
         <Grid>
-
-
             <StackPanel>
-               
-                <Button Content="Create New File" 
+                <Button x:Name="BtnCreateFile"
+                        Content="Create New File" 
                         Click="Save_To_Click" 
-                        Height="30" Width="100" 
+                        Padding="10"
                         HorizontalAlignment="Center"
-                        Margin="0,10,0,0"
+                        FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
                 />
 
                 <Button 
-                    Content="Open Existing File" Click="Open_Current_Database_Click" 
-                    Grid.Row="1" Grid.Column="0" 
-                    Height="30" Width="100" 
-                    HorizontalAlignment="Center"
-                    Margin="20"/>
-
+                        x:Name="BtnOpenFile"
+                        Content="Open Existing File" Click="Open_Current_Database_Click" 
+                        Grid.Row="1" Grid.Column="0" 
+                        Padding="10"
+                        HorizontalAlignment="Center"
+                        Margin="20"
+                        FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
+                />
             </StackPanel>
-
-
-
         </Grid>
     </StackPanel>
 </Window>

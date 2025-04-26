@@ -5,33 +5,53 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800"
+        Background="#3e4444">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <Label x:Name="Home_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30">C. A. A.</Label>
 
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+        <Label Foreground="#82b74b" x:Name="Home_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" FontWeight="Bold">C. A. A.</Label>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="1" x:Name="MainStack">
 
-            <Button Grid.Column="0" Grid.Row="0" Padding="10" BorderThickness="2" BorderBrush="Black" Click="OpenFileSelection">File Selection</Button>
-            <Button Grid.Column="0" Grid.Row="1" Padding="10" BorderThickness="2" BorderBrush="Black" Click="OpenExpenseManagement">Expenses</Button>
-            <Button Grid.Column="0" Grid.Row="2" Padding="10" BorderThickness="2" BorderBrush="Black" Click="OpenCategoryManagement">Categories</Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="SecondStack">
+                <Button x:Name="FileSelectBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenFileSelection" Margin="10">
+                    File Selection
+                </Button>
 
-            <Border Grid.Column="1" Grid.RowSpan="4" BorderThickness="2" BorderBrush="Black"></Border>
-            
-        </Grid>
+                <Button x:Name="ExpensesBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenExpenseManagement" Margin="10">
+                    Expenses
+                </Button>
+
+                <Button x:Name="CategoriesBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenCategoryManagement" Margin="10">
+                    Categories
+                </Button>
+            </StackPanel>
+
+            <StackPanel>
+                <Label Foreground="#82b74b" x:Name="ThemeTitleLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Color Themes</Label>
+
+                <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Default</RadioButton>
+                    <RadioButton x:Name="ProDeuterThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Protanopia / Deuteranopia</RadioButton>
+                    <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Tritanopia</RadioButton>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
+
+<!--
+Button Text: #82b74b, #FFC107
+
+Button Background: #405d27, #1E88E5, #D81B60
+    
+Button Outline: White, 
+    
+Text Color: #82b74b, #FFC107, 
+    
+Background: #3e4444, #004D40, 
+-->
