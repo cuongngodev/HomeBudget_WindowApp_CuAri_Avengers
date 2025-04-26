@@ -28,7 +28,7 @@ namespace HomeBudgetWPF
 
         void CloseFileSelectMenu();
 
-        void ChangeColorTheme(object sender, RoutedEventArgs e);
+        void ChangeColorTheme(string option);
 
         void SetDefaultTheme();
 

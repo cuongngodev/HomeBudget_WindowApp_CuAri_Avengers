@@ -113,11 +113,14 @@ namespace HomeBudgetWPF
             _categoryView.Hide();
         }
 
-        public void ChangeColorTheme(object sender, RoutedEventArgs e)
+        private void AlertColorChange(object sender, RoutedEventArgs e)
         {
-            RadioButton li = (sender as RadioButton);
-            string selectedTheme = li.Content as string;
-            
+            RadioButton? radioButton = sender as RadioButton;
+            ChangeColorTheme(radioButton.Content.ToString());
+        }
+
+        public void ChangeColorTheme(string selectedTheme)
+        {   
             _p.ChangeColorTheme(selectedTheme);
         }
 
@@ -429,6 +432,5 @@ namespace HomeBudgetWPF
         {
             return MessageBox.Show(message, "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
         }
-
     }
 }
