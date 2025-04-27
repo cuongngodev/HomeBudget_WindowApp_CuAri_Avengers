@@ -186,7 +186,6 @@ namespace HomeBudgetWPF
             this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._expenseView.LblExpenseCredit.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
             this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#405d27");
             this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
@@ -200,8 +199,6 @@ namespace HomeBudgetWPF
             this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#405d27");
 
-            this._expenseView.NewExpenseOnCreditChkBox.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._expenseView.NewExpenseOnCreditChkBox.Background = (Brush)brushConverter.ConvertFrom("#405d27");
 
             this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
@@ -210,16 +207,6 @@ namespace HomeBudgetWPF
             this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
             #endregion
         }
-
-        //Button Text: #82b74b, #FFC107
-
-        //Button Background: #405d27, #1E88E5, #D81B60
-
-        //Button Outline: White, 
-
-        //Text Color: #82b74b, #FFC107, 
-
-        //Background: #3e4444, #004D40, 
 
         public void SetProtanopiaDeuteranopiaTheme()
         {
@@ -283,7 +270,6 @@ namespace HomeBudgetWPF
             this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._expenseView.LblExpenseCredit.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
             this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
@@ -296,9 +282,6 @@ namespace HomeBudgetWPF
 
             this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-
-            this._expenseView.NewExpenseOnCreditChkBox.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._expenseView.NewExpenseOnCreditChkBox.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
 
             this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
@@ -370,7 +353,6 @@ namespace HomeBudgetWPF
             this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._expenseView.LblExpenseCredit.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
             this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
@@ -383,9 +365,6 @@ namespace HomeBudgetWPF
 
             this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-
-            this._expenseView.NewExpenseOnCreditChkBox.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._expenseView.NewExpenseOnCreditChkBox.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
 
             this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#D81B60");

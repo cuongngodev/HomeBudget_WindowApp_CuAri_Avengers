@@ -25,9 +25,7 @@ namespace HomeBudgetWPF
     /// </summary>
     public partial class FileSelect : Window
     {
-        static string selectedLocation = "";
         public Presenter _p;
-        private bool _closeProgram = false;
         public FileSelect(Presenter p)
         {
             InitializeComponent();
