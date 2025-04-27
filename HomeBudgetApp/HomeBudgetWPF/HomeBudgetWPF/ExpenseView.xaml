@@ -44,11 +44,6 @@
                 <Label x:Name="LblExpenseDate" FontWeight="Bold" Foreground="#82b74b" Content="Date:"/>
                 <DatePicker x:Name="DtDate" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
             </DockPanel>
-            
-            <DockPanel Margin="7" Grid.Row="4" HorizontalAlignment="Center" MinWidth="200">
-                <Label x:Name="LblExpenseCredit" FontWeight="Bold" Foreground="#82b74b" Content="On Credit Card:"/>
-                <CheckBox x:Name="NewExpenseOnCreditChkBox" Foreground="#82b74b" Background="#405d27" BorderThickness="2" BorderBrush="White" VerticalAlignment="Center"/>
-            </DockPanel>
 
             <Button x:Name="BtnLogExpense" 
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
