@@ -182,6 +182,36 @@ namespace HomeBudgetWPF
 
             return makeIdenticalExpense;
         }
+
+        public void DeleteExpense(int id)
+        {
+            if (id == -1)
+            {
+                _view.DisplayError("You did not select an expense to delete!");
+                return;
+            }
+            if (_view.AskConfirmation("Are you sure you want to delete this expense?"))
+            {
+                _model.expenses.Delete(id);
+                _view.DisplayConfirmation("Deleted Succesfully!");
+            }
+        }
+        public void UpdateExpense(int id, DateTime date, int cat, string amount, string desc)
+        {
+            if (id == -1)
+            {
+                _view.DisplayError("You did not select an expense to edit!");
+                return;
+            }
+            double newAmount = StringToDouble(amount);
+            if (newAmount == -1)
+            {
+                _view.DisplayError("Invalid Amount,\nPlease enter a number");
+                return;
+            }
+            _model.expenses.UpdateProperties(id, date, cat, newAmount, desc);
+            _view.DisplayConfirmation("Edited Succesfully!");
+        }
         #endregion
 
         public double StringToDouble(string amount)
