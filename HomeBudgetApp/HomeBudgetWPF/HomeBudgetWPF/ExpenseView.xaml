@@ -89,7 +89,14 @@
               Background="#405d27" Foreground="#82b74b" 
               BorderBrush="#82b74b" BorderThickness="5"
               Margin="10"
-              IsReadOnly="True"/>
+              x:Name="ExpensesDataGrid"
+              IsReadOnly="True">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Modify" Click="ModifyExpense"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
         </StackPanel>
         
 

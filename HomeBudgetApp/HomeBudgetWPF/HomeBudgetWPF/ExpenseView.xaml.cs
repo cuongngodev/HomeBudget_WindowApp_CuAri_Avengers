@@ -69,5 +69,10 @@ namespace HomeBudgetWPF
         {
             _p.CloseExpense();
         }
+
+        private void ModifyExpense(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
