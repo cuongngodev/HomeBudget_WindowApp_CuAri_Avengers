@@ -22,6 +22,8 @@ namespace HomeBudgetWPF
 
         void DisplayCategoryMenuWithName(string name);
 
+        void DisplayUpdateExpenseMenu();
+
         void CloseCategoryMenu();
 
         void CloseExpenseMenu();
