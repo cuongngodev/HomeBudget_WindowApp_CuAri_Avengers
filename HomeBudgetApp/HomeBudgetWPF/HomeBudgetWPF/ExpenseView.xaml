@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
-        Title="ExpenseView" Height="450" Width="800"
+        Title="ExpenseView" Height="450" Width="350"
         Background="#3e4444">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+       
         <Label x:Name="ExpensePageTitle" FontWeight="Bold" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30">Log Expense</Label>
 
-        <Grid>
+        <Grid x:Name="GrdBody">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition/>
@@ -18,7 +19,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
+                
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -45,16 +46,19 @@
                 <DatePicker x:Name="DtDate" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
             </DockPanel>
 
-            <Button x:Name="BtnLogExpense" 
+            <Button x:Name="BtnSubmit" 
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
-                    Width="auto" Padding="5"
+                    Width="auto"  Height="30" Margin="10" Padding="5"
                     Grid.Row="5" 
-                    HorizontalAlignment="Center" 
-                    Click="ExpenseSubmitClick">Log New Expense</Button>
+                    HorizontalAlignment="Left" 
+                    Click="ExpenseSubmitClick">Create</Button>
 
-            <Button x:Name="BtnCancelExpense" Width="auto" Grid.Row="6" Margin="10" Padding="5"
+            <Button x:Name="BtnCancelExpense" Width="auto" Height="30" Grid.Row="6" Margin="10" Padding="5"
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
-                    HorizontalAlignment="Center" Click="Cancel_Expense_Click">Cancel</Button>
+                    HorizontalAlignment="Right" Click="Cancel_Expense_Click">Cancel</Button>
+            <Button x:Name="BtnDeleteExpense" Width="auto"  Height="30" Grid.Row="5" Margin="10" Padding="5"
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
+                    HorizontalAlignment="Center" Click="Delete_Expense_Click" Visibility="Collapsed">Delete</Button>
         </Grid>
     </StackPanel>
 </Window>
