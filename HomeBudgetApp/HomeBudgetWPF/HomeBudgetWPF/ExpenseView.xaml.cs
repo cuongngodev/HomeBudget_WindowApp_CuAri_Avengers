@@ -25,12 +25,32 @@ namespace HomeBudgetWPF
     public partial class ExpenseView : Window
     {
         public Presenter _p;
-
-        public ExpenseView(Presenter p)
+        private bool _update;
+        public ExpenseView(Presenter p, bool update = false)
         {
             InitializeComponent();
             _p = p;
             this.Closing += MainWindow_Closing;
+            this._update = update;
+            SetupWindow();
+        }
+
+        private void SetupWindow()
+        {
+            if (_update)
+            {
+                this.Title = "Update Expense";
+                ExpensePageTitle.Content = "Update Expense";
+                BtnSubmit.Content = "Update";
+                BtnDeleteExpense.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                ExpensePageTitle.Content = "Add Expense";
+                this.Title = "Add Expense";
+                BtnSubmit.Content = "Add";
+            }
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -38,7 +58,7 @@ namespace HomeBudgetWPF
             Application.Current.Shutdown();
         }
 
-        public void SetupInputBoxes(List<Category> categoryList)
+        public void AddingCategory(List<Category> categoryList)
         {
             CmbCategory.ItemsSource = categoryList;
             CmbCategory.DisplayMemberPath = "Description";
@@ -59,13 +79,29 @@ namespace HomeBudgetWPF
             string desc = TxtDesc.Text;
             string amount = TxtAmount.Text;
 
+          
+       
             if (!_p.CreateNewCategoryFromDropDown(catName))
-                _p.CreateNewExpense(date, catType, amount, desc);
+            {
+                if (_update)
+                {
 
+                }
+                else
+                {
+                    _p.CreateNewExpense(date, catType, amount, desc);
+                }
+
+            }
        
         }
 
         private void Cancel_Expense_Click(object sender, RoutedEventArgs e)
+        {
+            _p.CloseExpense();
+        }
+
+        private void Delete_Expense_Click(object sender, RoutedEventArgs e)
         {
             _p.CloseExpense();
         }
