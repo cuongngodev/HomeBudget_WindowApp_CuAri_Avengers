@@ -123,6 +123,13 @@ namespace HomeBudgetWPF
             _view.DisplayExpenseMenu();
             _view.DisplayCategories(_model.categories.List());
         }
+
+        public void OpenUpdateExpense()
+        {
+            _view.DisplayUpdateExpenseMenu();
+            _view.DisplayCategories(_model.categories.List());
+        }
+
         public void CloseExpense()
         {
             _view.CloseExpenseMenu();
@@ -196,6 +203,7 @@ namespace HomeBudgetWPF
                 _view.DisplayConfirmation("Deleted Succesfully!");
             }
         }
+
         public void UpdateExpense(int id, DateTime date, int cat, string amount, string desc)
         {
             if (id == -1)
