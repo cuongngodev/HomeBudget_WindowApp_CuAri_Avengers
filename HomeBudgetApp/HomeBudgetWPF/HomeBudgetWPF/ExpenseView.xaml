@@ -54,6 +54,7 @@
                     Click="ExpenseSubmitClick">Create</Button>
 
             <Button x:Name="BtnCancelExpense" Width="auto" Height="30" Grid.Row="6" Margin="10" Padding="5"
+
                     FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
                     HorizontalAlignment="Right" Click="Cancel_Expense_Click">Cancel</Button>
             <Button x:Name="BtnDeleteExpense" Width="auto"  Height="30" Grid.Row="5" Margin="10" Padding="5"
