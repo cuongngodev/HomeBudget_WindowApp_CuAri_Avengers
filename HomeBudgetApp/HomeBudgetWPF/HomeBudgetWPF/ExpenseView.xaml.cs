@@ -42,8 +42,8 @@ namespace HomeBudgetWPF
                 this.Title = "Update Expense";
                 ExpensePageTitle.Content = "Update Expense";
                 BtnSubmit.Content = "Update";
-                BtnDeleteExpense.Visibility = Visibility.Visible;
 
+                BtnDeleteExpense.Visibility = Visibility.Visible;
             }
             else
             {
@@ -70,7 +70,6 @@ namespace HomeBudgetWPF
             TxtDesc.Text = "";
         }
 
-
         private void ExpenseSubmitClick(object sender, RoutedEventArgs e)
         {
             DateTime date = DtDate.SelectedDate.Value;
@@ -78,8 +77,6 @@ namespace HomeBudgetWPF
             string catName = CmbCategory.Text;
             string desc = TxtDesc.Text;
             string amount = TxtAmount.Text;
-
-          
        
             if (!_p.CreateNewCategoryFromDropDown(catName))
             {
@@ -93,7 +90,6 @@ namespace HomeBudgetWPF
                 }
 
             }
-       
         }
 
         private void Cancel_Expense_Click(object sender, RoutedEventArgs e)

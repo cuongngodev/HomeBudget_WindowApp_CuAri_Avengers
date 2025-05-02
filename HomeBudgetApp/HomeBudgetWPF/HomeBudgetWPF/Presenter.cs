@@ -44,7 +44,7 @@ namespace HomeBudgetWPF
         public void OpenSelectFile()
         {
             _view.DisplaySelectFileMenu();
-            _view. DisplayCategories(_model.categories.List());
+            _view.DisplayCategories(_model.categories.List());
         }
         #endregion
 
@@ -123,6 +123,7 @@ namespace HomeBudgetWPF
             _view.DisplayExpenseMenu();
             _view.DisplayCategories(_model.categories.List());
         }
+
         public void CloseExpense()
         {
             _view.CloseExpenseMenu();

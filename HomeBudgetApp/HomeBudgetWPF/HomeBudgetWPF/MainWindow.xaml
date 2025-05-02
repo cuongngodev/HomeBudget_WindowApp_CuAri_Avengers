@@ -7,38 +7,115 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         Background="#3e4444">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Label Foreground="#82b74b" x:Name="Home_Title" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" FontWeight="Bold">C. A. A.</Label>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="1" x:Name="MainStack">
+        <Label Foreground="#82b74b" x:Name="Home_Title" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" FontWeight="Bold">C. A. A.</Label>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="SecondStack">
-                <Button x:Name="FileSelectBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenFileSelection" Margin="10">
-                    File Selection
-                </Button>
+        <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-                <Button x:Name="ExpensesBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenExpenseManagement" Margin="10">
-                    Expenses
-                </Button>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-                <Button x:Name="CategoriesBtn" FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Height="150" MinWidth="150" Padding="10" BorderThickness="4" BorderBrush="White" Click="OpenCategoryManagement" Margin="10">
-                    Categories
-                </Button>
-            </StackPanel>
+                <GroupBox Header="Filter" Grid.Row="0" FontWeight="Bold"
+                  Foreground="#82b74b" Margin="10">
+                    <StackPanel>
+                        <StackPanel Margin="5">
+                            <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
+                            <DatePicker x:Name="DtStartDate" Padding="5"
+                                Background="#405d27" Foreground="#82b74b"/>
+                        </StackPanel>
 
-            <StackPanel>
-                <Label Foreground="#82b74b" x:Name="ThemeTitleLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Color Themes</Label>
+                        <StackPanel Margin="5">
+                            <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
+                            <DatePicker x:Name="DtEndDate" Padding="5"
+                                Background="#405d27" Foreground="#82b74b"/>
+                        </StackPanel>
 
-                <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Default</RadioButton>
-                    <RadioButton x:Name="ProDeuterThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Protanopia / Deuteranopia</RadioButton>
-                    <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Tritanopia</RadioButton>
-                </StackPanel>
+                        <StackPanel Margin="5">
+                            <CheckBox Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
+                            <ComboBox x:Name="CmbFilterCategory"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Summary" Grid.Row="0" Grid.Column="1" FontWeight="Bold"
+                  Foreground="#82b74b" Margin="10" Width="auto">
+                    <StackPanel>
+                        <StackPanel Margin="5">
+                            <CheckBox x:Name="ChkByMonth" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">By Month</CheckBox>
+                            <CheckBox x:Name="ChkByCategory" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">By Categoory</CheckBox>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <Button x:Name="BtnLogExpense" 
+                        FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
+                        Width="auto" Margin="10" Padding="5"
+                        Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150"
+                        Click="AddExpense">Add Expense</Button>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
+            <DataGrid Padding="10" 
+                      Background="#405d27" Foreground="#82b74b" 
+                      BorderBrush="#82b74b" BorderThickness="5"
+                      Margin="10"
+                      x:Name="ExpensesDataGrid"
+                      IsReadOnly="True">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Modify" Click="ModifyExpense"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="BtnFileSelect" 
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Padding="10" 
+                    BorderThickness="2" BorderBrush="White" Click="OpenFileSelection" Margin="10"
+                    MinWidth="150">
+                File Selection
+            </Button>
+
+            <Button x:Name="BtnCreateCategory" 
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" 
+                    MinWidth="150" Padding="10" BorderThickness="2" BorderBrush="White" 
+                    Click="OpenCategoryManagement" Margin="10">
+                Categories
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Grid.Column="1"  Margin="10">
+            <Label Foreground="#82b74b" x:Name="ThemeTitleLbl" HorizontalAlignment="Right" FontSize="15" FontWeight="Bold">Color Themes</Label>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Default</RadioButton>
+                <RadioButton x:Name="ProDeuterThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Protanopia / Deuteranopia</RadioButton>
+                <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Tritanopia</RadioButton>
             </StackPanel>
         </StackPanel>
     </Grid>
