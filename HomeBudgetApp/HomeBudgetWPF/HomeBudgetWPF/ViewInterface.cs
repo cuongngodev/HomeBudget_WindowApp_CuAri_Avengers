@@ -16,8 +16,6 @@ namespace HomeBudgetWPF
 
         void DisplayCategoryMenu();
 
-        void DisplayExpenseMenu();
-
         void DisplayAddExpenseMenu();
 
         void DisplaySelectFileMenu();

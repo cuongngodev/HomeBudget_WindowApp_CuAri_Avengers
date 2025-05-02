@@ -35,10 +35,8 @@ namespace HomeBudgetWPF
 
             _fileSelectView = new FileSelect(_p);
             _categoryView = new CategoryView(_p);
-            _expenseView = new ExpenseView(_p);
             _addExpenseView = new AddExpenseView(_p);
 
-            _expenseView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _addExpenseView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _categoryView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _fileSelectView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -57,11 +55,6 @@ namespace HomeBudgetWPF
         private void OpenFileSelection(object sender, RoutedEventArgs e)
         {
             _p.OpenSelectFile();
-        }
-
-        private void OpenExpenseManagement(object sender, RoutedEventArgs e)
-        {
-            _p.OpenExpense();
         }
 
         private void OpenCategoryManagement(object sender, RoutedEventArgs e)
@@ -96,12 +89,6 @@ namespace HomeBudgetWPF
             
         }
 
-        public void DisplayExpenseMenu()
-        {
-            _expenseView.Show();
-            this.Hide();
-        }
-
         public void DisplayAddExpenseMenu()
         {
             _addExpenseView.Show();
@@ -127,6 +114,13 @@ namespace HomeBudgetWPF
             _categoryView.Hide();
         }
 
+        public void SetupInputBoxes(List<Category> categoryList)
+        {
+            CmbFilterCategory.ItemsSource = categoryList;
+            CmbFilterCategory.DisplayMemberPath = "Description";
+            CmbFilterCategory.SelectedIndex = 0;
+        }
+
         private void AlertColorChange(object sender, RoutedEventArgs e)
         {
             RadioButton? radioButton = sender as RadioButton;
@@ -145,14 +139,6 @@ namespace HomeBudgetWPF
             #region Home
             this.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
             this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#405d27");
 
             this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
@@ -193,7 +179,7 @@ namespace HomeBudgetWPF
             #endregion
 
             #region Expenses
-            this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
+            this._addExpenseView.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
             //this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
             //this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
@@ -229,14 +215,6 @@ namespace HomeBudgetWPF
             #region ProDeuterHome
             this.Background = (Brush)brushConverter.ConvertFrom("#004D40");
             this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
 
             this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
@@ -277,7 +255,7 @@ namespace HomeBudgetWPF
             #endregion
 
             #region Expenses
-            this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
+            this._addExpenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
             //this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             //this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
@@ -312,14 +290,6 @@ namespace HomeBudgetWPF
 
             #region TritanHome
             this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this.FileSelectBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.ExpensesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.CategoriesBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this.FileSelectBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            this.ExpensesBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            this.CategoriesBtn.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
 
             this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
@@ -360,7 +330,7 @@ namespace HomeBudgetWPF
             #endregion
 
             #region Expenses
-            this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
+            this._addExpenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
             //this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             //this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
@@ -419,6 +389,16 @@ namespace HomeBudgetWPF
         public void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes)
         {
             _categoryView.SetupInputBoxes(categoryTypes);
+        }
+
+        private void ModifyExpense(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddExpense(object sender, RoutedEventArgs e)
+        {
+            _p.OpenAddExpense();
         }
 
         public bool AskConfirmation(string message)

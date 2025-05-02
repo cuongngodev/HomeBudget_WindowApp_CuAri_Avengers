@@ -100,7 +100,7 @@ namespace HomeBudgetWPF
 
         private void Delete_Expense_Click(object sender, RoutedEventArgs e)
         {
-            _p.CloseExpense();
+           // _p.CloseExpense();
         }
     }
 }
