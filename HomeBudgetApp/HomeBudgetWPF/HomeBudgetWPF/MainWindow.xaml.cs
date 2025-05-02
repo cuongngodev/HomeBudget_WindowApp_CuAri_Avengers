@@ -96,8 +96,10 @@ namespace HomeBudgetWPF
 
         public void DisplayCategories(List<Category> categories)
         {
-            _expenseView.SetupInputBoxes(categories);
+            _expenseView.AddingCategory(categories);
         }
+
+
 
         public void DisplaySelectFileMenu()
         {
@@ -403,7 +405,6 @@ namespace HomeBudgetWPF
         private void AddExpense(object sender, RoutedEventArgs e)
         {
             _p.OpenExpense();
-            _expenseView.AddingCategory(categories);
 
         }
 
@@ -415,6 +416,11 @@ namespace HomeBudgetWPF
         public void DisplayUpdateExpenseMenu()
         {
             _expenseView = new ExpenseView(_p, true);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -87,7 +87,6 @@
                       IsReadOnly="True">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Modify" Click="ModifyExpense"/>
                     </ContextMenu>
                 </DataGrid.ContextMenu>
             </DataGrid>
