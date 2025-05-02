@@ -123,9 +123,21 @@ namespace HomeBudgetWPF
             _view.DisplayExpenseMenu();
             _view.DisplayCategories(_model.categories.List());
         }
+
+        public void OpenAddExpense()
+        {
+            _view.DisplayAddExpenseMenu();
+            _view.DisplayCategories(_model.categories.List());
+        }
+
         public void CloseExpense()
         {
             _view.CloseExpenseMenu();
+        }
+
+        public void CloseAddExpense()
+        {
+            _view.CloseAddExpenseMenu();
         }
 
         public void CreateNewExpense(DateTime date, int cat, string amount, string desc)

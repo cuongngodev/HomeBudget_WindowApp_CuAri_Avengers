@@ -18,6 +18,8 @@ namespace HomeBudgetWPF
 
         void DisplayExpenseMenu();
 
+        void DisplayAddExpenseMenu();
+
         void DisplaySelectFileMenu();
 
         void DisplayCategoryMenuWithName(string name);
@@ -25,6 +27,8 @@ namespace HomeBudgetWPF
         void CloseCategoryMenu();
 
         void CloseExpenseMenu();
+
+        void CloseAddExpenseMenu();
 
         void CloseFileSelectMenu();
 

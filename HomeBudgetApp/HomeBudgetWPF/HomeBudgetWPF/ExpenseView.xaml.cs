@@ -38,41 +38,14 @@ namespace HomeBudgetWPF
             Application.Current.Shutdown();
         }
 
-        public void SetupInputBoxes(List<Category> categoryList)
-        {
-            CmbCategory.ItemsSource = categoryList;
-            CmbCategory.DisplayMemberPath = "Description";
-            CmbCategory.SelectedIndex = 0;
-
-            DtDate.SelectedDate = DateTime.Now;
-
-            TxtAmount.Text = "0";
-            TxtDesc.Text = "";
-        }
-
-
-        private void ExpenseSubmitClick(object sender, RoutedEventArgs e)
-        {
-            DateTime date = DtDate.SelectedDate.Value;
-            int catType = CmbCategory.SelectedIndex;
-            string catName = CmbCategory.Text;
-            string desc = TxtDesc.Text;
-            string amount = TxtAmount.Text;
-
-            if (!_p.CreateNewCategoryFromDropDown(catName))
-                _p.CreateNewExpense(date, catType, amount, desc);
-
-       
-        }
-
-        private void Cancel_Expense_Click(object sender, RoutedEventArgs e)
-        {
-            _p.CloseExpense();
-        }
-
         private void ModifyExpense(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void AddExpense(object sender, RoutedEventArgs e)
+        {
+            _p.OpenAddExpense();
         }
     }
 }
