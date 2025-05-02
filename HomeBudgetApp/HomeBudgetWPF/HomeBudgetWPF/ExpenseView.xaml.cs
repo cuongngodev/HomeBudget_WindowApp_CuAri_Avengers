@@ -42,6 +42,8 @@ namespace HomeBudgetWPF
                 this.Title = "Update Expense";
                 ExpensePageTitle.Content = "Update Expense";
                 BtnSubmit.Content = "Update";
+
+                BtnDeleteExpense.Visibility = Visibility.Visible;
             }
             else
             {
@@ -56,7 +58,7 @@ namespace HomeBudgetWPF
             Application.Current.Shutdown();
         }
 
-        public void SetupInputBoxes(List<Category> categoryList)
+        public void AddingCategory(List<Category> categoryList)
         {
             CmbCategory.ItemsSource = categoryList;
             CmbCategory.DisplayMemberPath = "Description";
@@ -75,7 +77,6 @@ namespace HomeBudgetWPF
             string catName = CmbCategory.Text;
             string desc = TxtDesc.Text;
             string amount = TxtAmount.Text;
-          
        
             if (!_p.CreateNewCategoryFromDropDown(catName))
             {
@@ -92,6 +93,11 @@ namespace HomeBudgetWPF
         }
 
         private void Cancel_Expense_Click(object sender, RoutedEventArgs e)
+        {
+            _p.CloseExpense();
+        }
+
+        private void Delete_Expense_Click(object sender, RoutedEventArgs e)
         {
             _p.CloseExpense();
         }

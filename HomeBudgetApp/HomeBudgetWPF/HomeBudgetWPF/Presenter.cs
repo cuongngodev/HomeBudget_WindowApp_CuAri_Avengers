@@ -159,7 +159,7 @@ namespace HomeBudgetWPF
 
             
             _model.expenses.Add(date,cat, newAmount, desc);
-
+ 
             _view.DisplayConfirmation ("Added Succesfully!");
             _view.CloseExpenseMenu();
         }
