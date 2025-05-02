@@ -26,7 +26,6 @@ namespace HomeBudgetWPF
         public FileSelect _fileSelectView;
         public CategoryView _categoryView;
         public ExpenseView _expenseView;
-        public AddExpenseView _addExpenseView;
 
         public MainWindow()
         {
@@ -35,9 +34,9 @@ namespace HomeBudgetWPF
 
             _fileSelectView = new FileSelect(_p);
             _categoryView = new CategoryView(_p);
-            _addExpenseView = new AddExpenseView(_p);
+            _expenseView = new ExpenseView(_p);
 
-            _addExpenseView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            _expenseView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _categoryView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _fileSelectView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -89,15 +88,15 @@ namespace HomeBudgetWPF
             
         }
 
-        public void DisplayAddExpenseMenu()
+        public void DisplayExpenseMenu()
         {
-            _addExpenseView.Show();
+            _expenseView.Show();
             this.Hide();
         }
 
         public void DisplayCategories(List<Category> categories)
         {
-            _addExpenseView.SetupInputBoxes(categories);
+            _expenseView.SetupInputBoxes(categories);
         }
 
         public void DisplaySelectFileMenu()
@@ -179,32 +178,28 @@ namespace HomeBudgetWPF
             #endregion
 
             #region Expenses
-            this._addExpenseView.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
-            //this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
+            this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
-            //this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            //this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            //this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            //this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
-            //this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            //this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
-            //this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            //this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
-            //this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#405d27");
-            //this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#405d27");
+            this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
-            //this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            //this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#405d27");
 
-
-            //this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            //this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-
-            //this._expenseView.BtnCancelExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            //this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            this._expenseView.BtnCancelExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
             #endregion
         }
 
@@ -255,31 +250,28 @@ namespace HomeBudgetWPF
             #endregion
 
             #region Expenses
-            this._addExpenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-            //this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
+            this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
 
-            //this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-
-            //this._expenseView.BtnCancelExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
+            this._expenseView.BtnCancelExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
             #endregion
         }
 
@@ -330,31 +322,28 @@ namespace HomeBudgetWPF
             #endregion
 
             #region Expenses
-            this._addExpenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-            //this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
+            this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            //this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            //this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#D81B60");
-            //this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
-            //this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
 
-            //this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-
-            //this._expenseView.BtnCancelExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
+            this._expenseView.BtnCancelExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
             #endregion
         }
 
@@ -362,12 +351,6 @@ namespace HomeBudgetWPF
         {
             this.Show();
             _expenseView.Hide();
-        }
-
-        public void CloseAddExpenseMenu()
-        {
-            this.Show();
-            _addExpenseView.Hide();
         }
 
         public void CloseFileSelectMenu()
@@ -398,7 +381,7 @@ namespace HomeBudgetWPF
 
         private void AddExpense(object sender, RoutedEventArgs e)
         {
-            _p.OpenAddExpense();
+            _p.OpenExpense();
         }
 
         public bool AskConfirmation(string message)

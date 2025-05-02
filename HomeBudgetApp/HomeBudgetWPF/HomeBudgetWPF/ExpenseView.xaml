@@ -5,95 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
-        Title="ExpenseView" Height="450" Width="800"
+        Title="ExpenseView" Height="450" Width="350"
         Background="#3e4444">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+       
+        <Label x:Name="ExpensePageTitle" FontWeight="Bold" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30">Log Expense</Label>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+        <Grid x:Name="GrdBody">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                
+            </Grid.RowDefinitions>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Margin="10">
-            <Label x:Name="LogExpenseTitle" FontWeight="Bold" Foreground="#82b74b" 
-                   Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Padding="10" FontSize="25">Display Options</Label>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+            <DockPanel Margin="7" Grid.Row="0" HorizontalAlignment="Center" MinWidth="200">
+                <Label x:Name="LblExpenseDesc" FontWeight="Bold" Foreground="#82b74b" Content="Description:"/>
+                <TextBox x:Name="TxtDesc" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" Width="100"></TextBox>
+            </DockPanel>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <DockPanel Margin="7" Grid.Row="1" HorizontalAlignment="Center" MinWidth="200">
+                <Label x:Name="LblExpenseAmount" FontWeight="Bold" Foreground="#82b74b" Content="Amount:"/>
+                <TextBox x:Name="TxtAmount" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"></TextBox>
+            </DockPanel>
 
-                <GroupBox Header="Filter" Grid.Row="0" FontWeight="Bold"
-                          Foreground="#82b74b">
-                    <StackPanel>
-                        <StackPanel Margin="5">
-                            <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
-                            <DatePicker x:Name="DtStartDate" Padding="5"
-                                        Background="#405d27" Foreground="#82b74b"/>
-                        </StackPanel>
+            <DockPanel Margin="7" Grid.Row="2" HorizontalAlignment="Center" MinWidth="200">
+                <Label x:Name="LblExpenseCat" FontWeight="Bold" Foreground="#82b74b" Content="Category:"/>
+                <ComboBox x:Name="CmbCategory" Foreground="#82b74b" BorderThickness="2" BorderBrush="#405d27" IsEditable="True" StaysOpenOnEdit="True"/>
+            </DockPanel>
 
-                        <StackPanel Margin="5">
-                            <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
-                            <DatePicker x:Name="DtEndDate" Padding="5"
-                                        Background="#405d27" Foreground="#82b74b"/>
-                        </StackPanel>
+            <DockPanel Margin="7" Grid.Row="3" HorizontalAlignment="Center" MinWidth="200">
+                <Label x:Name="LblExpenseDate" FontWeight="Bold" Foreground="#82b74b" Content="Date:"/>
+                <DatePicker x:Name="DtDate" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"/>
+            </DockPanel>
 
-                        <StackPanel Margin="5">
-                            <CheckBox Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
-                            <ComboBox/>
-                        </StackPanel>
-                    </StackPanel>
-                </GroupBox>
+            <Button x:Name="BtnSubmit" 
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
+                    Width="auto"  Height="30" Margin="10" Padding="5"
+                    Grid.Row="5" 
+                    HorizontalAlignment="Left" 
+                    Click="ExpenseSubmitClick">Create</Button>
 
-                <GroupBox Header="Summary" Grid.Row="1" FontWeight="Bold"
-                          Foreground="#82b74b">
-                    <StackPanel>
-                       <StackPanel Margin="5">
-                            <CheckBox Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">By Month</CheckBox>
-                            <CheckBox Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">By Categoory</CheckBox>
-                        </StackPanel>
-                    </StackPanel>
-                </GroupBox>
-
-                <Button x:Name="BtnLogExpense" 
-                FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
-                Width="auto" Margin="10" Padding="5"
-                Grid.Row="5"
-                Click="AddExpense">Add Expense</Button>
-            </Grid>
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            <DataGrid  Padding="10" 
-              Background="#405d27" Foreground="#82b74b" 
-              BorderBrush="#82b74b" BorderThickness="5"
-              Margin="10"
-              x:Name="ExpensesDataGrid"
-              IsReadOnly="True">
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Modify" Click="ModifyExpense"/>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-            </DataGrid>
-        </StackPanel>
-        
-
-    </Grid>
-    
+            <Button x:Name="BtnCancelExpense" Width="auto" Height="30" Grid.Row="6" Margin="10" Padding="5"
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White"
+                    HorizontalAlignment="Right" Click="Cancel_Expense_Click">Cancel</Button>
+        </Grid>
+    </StackPanel>
 </Window>

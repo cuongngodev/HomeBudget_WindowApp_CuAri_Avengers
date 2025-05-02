@@ -25,12 +25,30 @@ namespace HomeBudgetWPF
     public partial class ExpenseView : Window
     {
         public Presenter _p;
-
-        public ExpenseView(Presenter p)
+        private bool _update;
+        public ExpenseView(Presenter p, bool update = false)
         {
             InitializeComponent();
             _p = p;
             this.Closing += MainWindow_Closing;
+            this._update = update;
+            SetupWindow();
+        }
+
+        private void SetupWindow()
+        {
+            if (_update)
+            {
+                this.Title = "Update Expense";
+                ExpensePageTitle.Content = "Update Expense";
+                BtnSubmit.Content = "Update";
+            }
+            else
+            {
+                ExpensePageTitle.Content = "Add Expense";
+                this.Title = "Add Expense";
+                BtnSubmit.Content = "Add";
+            }
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -38,14 +56,44 @@ namespace HomeBudgetWPF
             Application.Current.Shutdown();
         }
 
-        private void ModifyExpense(object sender, RoutedEventArgs e)
+        public void SetupInputBoxes(List<Category> categoryList)
         {
+            CmbCategory.ItemsSource = categoryList;
+            CmbCategory.DisplayMemberPath = "Description";
+            CmbCategory.SelectedIndex = 0;
 
+            DtDate.SelectedDate = DateTime.Now;
+
+            TxtAmount.Text = "0";
+            TxtDesc.Text = "";
         }
 
-        private void AddExpense(object sender, RoutedEventArgs e)
+        private void ExpenseSubmitClick(object sender, RoutedEventArgs e)
         {
-            _p.OpenAddExpense();
+            DateTime date = DtDate.SelectedDate.Value;
+            int catType = CmbCategory.SelectedIndex;
+            string catName = CmbCategory.Text;
+            string desc = TxtDesc.Text;
+            string amount = TxtAmount.Text;
+          
+       
+            if (!_p.CreateNewCategoryFromDropDown(catName))
+            {
+                if (_update)
+                {
+
+                }
+                else
+                {
+                    _p.CreateNewExpense(date, catType, amount, desc);
+                }
+
+            }
+        }
+
+        private void Cancel_Expense_Click(object sender, RoutedEventArgs e)
+        {
+            _p.CloseExpense();
         }
     }
 }

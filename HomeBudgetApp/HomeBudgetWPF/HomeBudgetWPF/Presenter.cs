@@ -120,18 +120,13 @@ namespace HomeBudgetWPF
         #region Expenses
         public void OpenExpense()
         {
+            _view.DisplayExpenseMenu();
             _view.DisplayCategories(_model.categories.List());
         }
 
-        public void OpenAddExpense()
+        public void CloseExpense()
         {
-            _view.DisplayAddExpenseMenu();
-            _view.DisplayCategories(_model.categories.List());
-        }
-
-        public void CloseAddExpense()
-        {
-            _view.CloseAddExpenseMenu();
+            _view.CloseExpenseMenu();
         }
 
         public void CreateNewExpense(DateTime date, int cat, string amount, string desc)
@@ -166,7 +161,7 @@ namespace HomeBudgetWPF
             _model.expenses.Add(date,cat, newAmount, desc);
 
             _view.DisplayConfirmation ("Added Succesfully!");
-            CloseAddExpense();
+            _view.CloseExpenseMenu();
         }
 
         public bool MakeIdenticalExpense(DateTime date, int cat, double amount, string desc)
