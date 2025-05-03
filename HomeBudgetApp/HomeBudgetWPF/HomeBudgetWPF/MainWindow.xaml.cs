@@ -93,10 +93,57 @@ namespace HomeBudgetWPF
             _expenseView.Show();
             this.Hide();
         }
-
-        public void DisplayCategories(List<Category> categories)
+        public void DisplayExpenseDataGrid()
         {
-            _expenseView.SetupInputBoxes(categories);
+            DateTime start = DtStartDate.SelectedDate.Value;
+            DateTime end = DtStartDate.SelectedDate.Value;
+
+            bool isFilterByCategory = chkFilterByCategory.IsChecked;
+
+            bool isSummaryByMonth = chkSummaryByMonth.IsChecked;
+            bool isSummaryByCategory = chkSummaryByCategory.IsChecked;
+
+            int catID = (CmbFilterCategory.SelectedItem as Category).Id;
+
+            if (isSummaryByCategory && isSummaryByMonth)
+            {
+                _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
+            }
+            else if (isSummaryByCategory && !isSummaryByMonth)
+            {
+                _p.DisplayExpenseItemsByCategory(start, end, isFilterByCategory, catID);
+            }
+            else if (!isSummaryByCategory && isSummaryByMonth)
+            {
+                _p.DisplayExpenseItemsByMonth(start, end, isFilterByCategory, catID);
+            }
+            else
+            {
+                _p.DisplayExpenseItems(start, end, isFilterByCategory, catID);
+            }
+        }
+
+        public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
+        {
+            ExpensesDataGrid.ItemsSource = expenseList;
+            // Start binding here
+        }
+        public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
+        {
+            ExpensesDataGrid.ItemsSource = expenseList;
+            // Start binding here
+
+        }
+        public void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> expenseList)
+        {
+            ExpensesDataGrid.ItemsSource = expenseList;
+            // Start binding here
+        }
+
+        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string,object>> expenseList)
+        {
+            ExpensesDataGrid.ItemsSource = expenseList;
+            // Start binding here
         }
 
         public void DisplaySelectFileMenu()
@@ -364,6 +411,11 @@ namespace HomeBudgetWPF
         {
             this.Show();
             _expenseView.Hide();
+        }
+
+        public void DisplayCategories(List<Category> categories)
+        {
+            _expenseView.SetupInputBoxes(categories);
         }
 
         public void CloseFileSelectMenu()
