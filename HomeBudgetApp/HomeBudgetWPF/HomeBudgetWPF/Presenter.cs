@@ -217,5 +217,27 @@ namespace HomeBudgetWPF
                     break;
             }
         }
+        // Data Grid
+        public void DisplayExpenseItems(DateTime start, DateTime end, bool filterFlag, int catID)
+        {
+            List<BudgetItem> items = _model.GetBudgetItems(start, end, filterFlag, catID);
+            _view.DisplayExpenseItemsGrid(items);
+        }
+        public void DisplayExpenseItemsByMonth(DateTime start, DateTime end, bool filterFlag, int catID)
+        {
+            List<BudgetItemsByMonth> items = _model.GetBudgetItemsByMonth(start, end, filterFlag, catID);
+            _view.DisplayExpenseItemsByMonthGrid(items);
+        }
+        public void DisplayExpenseItemsByCategory(DateTime start, DateTime end, bool filterFlag, int catID)
+        {
+            List<BudgetItemsByCategory> items = _model.GetBudgetItemsByCategory(start, end, filterFlag, catID);
+            _view.DisplayExpenseItemsByCategoryGrid(items);
+
+        }
+        public void DisplayExpenseItemsByCategoryAndMonth(DateTime start, DateTime end, bool filterFlag, int catID)
+        {
+            List<Dictionary<string, object>> itemsDict = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, filterFlag, catID);
+            _view.DisplayExpenseItemmsByCategoryAndMonthGrid(itemsDict);
+        }
     }
 }
