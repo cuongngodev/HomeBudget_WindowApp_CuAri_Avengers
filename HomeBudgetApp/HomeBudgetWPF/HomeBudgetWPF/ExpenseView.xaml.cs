@@ -26,12 +26,24 @@ namespace HomeBudgetWPF
     {
         public Presenter _p;
         private bool _update;
-        public ExpenseView(Presenter p, bool update = false)
+        public ExpenseView(Presenter p)
         {
             InitializeComponent();
             _p = p;
             this.Closing += MainWindow_Closing;
-            this._update = update;
+            this._update = false;
+            SetupWindow();
+        }
+
+        public void OpenExpenseAdd()
+        {
+            _update = false;
+            SetupWindow();
+        }
+
+        public void OpenExpenseUpdate()
+        {
+            _update = true;
             SetupWindow();
         }
 
@@ -50,6 +62,7 @@ namespace HomeBudgetWPF
                 ExpensePageTitle.Content = "Add Expense";
                 this.Title = "Add Expense";
                 BtnSubmit.Content = "Add";
+                BtnDeleteExpense.Visibility = Visibility.Hidden;
             }
         }
 
@@ -82,7 +95,7 @@ namespace HomeBudgetWPF
             {
                 if (_update)
                 {
-
+                    //Not sure the logic for this, depends on how the grid is designed and functions 
                 }
                 else
                 {

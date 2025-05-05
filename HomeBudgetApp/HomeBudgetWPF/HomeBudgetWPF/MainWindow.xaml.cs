@@ -36,39 +36,25 @@ namespace HomeBudgetWPF
             _categoryView = new CategoryView(_p);
             _expenseView = new ExpenseView(_p);
 
-            _expenseView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            _categoryView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            _fileSelectView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-           
+            SetupWindow();
             _p.SetupPresenter();
 
             this.Closing += MainWindow_Closing;
         }
 
+        private void SetupWindow()
+        {
+            //Fixes a WPF bug where some windows are opened on different monitors
+            _expenseView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            _categoryView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            _fileSelectView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+        }
+
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         { 
             Current.Shutdown();    
-        }
-
-        private void OpenFileSelection(object sender, RoutedEventArgs e)
-        {
-            _p.OpenSelectFile();
-        }
-
-        private void OpenCategoryManagement(object sender, RoutedEventArgs e)
-        {
-            _p.OpenCategory();
-        }
-
-        public void DisplayError(string message)
-        {
-            MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
-        public void DisplayConfirmation(string message)
-        {
-            MessageBox.Show(message, "Success", MessageBoxButton.OK);
         }
 
         public void OpenWindow()
@@ -81,17 +67,9 @@ namespace HomeBudgetWPF
             this.Close();
         }
 
-        public void DisplayCategoryMenu()
+        public void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes)
         {
-            _categoryView.ShowView();
-            this.Hide();
-            
-        }
-
-        public void DisplayExpenseMenu()
-        {
-            _expenseView.Show();
-            this.Hide();
+            _categoryView.SetupInputBoxes(categoryTypes);
         }
 
         public void DisplayCategories(List<Category> categories)
@@ -99,22 +77,107 @@ namespace HomeBudgetWPF
             _expenseView.AddingCategory(categories);
         }
 
+        #region OpeningWindows
+
+        private void OpenFileSelection(object sender, RoutedEventArgs e)
+        {
+            _p.OpenSelectFile();
+        }
+
+        private void BtnLogExpense_Click(object sender, RoutedEventArgs e)
+        {
+            _p.OpenExpense();
+        }
+
+        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
+        {
+            _p.OpenCategory();
+        }
+
+        public void DisplayCategoryMenu()
+        {
+            _categoryView.ShowView();
+            this.Hide();
+
+        }
+
+        public void DisplayExpenseMenu()
+        {
+            _expenseView.OpenExpenseAdd();
+            _expenseView.Show();
+            this.Hide();
+        }
 
 
         public void DisplaySelectFileMenu()
         {
             this.DefaultThemeBtn.IsChecked = true;
-            
+
             _fileSelectView.Show();
             this.Hide();
         }
+
+
+        public void DisplayCategoryMenuWithName(string name)
+        {
+            _categoryView.ShowView(name);
+
+        }
+
+        public void DisplayUpdateExpenseMenu()
+        {
+            _expenseView.OpenExpenseUpdate();
+            _expenseView.Show();
+            this.Hide();
+        }
+
+        #endregion
+
+        #region MessageBoxes
+        public void DisplayError(string message)
+        {
+            MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public void DisplayConfirmation(string message)
+        {
+            MessageBox.Show(message, "Success", MessageBoxButton.OK);
+        }
+
+        public bool AskConfirmation(string message)
+        {
+            return MessageBox.Show(message, "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }
+        #endregion
+
+        #region ClosingWindows
 
         public void CloseCategoryMenu()
         {
             this.Show();
             _categoryView.Hide();
+
         }
 
+        public void CloseExpenseMenu()
+        {
+            this.Show();
+            _expenseView.Hide();
+        }
+
+        public void CloseFileSelectMenu()
+        {
+            this.Show();
+            _fileSelectView.Hide();
+        }
+
+        public void CloseMain()
+        {
+            this.Hide();
+        }
+        #endregion
+
+        #region ColorStuff
         public void SetupInputBoxes(List<Category> categoryList)
         {
             CmbFilterCategory.ItemsSource = categoryList;
@@ -129,7 +192,7 @@ namespace HomeBudgetWPF
         }
 
         public void ChangeColorTheme(string selectedTheme)
-        {   
+        {
             _p.ChangeColorTheme(selectedTheme);
         }
 
@@ -201,12 +264,14 @@ namespace HomeBudgetWPF
             this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#405d27");
 
-
-           // this._expenseView.NewExpenseOnCreditChkBox.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            // this._expenseView.NewExpenseOnCreditChkBox.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
             //this._expenseView.NewExpenseOnCreditChkBox.Background = (Brush)brushConverter.ConvertFrom("#405d27");
 
-          //  this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-           // this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+            //  this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            // this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
+
+            this._expenseView.BtnCancelExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
+            this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
             #endregion
         }
 
@@ -274,7 +339,7 @@ namespace HomeBudgetWPF
             this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
             this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-           // this._expenseView.LblExpenseCredit.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
+            // this._expenseView.LblExpenseCredit.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
 
             this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
             this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
@@ -374,53 +439,10 @@ namespace HomeBudgetWPF
 
             #endregion
         }
+        #endregion
 
-        public void CloseExpenseMenu()
-        {
-            this.Show();
-            _expenseView.Hide();
-        }
 
-        public void CloseFileSelectMenu()
-        {
-            this.Show();
-            _fileSelectView.Hide();
-        }
 
-        public void DisplayCategoryMenuWithName(string name)
-        {
-            _categoryView.ShowView(name);
-        }
 
-        public void CloseMain()
-        {
-            this.Hide();
-        }
-
-        public void DisplayCategoryTypes(List<Category.CategoryType> categoryTypes)
-        {
-            _categoryView.SetupInputBoxes(categoryTypes);
-        }
-
-        private void AddExpense(object sender, RoutedEventArgs e)
-        {
-            _p.OpenExpense();
-
-        }
-
-        public bool AskConfirmation(string message)
-        {
-            return MessageBox.Show(message, "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-        }
-
-        public void DisplayUpdateExpenseMenu()
-        {
-            _expenseView = new ExpenseView(_p, true);
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
