@@ -84,12 +84,12 @@ namespace HomeBudgetWPF
             _p.OpenSelectFile();
         }
 
-        private void OpenExpenseManagement(object sender, RoutedEventArgs e)
+        private void BtnLogExpense_Click(object sender, RoutedEventArgs e)
         {
             _p.OpenExpense();
         }
 
-        private void OpenCategoryManagement(object sender, RoutedEventArgs e)
+        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
         {
             _p.OpenCategory();
         }
@@ -441,14 +441,8 @@ namespace HomeBudgetWPF
         }
         #endregion
 
-        private void BtnLogExpense_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
 
-        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
     }
 }
