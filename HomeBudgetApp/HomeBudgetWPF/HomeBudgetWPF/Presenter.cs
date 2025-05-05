@@ -44,7 +44,7 @@ namespace HomeBudgetWPF
         public void OpenSelectFile()
         {
             _view.DisplaySelectFileMenu();
-            _view. DisplayCategories(_model.categories.List());
+            _view.DisplayCategories(_model.categories.List());
         }
         #endregion
 
@@ -124,6 +124,12 @@ namespace HomeBudgetWPF
             _view.DisplayCategories(_model.categories.List());
         }
 
+        public void OpenUpdateExpense()
+        {
+            _view.DisplayUpdateExpenseMenu();
+            _view.DisplayCategories(_model.categories.List());
+        }
+
         public void CloseExpense()
         {
             _view.CloseExpenseMenu();
@@ -182,6 +188,37 @@ namespace HomeBudgetWPF
             }
 
             return makeIdenticalExpense;
+        }
+
+        public void DeleteExpense(int id)
+        {
+            if (id == -1)
+            {
+                _view.DisplayError("You did not select an expense to delete!");
+                return;
+            }
+            if (_view.AskConfirmation("Are you sure you want to delete this expense?"))
+            {
+                _model.expenses.Delete(id);
+                _view.DisplayConfirmation("Deleted Succesfully!");
+            }
+        }
+
+        public void UpdateExpense(int id, DateTime date, int cat, string amount, string desc)
+        {
+            if (id == -1)
+            {
+                _view.DisplayError("You did not select an expense to edit!");
+                return;
+            }
+            double newAmount = StringToDouble(amount);
+            if (newAmount == -1)
+            {
+                _view.DisplayError("Invalid Amount,\nPlease enter a number");
+                return;
+            }
+            _model.expenses.UpdateProperties(id, date, cat, newAmount, desc);
+            _view.DisplayConfirmation("Edited Succesfully!");
         }
         #endregion
 
