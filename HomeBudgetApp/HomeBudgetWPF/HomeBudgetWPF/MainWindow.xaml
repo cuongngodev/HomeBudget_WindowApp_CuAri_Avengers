@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
+        ResizeMode="CanMinimize"
         Title="MainWindow" Height="450" Width="800"
         Background="#3e4444">
     <Grid>
@@ -15,53 +16,46 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Label Foreground="#82b74b" x:Name="Home_Title" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" FontWeight="Bold">C. A. A.</Label>
+        <Label Foreground="#82b74b" x:Name="Home_Title" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" FontWeight="Bold">C. A. A.</Label>
 
-        <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+        <StackPanel Grid.RowSpan="3" Grid.Column="0" HorizontalAlignment="Center" Width="200">
+           
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <GroupBox Header="Filter" Grid.Row="0" FontWeight="Bold"
+            <StackPanel Grid.Column="0" Grid.RowSpan="2">
+                <Button x:Name="BtnFileSelect" 
+                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Padding="1" 
+                   Click="OpenFileSelection" Margin="10,10,0,0" Width="80" HorizontalAlignment="Left"
+                    >
+                    File Selection
+                </Button>
+                <GroupBox Header="Filter" FontWeight="Bold"
                   Foreground="#82b74b" Margin="10">
-                    <StackPanel>
-                        <StackPanel Margin="5">
-                            <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
-                            <DatePicker x:Name="DtStartDate" Padding="5"
+                        <StackPanel>
+                            <StackPanel Margin="5">
+                                <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
+                                <DatePicker x:Name="DtStartDate" Padding="5"
                                 Background="#405d27" Foreground="#82b74b"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
-                            <DatePicker x:Name="DtEndDate" Padding="5"
+                            <StackPanel Margin="5">
+                                <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
+                                <DatePicker x:Name="DtEndDate" Padding="5"
                                 Background="#405d27" Foreground="#82b74b"/>
-                        </StackPanel>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <CheckBox Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
-                            <ComboBox x:Name="CmbFilterCategory"/>
+                            <StackPanel Margin="5">
+                                <CheckBox Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
+                                <ComboBox x:Name="CmbFilterCategory"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </GroupBox>
+                    </GroupBox>
 
-                <GroupBox Header="Summary" Grid.Row="0" Grid.Column="1" FontWeight="Bold"
-                  Foreground="#82b74b" Margin="10" Width="auto">
+                <GroupBox Header="Summary" FontWeight="Bold"
+                Foreground="#82b74b" Margin="10,0" Width="auto">
                     <StackPanel>
                         <StackPanel Margin="5">
                             <CheckBox x:Name="ChkByMonth" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">By Month</CheckBox>
@@ -70,15 +64,27 @@
                     </StackPanel>
                 </GroupBox>
 
-                <Button x:Name="BtnLogExpense" 
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <Button x:Name="BtnLogExpense" 
                         FontWeight="Bold" Background="#405d27" Foreground="#82b74b" BorderThickness="2" BorderBrush="White" 
                         Width="auto" Margin="10" Padding="5"
-                        Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150"
-                        Click="AddExpense">Add Expense</Button>
-            </Grid>
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Click="BtnLogExpense_Click">Add Expense</Button>
+
+                    <Button x:Name="BtnCreateCategory" 
+                  FontWeight="Bold" Background="#405d27" Foreground="#82b74b" 
+                  Height="30" Width="auto" Padding="5" BorderThickness="2" BorderBrush="White" 
+                  Click="BtnCreateCategory_Click">
+                        Categories
+                    </Button>
+                </StackPanel>
+
+            </StackPanel>
+            
+                
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
+        <GroupBox Grid.Column="1" Grid.Row="1" Margin="10" >
             <DataGrid Padding="10" 
                       Background="#405d27" Foreground="#82b74b" 
                       BorderBrush="#82b74b" BorderThickness="5"
@@ -90,28 +96,13 @@
                     </ContextMenu>
                 </DataGrid.ContextMenu>
             </DataGrid>
-        </StackPanel>
+        </GroupBox>
 
-        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="BtnFileSelect" 
-                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" Padding="10" 
-                    BorderThickness="2" BorderBrush="White" Click="OpenFileSelection" Margin="10"
-                    MinWidth="150">
-                File Selection
-            </Button>
-
-            <Button x:Name="BtnCreateCategory" 
-                    FontWeight="Bold" Background="#405d27" Foreground="#82b74b" 
-                    MinWidth="150" Padding="10" BorderThickness="2" BorderBrush="White" 
-                    Click="OpenCategoryManagement" Margin="10">
-                Categories
-            </Button>
-        </StackPanel>
 
         <StackPanel Grid.Row="3" Grid.Column="1"  Margin="10">
-            <Label Foreground="#82b74b" x:Name="ThemeTitleLbl" HorizontalAlignment="Right" FontSize="15" FontWeight="Bold">Color Themes</Label>
+            <Label Foreground="#82b74b" x:Name="ThemeTitleLbl" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Color Themes</Label>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <RadioButton x:Name="DefaultThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Default</RadioButton>
                 <RadioButton x:Name="ProDeuterThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Protanopia / Deuteranopia</RadioButton>
                 <RadioButton x:Name="TritanopiaThemeBtn" Margin="5" Foreground="#82b74b" Checked="AlertColorChange">Tritanopia</RadioButton>

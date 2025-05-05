@@ -108,12 +108,6 @@ namespace HomeBudgetWPF
             this.Hide();
         }
 
-        public void DisplayCategories(List<Category> categories)
-        {
-            _expenseView.AddingCategory(categories);
-        }
-
-
 
         public void DisplaySelectFileMenu()
         {
@@ -446,5 +440,15 @@ namespace HomeBudgetWPF
             #endregion
         }
         #endregion
+
+        private void BtnLogExpense_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnCreateCategory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
