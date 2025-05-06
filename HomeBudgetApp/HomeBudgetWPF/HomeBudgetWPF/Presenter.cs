@@ -24,6 +24,7 @@ namespace HomeBudgetWPF
         public void SetupPresenter()
         {
             _view.DisplaySelectFileMenu();
+            
         }
 
         //DB STUFF 
@@ -61,6 +62,10 @@ namespace HomeBudgetWPF
         public void CloseCategory()
         {
             _view.CloseCategoryMenu();
+        }
+        public void GetCategoriesForFilter()
+        {
+            _view.ShowCategoriesOptions(_model.categories.List());
         }
 
         /// <summary>

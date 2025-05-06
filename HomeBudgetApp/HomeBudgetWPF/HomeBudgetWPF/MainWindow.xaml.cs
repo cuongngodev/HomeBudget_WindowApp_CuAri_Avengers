@@ -51,7 +51,15 @@ namespace HomeBudgetWPF
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
         }
-
+        /// <summary>
+        /// Shows Categories for filtering usage in the mainwindow after file selected.
+        /// </summary>
+        /// <param name="categories"></param>
+        public void ShowCategoriesOptions(List<Category> categories)
+        {
+            CmbFilterCategory.ItemsSource = categories;
+            CmbFilterCategory.SelectedIndex = 0;
+        }
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         { 
             Current.Shutdown();    
@@ -230,6 +238,8 @@ namespace HomeBudgetWPF
         public void CloseFileSelectMenu()
         {
             this.Show();
+            // Application is ready
+            _p.GetCategoriesForFilter();
             _fileSelectView.Hide();
         }
 
