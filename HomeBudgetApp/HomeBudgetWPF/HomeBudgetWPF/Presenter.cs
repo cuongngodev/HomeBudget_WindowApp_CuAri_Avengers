@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -241,7 +242,11 @@ namespace HomeBudgetWPF
             }
             return result;
         }
+        public bool CheckDatePeriod(DateTime start, DateTime end)
+        {
+            return start <= end ? true : false;
 
+        }
         public void ChangeColorTheme(string theme)
         {
             switch (theme)
@@ -262,24 +267,51 @@ namespace HomeBudgetWPF
         // Data Grid
         public void DisplayExpenseItems(DateTime start, DateTime end, bool filterFlag, int catID)
         {
-            List<BudgetItem> items = _model.GetBudgetItems(start, end, filterFlag, catID);
-            _view.DisplayExpenseItemsGrid(items);
+            if (CheckDatePeriod(start, end))
+            {
+                List<BudgetItem> items = _model.GetBudgetItems(start, end, filterFlag, catID);
+                _view.DisplayExpenseItemsGrid(items);
+            }
+            else
+            {
+                _view.DisplayError("Start date can not excess end date");
+            }
         }
         public void DisplayExpenseItemsByMonth(DateTime start, DateTime end, bool filterFlag, int catID)
         {
-            List<BudgetItemsByMonth> items = _model.GetBudgetItemsByMonth(start, end, filterFlag, catID);
-            _view.DisplayExpenseItemsByMonthGrid(items);
+            if (CheckDatePeriod(start, end))
+            {
+                List<BudgetItemsByMonth> items = _model.GetBudgetItemsByMonth(start, end, filterFlag, catID);
+                _view.DisplayExpenseItemsByMonthGrid(items);
+            }
+            else
+            {
+                _view.DisplayError("Start date can not excess end date");
+            }
         }
         public void DisplayExpenseItemsByCategory(DateTime start, DateTime end, bool filterFlag, int catID)
         {
-            List<BudgetItemsByCategory> items = _model.GetBudgetItemsByCategory(start, end, filterFlag, catID);
-            _view.DisplayExpenseItemsByCategoryGrid(items);
-
+            if (CheckDatePeriod(start, end))
+            {
+                List<BudgetItemsByCategory> items = _model.GetBudgetItemsByCategory(start, end, filterFlag, catID);
+                _view.DisplayExpenseItemsByCategoryGrid(items);
+            }
+            else
+            {
+                _view.DisplayError("Start date can not excess end date");
+            }
         }
         public void DisplayExpenseItemsByCategoryAndMonth(DateTime start, DateTime end, bool filterFlag, int catID)
         {
-            List<Dictionary<string, object>> itemsDict = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, filterFlag, catID);
-            _view.DisplayExpenseItemmsByCategoryAndMonthGrid(itemsDict);
+            if (CheckDatePeriod(start, end))
+            {
+                List<Dictionary<string, object>> itemsDict = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, filterFlag, catID);
+                _view.DisplayExpenseItemmsByCategoryAndMonthGrid(itemsDict);
+            }
+            else
+            {
+                _view.DisplayError("Start date can not excess end date");
+            }          
         }
     }
 }
