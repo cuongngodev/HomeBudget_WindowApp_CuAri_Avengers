@@ -196,11 +196,21 @@ namespace HomeBudgetWPF
             _p.ChangeColorTheme(selectedTheme);
         }
 
+        const string LIGHT_GREEN = "#82b74b";
+        const string DARK_GREEN = "#405d27";
+        const string DARK_GREY = "#3e4444";
+        const string GOLDEN_YELLOW = "#FFC107";
+        const string LIGHT_BLUE = "#1E88E5";
+        const string TURQUOISE = "#004D40";
+        const string MARROON = "#D81B60";
+
         public void SetDefaultTheme()
         {
             BrushConverter brushConverter = new BrushConverter();
 
             #region Home
+            
+
             this.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
             this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
 
