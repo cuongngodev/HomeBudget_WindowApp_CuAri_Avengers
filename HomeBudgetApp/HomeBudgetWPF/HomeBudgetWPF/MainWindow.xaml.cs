@@ -135,7 +135,7 @@ namespace HomeBudgetWPF
                 isFilterByCategory = true;
                 catId = CmbFilterCategory.SelectedIndex+1;
             }
-                DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
+            DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
         }
         public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
         {
@@ -160,9 +160,11 @@ namespace HomeBudgetWPF
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
             ExpensesDataGrid.ItemsSource = expenseList;
+            ExpensesDataGrid.AutoGenerateColumns = false;
 
             // CategoryID column
             DataGridTextColumn categoryIdColumn = new DataGridTextColumn();
+
             categoryIdColumn.Header = "CategoryID";
             categoryIdColumn.Binding = new Binding("CategoryID");
             ExpensesDataGrid.Columns.Add(categoryIdColumn);
@@ -182,7 +184,7 @@ namespace HomeBudgetWPF
             // Description column
             DataGridTextColumn descriptionColumn = new DataGridTextColumn();
             descriptionColumn.Header = "Description";
-            descriptionColumn.Binding = new Binding("Description");
+            descriptionColumn.Binding = new Binding("ShortDescription");
             ExpensesDataGrid.Columns.Add(descriptionColumn);
 
             // Amount column
@@ -196,7 +198,7 @@ namespace HomeBudgetWPF
             balanceColumn.Header = "Balance";
             balanceColumn.Binding = new Binding("Balance");
             ExpensesDataGrid.Columns.Add(balanceColumn);
-            ExpensesDataGrid.AutoGenerateColumns = true;
+            
         }
         
         public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
