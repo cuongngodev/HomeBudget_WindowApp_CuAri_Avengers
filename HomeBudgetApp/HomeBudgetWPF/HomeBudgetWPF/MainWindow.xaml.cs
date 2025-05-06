@@ -107,18 +107,29 @@ namespace HomeBudgetWPF
             _expenseView.Show();
             this.Hide();
         }
-        public void DisplayExpenseDataGrid()
+        public void ApplyFilters()
         {
+            if(!DtStartDate.SelectedDate.HasValue && !DtEndDate.SelectedDate.HasValue)
+            {
+                return;
+            }
             DateTime start = DtStartDate.SelectedDate.Value;
-            DateTime end = DtStartDate.SelectedDate.Value;
+            DateTime end = DtEndDate.SelectedDate.Value;
+            bool isFilterByCategory = false;
+            int catId = -1;
 
-            bool isFilterByCategory = chkFilterByCategory.IsChecked;
+            bool isSummaryByMonth = ChkByMonth.IsChecked == true;
+            bool isSummaryByCategory = ChkByCategory.IsChecked == true;
 
-            bool isSummaryByMonth = chkSummaryByMonth.IsChecked;
-            bool isSummaryByCategory = chkSummaryByCategory.IsChecked;
-
-            int catID = (CmbFilterCategory.SelectedItem as Category).Id;
-
+            if (chkFilterCategory.IsChecked == true)
+            {
+                isFilterByCategory = true;
+                catId = CmbFilterCategory.SelectedIndex;
+            }
+            DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
+        }
+        public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
+        {
             if (isSummaryByCategory && isSummaryByMonth)
             {
                 _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
@@ -491,42 +502,15 @@ namespace HomeBudgetWPF
             #endregion
         }
         #endregion
-
-        public void DisplayCategories(List<Category> categories)
-        {
-            _expenseView.SetupInputBoxes(categories);
-        }
-
-        public void CloseFileSelectMenu()
-        {
-            this.Show();
-            _fileSelectView.Hide();
-        }
-
-
-
-        private void ModifyExpense(object sender, RoutedEventArgs e)
-        {
-<<<<<<<<< Temporary merge branch 1
-            _expenseView.AddingCategory(categories);
-=========
-
-        }
-
         private void AddExpense(object sender, RoutedEventArgs e)
         {
             _p.OpenExpense();
->>>>>>>>> Temporary merge branch 2
         }
+     
 
-        public bool AskConfirmation(string message)
+        private void SelectedDateChanged_Click(object sender, SelectionChangedEventArgs e)
         {
-            return MessageBox.Show(message, "", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-        }
-
-        public void DisplayUpdateExpenseMenu()
-        {
-            _expenseView = new ExpenseView(_p, true);
+            ApplyFilters();
         }
     }
 }
