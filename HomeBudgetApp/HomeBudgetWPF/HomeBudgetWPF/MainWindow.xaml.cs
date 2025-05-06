@@ -132,9 +132,9 @@ namespace HomeBudgetWPF
             if (chkFilterCategory.IsChecked == true)
             {
                 isFilterByCategory = true;
-                catId = CmbFilterCategory.SelectedIndex;
+                catId = CmbFilterCategory.SelectedIndex+1;
             }
-            DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
+                DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
         }
         public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
         {
@@ -519,6 +519,11 @@ namespace HomeBudgetWPF
      
 
         private void SelectedDateChanged_Click(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void CmbFilterCategory_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ApplyFilters();
         }

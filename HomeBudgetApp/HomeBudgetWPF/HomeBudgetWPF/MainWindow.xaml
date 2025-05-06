@@ -51,7 +51,7 @@
 
                             <StackPanel Margin="5">
                                 <CheckBox x:Name="chkFilterCategory" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
-                                <ComboBox x:Name="CmbFilterCategory"/>
+                                <ComboBox x:Name="CmbFilterCategory" DataContextChanged="CmbFilterCategory_DataContextChanged"/>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
