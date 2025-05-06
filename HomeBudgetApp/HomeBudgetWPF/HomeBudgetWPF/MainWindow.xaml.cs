@@ -201,8 +201,31 @@ namespace HomeBudgetWPF
         
         public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
         {
-       
-            
+            // table hold the data
+            DataTable dataTable = new DataTable();
+
+            // Add columns 
+            dataTable.Columns.Add("Category", typeof(string));
+            dataTable.Columns.Add("Total", typeof(double));
+            dataTable.Columns.Add("Details", typeof(string));
+
+            // Add rows 
+            foreach (var item in expenseList)
+            {
+                DataRow row = dataTable.NewRow();
+                row["Category"] = item.Category;
+                row["Total"] = item.Total;
+                row["Details"] = string.Join(",\n", item.Details.Select(d => d.ShortDescription));
+
+                dataTable.Rows.Add(row);
+            }
+            // Bind the DataTable to the DataGrid
+            ExpensesDataGrid.ItemsSource = dataTable.DefaultView;
+
+            // Auto-generate columns
+            ExpensesDataGrid.AutoGenerateColumns = true;
+
+
         }
         public void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> expenseList)
         {
