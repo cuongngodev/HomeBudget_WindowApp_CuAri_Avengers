@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
+using System.Data;
 
 namespace HomeBudgetWPF
 {
@@ -159,19 +160,78 @@ namespace HomeBudgetWPF
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
             ExpensesDataGrid.ItemsSource = expenseList;
-            // Start binding here
+
+            // CategoryID column
+            DataGridTextColumn categoryIdColumn = new DataGridTextColumn();
+            categoryIdColumn.Header = "CategoryID";
+            categoryIdColumn.Binding = new Binding("CategoryID");
+            ExpensesDataGrid.Columns.Add(categoryIdColumn);
+
+            //  Category column
+            DataGridTextColumn categoryColumn = new DataGridTextColumn();
+            categoryColumn.Header = "Category";
+            categoryColumn.Binding = new Binding("Category");
+            ExpensesDataGrid.Columns.Add(categoryColumn);
+
+            // Date column
+            DataGridTextColumn dateColumn = new DataGridTextColumn();
+            dateColumn.Header = "Date";
+            dateColumn.Binding = new Binding("Date");
+            ExpensesDataGrid.Columns.Add(dateColumn);
+
+            // Description column
+            DataGridTextColumn descriptionColumn = new DataGridTextColumn();
+            descriptionColumn.Header = "Description";
+            descriptionColumn.Binding = new Binding("Description");
+            ExpensesDataGrid.Columns.Add(descriptionColumn);
+
+            // Amount column
+            DataGridTextColumn amountColumn = new DataGridTextColumn();
+            amountColumn.Header = "Amount";
+            amountColumn.Binding = new Binding("Amount");
+            ExpensesDataGrid.Columns.Add(amountColumn);
+
+            // Balance column
+            DataGridTextColumn balanceColumn = new DataGridTextColumn();
+            balanceColumn.Header = "Balance";
+            balanceColumn.Binding = new Binding("Balance");
+            ExpensesDataGrid.Columns.Add(balanceColumn);
+            ExpensesDataGrid.AutoGenerateColumns = true;
         }
+        
         public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
         {
-            ExpensesDataGrid.ItemsSource = expenseList;
-            // Start binding here
-
+       
+            
         }
         public void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> expenseList)
         {
-            ExpensesDataGrid.ItemsSource = expenseList;
-            // Start binding here
+            // table hold the data
+            DataTable dataTable = new DataTable();
+
+            // Add columns 
+            dataTable.Columns.Add("Month", typeof(string));
+            dataTable.Columns.Add("Total", typeof(double));
+            dataTable.Columns.Add("Descriptions", typeof(string));
+
+            // Add rows 
+            foreach (var item in expenseList)
+            {
+                DataRow row = dataTable.NewRow();
+                row["Month"] = item.Month;
+                row["Total"] = item.Total;
+                row["Descriptions"] = string.Join(",\n", item.Details.Select(d => d.ShortDescription));
+
+                dataTable.Rows.Add(row);
+            }
+
+            // Bind the DataTable to the DataGrid
+            ExpensesDataGrid.ItemsSource = dataTable.DefaultView;
+
+            // Auto-generate columns
+            ExpensesDataGrid.AutoGenerateColumns = true;
         }
+
 
         public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string,object>> expenseList)
         {

@@ -94,14 +94,7 @@
                       x:Name="ExpensesDataGrid"
                       IsReadOnly="True"
                       AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="CategoryID" Binding="{Binding CategoryID}" Width="*"/>
-                    <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
-                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*"/>
-                    <DataGridTextColumn Header="Description" Binding="{Binding ShortDescription}" Width="*"/>
-                    <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*"/>
-                    <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
-                </DataGrid.Columns>
+                
             </DataGrid>
         </GroupBox>
 
