@@ -38,17 +38,19 @@
                             <StackPanel Margin="5">
                                 <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
                                 <DatePicker x:Name="DtStartDate" Padding="5"
-                                Background="#405d27" Foreground="#82b74b"/>
+                                Background="#405d27" Foreground="#82b74b"
+                                />
                             </StackPanel>
 
                             <StackPanel Margin="5">
                                 <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
                                 <DatePicker x:Name="DtEndDate" Padding="5"
-                                Background="#405d27" Foreground="#82b74b"/>
+                                Background="#405d27" Foreground="#82b74b"
+                                SelectedDateChanged="SelectedDateChanged_Click"/>
                             </StackPanel>
 
                             <StackPanel Margin="5">
-                                <CheckBox Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
+                                <CheckBox x:Name="chkFilterCategory" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
                                 <ComboBox x:Name="CmbFilterCategory"/>
                             </StackPanel>
                         </StackPanel>
@@ -90,11 +92,16 @@
                       BorderBrush="#82b74b" BorderThickness="5"
                       Margin="10"
                       x:Name="ExpensesDataGrid"
-                      IsReadOnly="True">
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="CategoryID" Binding="{Binding CategoryID}" Width="*"/>
+                    <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding ShortDescription}" Width="*"/>
+                    <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*"/>
+                    <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
+                </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
 

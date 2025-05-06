@@ -27,6 +27,14 @@ namespace HomeBudgetWPF
         void CloseCategoryMenu();
 
         void CloseExpenseMenu();
+        
+        void DisplayExpenseItemsGrid(List<BudgetItem> items);
+
+        void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> items);
+
+        void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> items);
+        
+        void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> items);
 
         void CloseFileSelectMenu();
 
@@ -44,6 +52,7 @@ namespace HomeBudgetWPF
 
         void DisplayCategories(List<Category> categories);
 
+        void ShowCategoriesOptions(List<Category> categories);
     }
 
 

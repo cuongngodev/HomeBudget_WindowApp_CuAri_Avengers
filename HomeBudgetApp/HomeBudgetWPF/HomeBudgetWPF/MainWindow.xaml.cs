@@ -51,7 +51,15 @@ namespace HomeBudgetWPF
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
         }
-
+        /// <summary>
+        /// Shows Categories for filtering usage in the mainwindow after file selected.
+        /// </summary>
+        /// <param name="categories"></param>
+        public void ShowCategoriesOptions(List<Category> categories)
+        {
+            CmbFilterCategory.ItemsSource = categories;
+            CmbFilterCategory.SelectedIndex = 0;
+        }
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         { 
             Current.Shutdown();    
@@ -107,7 +115,69 @@ namespace HomeBudgetWPF
             _expenseView.Show();
             this.Hide();
         }
+        public void ApplyFilters()
+        {
+            if(!DtStartDate.SelectedDate.HasValue && !DtEndDate.SelectedDate.HasValue)
+            {
+                return;
+            }
+            DateTime start = DtStartDate.SelectedDate.Value;
+            DateTime end = DtEndDate.SelectedDate.Value;
+            bool isFilterByCategory = false;
+            int catId = -1;
 
+            bool isSummaryByMonth = ChkByMonth.IsChecked == true;
+            bool isSummaryByCategory = ChkByCategory.IsChecked == true;
+
+            if (chkFilterCategory.IsChecked == true)
+            {
+                isFilterByCategory = true;
+                catId = CmbFilterCategory.SelectedIndex;
+            }
+            DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
+        }
+        public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
+        {
+            if (isSummaryByCategory && isSummaryByMonth)
+            {
+                _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
+            }
+            else if (isSummaryByCategory && !isSummaryByMonth)
+            {
+                _p.DisplayExpenseItemsByCategory(start, end, isFilterByCategory, catID);
+            }
+            else if (!isSummaryByCategory && isSummaryByMonth)
+            {
+                _p.DisplayExpenseItemsByMonth(start, end, isFilterByCategory, catID);
+            }
+            else
+            {
+                _p.DisplayExpenseItems(start, end, isFilterByCategory, catID);
+            }
+        }
+
+        public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
+        {
+            ExpensesDataGrid.ItemsSource = expenseList;
+            // Start binding here
+        }
+        public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
+        {
+            ExpensesDataGrid.ItemsSource = expenseList;
+            // Start binding here
+
+        }
+        public void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> expenseList)
+        {
+            ExpensesDataGrid.ItemsSource = expenseList;
+            // Start binding here
+        }
+
+        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string,object>> expenseList)
+        {
+            ExpensesDataGrid.ItemsSource = expenseList;
+            // Start binding here
+        }
 
         public void DisplaySelectFileMenu()
         {
@@ -168,6 +238,8 @@ namespace HomeBudgetWPF
         public void CloseFileSelectMenu()
         {
             this.Show();
+            // Application is ready
+            _p.GetCategoriesForFilter();
             _fileSelectView.Hide();
         }
 
@@ -450,9 +522,15 @@ namespace HomeBudgetWPF
             #endregion
         }
         #endregion
+        private void AddExpense(object sender, RoutedEventArgs e)
+        {
+            _p.OpenExpense();
+        }
+     
 
-
-
-
+        private void SelectedDateChanged_Click(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
     }
 }
