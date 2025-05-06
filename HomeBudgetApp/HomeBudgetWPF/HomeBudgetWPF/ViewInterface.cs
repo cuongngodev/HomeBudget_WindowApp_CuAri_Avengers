@@ -22,7 +22,7 @@ namespace HomeBudgetWPF
 
         void DisplayCategoryMenuWithName(string name);
 
-        void DisplayUpdateExpenseMenu();
+        void DisplayUpdateExpenseMenu(Expense expense);
 
         void CloseCategoryMenu();
 
