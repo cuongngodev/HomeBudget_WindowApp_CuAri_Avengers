@@ -39,6 +39,7 @@
                                 <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
                                 <DatePicker x:Name="DtStartDate" Padding="5"
                                 Background="#405d27" Foreground="#82b74b"
+                                SelectedDateChanged="SelectedDateChanged_Click"
                                 />
                             </StackPanel>
 

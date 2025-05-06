@@ -118,7 +118,7 @@ namespace HomeBudgetWPF
         }
         public void ApplyFilters()
         {
-            if(!DtStartDate.SelectedDate.HasValue && !DtEndDate.SelectedDate.HasValue)
+            if(!DtStartDate.SelectedDate.HasValue || !DtEndDate.SelectedDate.HasValue)
             {
                 return;
             }
