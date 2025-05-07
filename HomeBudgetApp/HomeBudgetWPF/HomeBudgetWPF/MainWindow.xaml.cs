@@ -118,8 +118,10 @@ namespace HomeBudgetWPF
         }
         public void ApplyFilters()
         {
-            
-            if(!DtStartDate.SelectedDate.HasValue || !DtEndDate.SelectedDate.HasValue)
+            // Clear all current collumn to avoid create more column to exsiting datagrid
+            ExpensesDataGrid.Columns.Clear();
+
+            if (!DtStartDate.SelectedDate.HasValue || !DtEndDate.SelectedDate.HasValue)
             {
                 return;
             }
