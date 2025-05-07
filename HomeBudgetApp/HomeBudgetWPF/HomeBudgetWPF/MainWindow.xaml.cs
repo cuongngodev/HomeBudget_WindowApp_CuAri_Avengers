@@ -135,13 +135,16 @@ namespace HomeBudgetWPF
             if (chkFilterCategory.IsChecked == true)
             {
                 isFilterByCategory = true;
-                catId = CmbFilterCategory.SelectedIndex+1;
+                catId = CmbFilterCategory.SelectedIndex + 1;
             }
-                DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
+            
+            DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
         }
 
         public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
         {
+            
+
             if (isSummaryByCategory && isSummaryByMonth)
             {
                 _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
@@ -162,10 +165,16 @@ namespace HomeBudgetWPF
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
-            DgBudgetItems.ItemsSource = expenseList;
-
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
+            ExpensesDataGrid.ItemsSource = expenseList;
+            ExpensesDataGrid.AutoGenerateColumns = false;
+            
             // CategoryID column
             DataGridTextColumn categoryIdColumn = new DataGridTextColumn();
+
             categoryIdColumn.Header = "CategoryID";
             categoryIdColumn.Binding = new Binding("CategoryID");
             DgBudgetItems.Columns.Add(categoryIdColumn);
@@ -204,6 +213,10 @@ namespace HomeBudgetWPF
         
         public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
         {
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
             // table hold the data
             DataTable dataTable = new DataTable();
 
@@ -232,6 +245,10 @@ namespace HomeBudgetWPF
         }
         public void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> expenseList)
         {
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
             // table hold the data
             DataTable dataTable = new DataTable();
 
@@ -259,10 +276,36 @@ namespace HomeBudgetWPF
         }
 
 
-        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string,object>> expenseList)
+        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> data, List<string> catNames)
         {
-            DgBudgetItems.ItemsSource = expenseList;
-            // Start binding here
+            ExpensesDataGrid.ItemsSource = data;
+            ExpensesDataGrid.AutoGenerateColumns = false;
+
+            // Add month column
+            DataGridTextColumn monthColumn = new DataGridTextColumn()
+            {
+                Header = "Month",
+                Binding = new Binding("[Month]")
+            };
+            ExpensesDataGrid.Columns.Add(monthColumn);
+            // Add Category Columns
+            foreach (string catName in catNames)
+            {
+                DataGridTextColumn catColumn = new DataGridTextColumn()
+                {
+                    Header = catName,
+                    Binding = new Binding($"[{catName}]")
+                };
+                ExpensesDataGrid.Columns.Add(catColumn);
+            }
+            // Add Total Column
+            DataGridTextColumn totalColumn = new DataGridTextColumn()
+            {
+                Header = "Total",
+                Binding = new Binding("[Total]")
+            };
+            ExpensesDataGrid.Columns.Add(totalColumn);
+
         }
 
         public void DisplaySelectFileMenu()
@@ -277,7 +320,6 @@ namespace HomeBudgetWPF
         public void DisplayCategoryMenuWithName(string name)
         {
             _categoryView.ShowView(name);
-
         }
 
         public void DisplayUpdateExpenseMenu(Expense expense)
@@ -317,13 +359,13 @@ namespace HomeBudgetWPF
         {
             this.Show();
             _categoryView.Hide();
-
         }
 
         public void CloseExpenseMenu()
         {
             this.Show();
             _expenseView.Hide();
+            ApplyFilters();
         }
 
         public void CloseFileSelectMenu()
@@ -331,9 +373,14 @@ namespace HomeBudgetWPF
             this.Show();
             // Application is ready
             _p.GetCategoriesForFilter();
+            _p.SetupDefaultDate();
             _fileSelectView.Hide();
         }
-
+        public void SetDefaultDate(DateTime start, DateTime end)
+        {
+            DtStartDate.SelectedDate = start;
+            DtEndDate.SelectedDate = end;
+        }
         public void CloseMain()
         {
             this.Hide();
@@ -611,7 +658,40 @@ namespace HomeBudgetWPF
             ApplyFilters();
         }
 
-        private void CmbFilterCategory_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+       
+
+        private void CmbFilterCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+
+        }
+
+        private void chkFilterCategory_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void chkFilterCategory_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByMonth_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByMonth_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByCategory_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByCategory_Unchecked(object sender, RoutedEventArgs e)
         {
             ApplyFilters();
         }
