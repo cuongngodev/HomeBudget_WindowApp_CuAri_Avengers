@@ -8,8 +8,8 @@
         Title="FileSelect" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
         Background="#3e4444">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Label x:Name="FileSelectPageTitle" FontWeight="Bold" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="StkFileSelectView">
+        <Label x:Name="LblFileSelectPageTitle" FontWeight="Bold" Foreground="#82b74b" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" FontSize="30" Content="New User"/>
 
         <Grid>
             <StackPanel>

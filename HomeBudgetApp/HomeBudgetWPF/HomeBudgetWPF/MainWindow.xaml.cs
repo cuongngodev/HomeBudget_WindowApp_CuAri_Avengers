@@ -23,6 +23,8 @@ namespace HomeBudgetWPF
     /// </summary>
     public partial class MainWindow : Window, ViewInterface
     {
+        public Theme theme = new Theme(0);
+        
         public Presenter _p;
         public FileSelect _fileSelectView;
         public CategoryView _categoryView;
@@ -50,7 +52,7 @@ namespace HomeBudgetWPF
             _categoryView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _fileSelectView.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
+            this.BtnDefaultTheme.IsChecked = true;
         }
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -112,8 +114,6 @@ namespace HomeBudgetWPF
 
         public void DisplaySelectFileMenu()
         {
-            this.DefaultThemeBtn.IsChecked = true;
-
             _fileSelectView.Show();
             this.Hide();
         }
@@ -122,7 +122,6 @@ namespace HomeBudgetWPF
         public void DisplayCategoryMenuWithName(string name)
         {
             _categoryView.ShowView(name);
-
         }
 
         public void DisplayUpdateExpenseMenu()
@@ -197,204 +196,47 @@ namespace HomeBudgetWPF
             _p.ChangeColorTheme(selectedTheme);
         }
 
-        const string LIGHT_GREEN = "#82b74b";
-        const string DARK_GREEN = "#405d27";
-        const string DARK_GREY = "#3e4444";
-        const string GOLDEN_YELLOW = "#FFC107";
-        const string LIGHT_BLUE = "#1E88E5";
-        const string TURQUOISE = "#004D40";
-        const string MARROON = "#D81B60";
-        const string WHITE = "#fff";
-
         public void SetDefaultTheme()
         {
-            BrushConverter brushConverter = new BrushConverter();
+            theme.CurrentTheme = Theme.Mode.DEFAULT;
 
-            #region Home
-            
-
-            this.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
-            this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            #endregion
-
-            #region FileSelect
-            this._fileSelectView.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
-            this._fileSelectView.FileSelectPageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._fileSelectView.BtnCreateFile.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._fileSelectView.BtnCreateFile.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-
-            this._fileSelectView.BtnOpenFile.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._fileSelectView.BtnOpenFile.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            #endregion
-
-            #region Categories
-            this._categoryView.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
-            this._categoryView.CategoryPageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._categoryView.LblCatDescription.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._categoryView.LblCatType.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._categoryView.TxtDescription.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            this._categoryView.TxtDescription.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._categoryView.CmbCatType.BorderBrush = (Brush)brushConverter.ConvertFrom("#405d27");
-            this._categoryView.CmbCatType.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._categoryView.BtnCreateCategory.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._categoryView.BtnCreateCategory.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-
-            this._categoryView.BtnCancelCategory.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._categoryView.BtnCancelCategory.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            #endregion
-
-            #region Expenses
-            this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#3e4444");
-            this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            //this._expenseView.LblExpenseCredit.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#405d27");
-            this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-
-            this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-
-            // this._expenseView.NewExpenseOnCreditChkBox.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            //this._expenseView.NewExpenseOnCreditChkBox.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-
-            //  this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            // this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-
-            this._expenseView.BtnCancelExpense.Foreground = (Brush)brushConverter.ConvertFrom("#82b74b");
-            this._expenseView.BtnCancelExpense.Background = (Brush)brushConverter.ConvertFrom("#405d27");
-            #endregion
+            SetThemeProperties();
         }
-
-        //Button Text: #82b74b, #FFC107
-
-        //Button Background: #405d27, #1E88E5, #D81B60
-
-        //Button Outline: White, 
-
-        //Text Color: #82b74b, #FFC107, 
-
-        //Background: #3e4444, #004D40, 
 
         public void SetProtanopiaDeuteranopiaTheme()
         {
-            BrushConverter brushConverter = new BrushConverter();
+            theme.CurrentTheme = Theme.Mode.PROTAN_DEUTERAN;
 
-            #region ProDeuterHome
-            Background = (Brush)brushConverter.ConvertFrom(TURQUOISE);
-
-            //var collection = LogicalChildren;
-            //UIElementCollection UIcollection = new UIElementCollection(this);
-
-            //while(collection.MoveNext())
-            //{
-            //    if (collection.Current is Panel)
-            //    {
-            //        Panel panel = (Panel)collection.Current;
-                    
-            //        UIcollection.Add(panel);
-            //    }
-            //}
-
-            //// UIElementCollection collectionOfOne = new
-
-            //SetThemeOnControls(UIcollection);
-
-
-            //this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-
-            //#endregion
-
-            //#region FileSelect
-            //this._fileSelectView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-            //this._fileSelectView.FileSelectPageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._fileSelectView.BtnCreateFile.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._fileSelectView.BtnCreateFile.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-
-            //this._fileSelectView.BtnOpenFile.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._fileSelectView.BtnOpenFile.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //#endregion
-
-            //#region Categories
-            //this._categoryView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-            //this._categoryView.CategoryPageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._categoryView.LblCatDescription.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._categoryView.LblCatType.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._categoryView.TxtDescription.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //this._categoryView.TxtDescription.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._categoryView.CmbCatType.BorderBrush = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //this._categoryView.CmbCatType.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._categoryView.BtnCreateCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._categoryView.BtnCreateCategory.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-
-            //this._categoryView.BtnCancelCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._categoryView.BtnCancelCategory.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //#endregion
-
-            //#region Expenses
-            //this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-            //this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //// this._expenseView.LblExpenseCredit.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#1E88E5");
-            //this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            //this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-
-            ////this._expenseView.NewExpenseOnCreditChkBox.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            ////this._expenseView.NewExpenseOnCreditChkBox.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-
-            ////this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            ////this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#1E88E5");
-
-            #endregion
+            SetThemeProperties();
         }
 
+        public void SetTritanopiaTheme()
+        {
+            theme.CurrentTheme = Theme.Mode.TRITAN;
+
+            SetThemeProperties();
+        }
+        #endregion
+
+        public void SetThemeProperties()
+        {
+            BrushConverter brushConverter = new BrushConverter();
+            Background = (Brush)brushConverter.ConvertFrom(theme.BackgroundColor);
+            _categoryView.Background = (Brush)brushConverter.ConvertFrom(theme.BackgroundColor);
+            _expenseView.Background = (Brush)brushConverter.ConvertFrom(theme.BackgroundColor);
+            _fileSelectView.Background = (Brush)brushConverter.ConvertFrom(theme.BackgroundColor);
+
+            var collection = LogicalChildren;
+            UIElementCollection mainViewCollection = GrdMainView.Children;
+            UIElementCollection categoryViewCollection = _categoryView.StkCategoryView.Children;
+            UIElementCollection expenseViewCollection = _expenseView.StkExpenseView.Children;
+            UIElementCollection fileSelectViewCollection = _fileSelectView.StkFileSelectView.Children;
+
+            SetThemeOnControls(mainViewCollection);
+            SetThemeOnControls(categoryViewCollection);
+            SetThemeOnControls(expenseViewCollection);
+            SetThemeOnControls(fileSelectViewCollection);
+        }
 
         private void SetThemeOnControls(UIElementCollection children)
         {
@@ -417,102 +259,49 @@ namespace HomeBudgetWPF
         {
             BrushConverter brushConverter = new BrushConverter();
 
-            control.Foreground = (Brush)brushConverter.ConvertFrom(GOLDEN_YELLOW);
-            control.Background = (Brush)brushConverter.ConvertFrom(LIGHT_BLUE);
-            control.BorderBrush = (Brush)brushConverter.ConvertFrom(WHITE);
+            switch (control)
+            {
+                case Label lbl:
+                    lbl.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    break;
+                case TextBox txt:
+                    txt.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    txt.Background = (Brush)brushConverter.ConvertFrom(theme.ElementBackgroundColor);
+                    break;
+                case Button btn:
+                    btn.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    btn.Background = (Brush)brushConverter.ConvertFrom(theme.ElementBackgroundColor);
+                    btn.BorderBrush = (Brush)brushConverter.ConvertFrom(theme.ElementBorderColor);
+                    break;
+                case DatePicker dtPckr:
+                    dtPckr.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    dtPckr.Background = (Brush)brushConverter.ConvertFrom(theme.ElementBackgroundColor);
+                    dtPckr.BorderBrush = (Brush)brushConverter.ConvertFrom(theme.ElementBorderColor);
+                    break;
+                case GroupBox grpBx:
+                    grpBx.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    break;
+                case CheckBox chk:
+                    chk.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    chk.Background = (Brush)brushConverter.ConvertFrom(theme.ElementBackgroundColor);
+                    chk.BorderBrush = (Brush)brushConverter.ConvertFrom(theme.ElementBorderColor);
+                    break;
+                case RadioButton rdBtn:
+                    rdBtn.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    rdBtn.Background = (Brush)brushConverter.ConvertFrom(theme.ElementBackgroundColor);
+                    rdBtn.BorderBrush = (Brush)brushConverter.ConvertFrom(theme.ElementBorderColor);
+                    break;
+                case DataGrid dtGrd:
+                    dtGrd.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    dtGrd.Background = (Brush)brushConverter.ConvertFrom(theme.ElementBackgroundColor);
+                    dtGrd.BorderBrush = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor); 
+                    break;
+                default:
+                    control.Foreground = (Brush)brushConverter.ConvertFrom(theme.ElementForegroundColor);
+                    control.Background = (Brush)brushConverter.ConvertFrom(theme.ElementBackgroundColor);
+                    control.BorderBrush = (Brush)brushConverter.ConvertFrom(theme.ElementBorderColor);
+                    break;
+            }
         }
-
-        //Label
-        //Button
-        //Datepicker
-        //Groupbox
-        //StackPanel
-        //Grid
-        //Checkbox
-        //RadioButton
-            
-
-        public void SetTritanopiaTheme()
-        {
-            BrushConverter brushConverter = new BrushConverter();
-            this.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-
-            #region TritanHome
-            this.Home_Title.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this.ThemeTitleLbl.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this.DefaultThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.ProDeuterThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this.TritanopiaThemeBtn.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            #endregion
-
-            #region FileSelect
-            this._fileSelectView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-            this._fileSelectView.FileSelectPageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._fileSelectView.BtnCreateFile.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._fileSelectView.BtnCreateFile.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-
-            this._fileSelectView.BtnOpenFile.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._fileSelectView.BtnOpenFile.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            #endregion
-
-            #region Categories
-            this._categoryView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-            this._categoryView.CategoryPageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._categoryView.LblCatDescription.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._categoryView.LblCatType.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._categoryView.TxtDescription.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            this._categoryView.TxtDescription.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._categoryView.CmbCatType.BorderBrush = (Brush)brushConverter.ConvertFrom("#D81B60");
-            this._categoryView.CmbCatType.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._categoryView.BtnCreateCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._categoryView.BtnCreateCategory.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-
-            this._categoryView.BtnCancelCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._categoryView.BtnCancelCategory.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            #endregion
-
-            #region Expenses
-            this._expenseView.Background = (Brush)brushConverter.ConvertFrom("#004D40");
-            this._expenseView.ExpensePageTitle.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._expenseView.LblExpenseDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._expenseView.LblExpenseAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._expenseView.LblExpenseCat.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._expenseView.LblExpenseDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.LblExpenseCredit.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._expenseView.TxtDesc.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            this._expenseView.TxtDesc.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._expenseView.TxtAmount.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-            this._expenseView.TxtAmount.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._expenseView.CmbCategory.BorderBrush = (Brush)brushConverter.ConvertFrom("#D81B60");
-            this._expenseView.CmbCategory.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-
-            this._expenseView.DtDate.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            this._expenseView.DtDate.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-
-            //this._expenseView.NewExpenseOnCreditChkBox.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.NewExpenseOnCreditChkBox.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-
-            //this._expenseView.BtnLogExpense.Foreground = (Brush)brushConverter.ConvertFrom("#FFC107");
-            //this._expenseView.BtnLogExpense.Background = (Brush)brushConverter.ConvertFrom("#D81B60");
-
-
-            #endregion
-        }
-        #endregion
-
-
-
-
     }
 }
