@@ -101,7 +101,7 @@ namespace HomeBudgetWPF
             {
                 if (_update)
                 {
-                    //Not sure the logic for this, depends on how the grid is designed and functions 
+                    _p.UpdateExpense(_updateExpense.Id, date, catType, catName, desc);
                 }
                 else
                 {
