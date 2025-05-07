@@ -330,9 +330,14 @@ namespace HomeBudgetWPF
             this.Show();
             // Application is ready
             _p.GetCategoriesForFilter();
+            _p.SetupDefaultDate();
             _fileSelectView.Hide();
         }
-
+        public void SetDefaultDate(DateTime start, DateTime end)
+        {
+            DtStartDate.SelectedDate = start;
+            DtEndDate.SelectedDate = end;
+        }
         public void CloseMain()
         {
             this.Hide();

@@ -27,7 +27,10 @@ namespace HomeBudgetWPF
             _view.DisplaySelectFileMenu();
             
         }
-
+        public void SetupDefaultDate()
+        {
+            _view.SetDefaultDate(DateTime.Today.AddDays(-364), DateTime.Today);
+        }
         //DB STUFF 
         #region Database
         public void SetDatabase(string db, bool isNew)

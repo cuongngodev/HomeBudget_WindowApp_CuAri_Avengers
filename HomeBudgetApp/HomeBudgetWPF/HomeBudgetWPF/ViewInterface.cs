@@ -53,6 +53,8 @@ namespace HomeBudgetWPF
         void DisplayCategories(List<Category> categories);
 
         void ShowCategoriesOptions(List<Category> categories);
+
+        void SetDefaultDate(DateTime start, DateTime end);
     }
 
 
