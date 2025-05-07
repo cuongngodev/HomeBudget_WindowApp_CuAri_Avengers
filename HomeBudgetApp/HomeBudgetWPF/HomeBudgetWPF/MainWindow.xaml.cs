@@ -118,6 +118,7 @@ namespace HomeBudgetWPF
         }
         public void ApplyFilters()
         {
+            
             if(!DtStartDate.SelectedDate.HasValue || !DtEndDate.SelectedDate.HasValue)
             {
                 return;
@@ -133,13 +134,15 @@ namespace HomeBudgetWPF
             if (chkFilterCategory.IsChecked == true)
             {
                 isFilterByCategory = true;
-                catId = CmbFilterCategory.SelectedIndex+1;
+                catId = CmbFilterCategory.SelectedIndex + 1;
             }
+            
             DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
         }
         public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
         {
             
+
             if (isSummaryByCategory && isSummaryByMonth)
             {
                 _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
@@ -162,7 +165,7 @@ namespace HomeBudgetWPF
         {
             ExpensesDataGrid.ItemsSource = expenseList;
             ExpensesDataGrid.AutoGenerateColumns = false;
-
+            
             // CategoryID column
             DataGridTextColumn categoryIdColumn = new DataGridTextColumn();
 
@@ -277,7 +280,6 @@ namespace HomeBudgetWPF
         public void DisplayCategoryMenuWithName(string name)
         {
             _categoryView.ShowView(name);
-
         }
 
         public void DisplayUpdateExpenseMenu()
@@ -609,7 +611,40 @@ namespace HomeBudgetWPF
             ApplyFilters();
         }
 
-        private void CmbFilterCategory_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+       
+
+        private void CmbFilterCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+
+        }
+
+        private void chkFilterCategory_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void chkFilterCategory_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByMonth_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByMonth_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByCategory_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByCategory_Unchecked(object sender, RoutedEventArgs e)
         {
             ApplyFilters();
         }
