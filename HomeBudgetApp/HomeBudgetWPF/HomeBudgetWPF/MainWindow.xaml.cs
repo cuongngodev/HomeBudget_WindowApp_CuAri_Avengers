@@ -165,6 +165,10 @@ namespace HomeBudgetWPF
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
             ExpensesDataGrid.ItemsSource = expenseList;
             ExpensesDataGrid.AutoGenerateColumns = false;
             
@@ -209,6 +213,10 @@ namespace HomeBudgetWPF
         
         public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
         {
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
             // table hold the data
             DataTable dataTable = new DataTable();
 
@@ -237,6 +245,10 @@ namespace HomeBudgetWPF
         }
         public void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> expenseList)
         {
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
             // table hold the data
             DataTable dataTable = new DataTable();
 
@@ -264,10 +276,9 @@ namespace HomeBudgetWPF
         }
 
 
-        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string,object>> expenseList)
+        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> data)
         {
-            ExpensesDataGrid.ItemsSource = expenseList;
-            // Start binding here
+
         }
 
         public void DisplaySelectFileMenu()
