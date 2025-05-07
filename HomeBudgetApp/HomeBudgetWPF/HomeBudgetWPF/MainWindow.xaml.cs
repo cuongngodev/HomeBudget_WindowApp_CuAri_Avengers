@@ -276,8 +276,35 @@ namespace HomeBudgetWPF
         }
 
 
-        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> data)
+        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> data, List<string> catNames)
         {
+            ExpensesDataGrid.ItemsSource = data;
+            ExpensesDataGrid.AutoGenerateColumns = false;
+
+            // Add month column
+            DataGridTextColumn monthColumn = new DataGridTextColumn()
+            {
+                Header = "Month",
+                Binding = new Binding("[Month]")
+            };
+            ExpensesDataGrid.Columns.Add(monthColumn);
+            // Add Category Columns
+            foreach (string catName in catNames)
+            {
+                DataGridTextColumn catColumn = new DataGridTextColumn()
+                {
+                    Header = catName,
+                    Binding = new Binding($"[{catName}]")
+                };
+                ExpensesDataGrid.Columns.Add(catColumn);
+            }
+            // Add Total Column
+            DataGridTextColumn totalColumn = new DataGridTextColumn()
+            {
+                Header = "Total",
+                Binding = new Binding("[Total]")
+            };
+            ExpensesDataGrid.Columns.Add(totalColumn);
 
         }
 

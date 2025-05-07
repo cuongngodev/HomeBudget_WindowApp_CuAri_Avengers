@@ -309,7 +309,8 @@ namespace HomeBudgetWPF
             if (CheckDatePeriod(start, end))
             {
                 List<Dictionary<string, object>> itemsDict = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, filterFlag, catID);
-                _view.DisplayExpenseItemmsByCategoryAndMonthGrid(itemsDict);
+                List<string> categoryNames = _model.categories.List().Select(c => c.Description).ToList();
+                _view.DisplayExpenseItemmsByCategoryAndMonthGrid(itemsDict, categoryNames);
             }
             else
             {

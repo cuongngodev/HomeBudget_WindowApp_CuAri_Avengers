@@ -34,7 +34,7 @@ namespace HomeBudgetWPF
 
         void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> items);
         
-        void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> items);
+        void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> items, List<string> catNames);
 
         void CloseFileSelectMenu();
 
