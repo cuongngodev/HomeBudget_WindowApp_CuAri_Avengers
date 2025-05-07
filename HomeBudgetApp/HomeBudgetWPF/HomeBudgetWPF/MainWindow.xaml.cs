@@ -354,13 +354,13 @@ namespace HomeBudgetWPF
         {
             this.Show();
             _categoryView.Hide();
-
         }
 
         public void CloseExpenseMenu()
         {
             this.Show();
             _expenseView.Hide();
+            ApplyFilters();
         }
 
         public void CloseFileSelectMenu()
