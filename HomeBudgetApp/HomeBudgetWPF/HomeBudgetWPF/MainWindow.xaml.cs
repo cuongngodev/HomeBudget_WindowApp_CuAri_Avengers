@@ -197,9 +197,8 @@ namespace HomeBudgetWPF
             // Description column
             DataGridTextColumn descriptionColumn = new DataGridTextColumn();
             descriptionColumn.Header = "Description";
-            descriptionColumn.Binding = new Binding("Description");
+            descriptionColumn.Binding = new Binding("ShortDescription");
             DgBudgetItems.Columns.Add(descriptionColumn);
-
             // Amount column
             DataGridTextColumn amountColumn = new DataGridTextColumn();
             amountColumn.Header = "Amount";
@@ -698,12 +697,6 @@ namespace HomeBudgetWPF
             ApplyFilters();
         }
 
-        private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
-        {
-            BudgetItem selectedItem = (BudgetItem)DgBudgetItems.SelectedItem;
-            _p.DeleteExpense(selectedItem.ExpenseID);
-            ApplyFilters();
-        }
 
         private void MenuItemModify_Click(object sender, RoutedEventArgs e)
         {

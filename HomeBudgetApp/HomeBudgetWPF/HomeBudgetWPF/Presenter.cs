@@ -199,19 +199,7 @@ namespace HomeBudgetWPF
             return makeIdenticalExpense;
         }
 
-        public void DeleteExpense(int id)
-        {
-            if (id == -1)
-            {
-                _view.DisplayError("You did not select an expense to delete!");
-                return;
-            }
-            if (_view.AskConfirmation("Are you sure you want to delete this expense?"))
-            {
-                _model.expenses.Delete(id);
-                _view.DisplayConfirmation("Deleted Succesfully!");
-            }
-        }
+    
 
         public void UpdateExpense(int id, DateTime date, int cat, string amount, string desc)
         {
