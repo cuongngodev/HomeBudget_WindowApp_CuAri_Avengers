@@ -46,7 +46,7 @@
                         </StackPanel>
 
                         <StackPanel Margin="5">
-                            <CheckBox Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
+                            <CheckBox x:Name="ChkFilterByCategory" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
                             <ComboBox x:Name="CmbFilterCategory"/>
                         </StackPanel>
                     </StackPanel>

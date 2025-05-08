@@ -120,19 +120,19 @@ namespace HomeBudgetWPF
         }
         public void ApplyFilters()
         {
-            if(!DtStartDate.SelectedDate.HasValue && !DtEndDate.SelectedDate.HasValue)
+            if(!DtPckrStartDate.SelectedDate.HasValue && !DtPckrEndDate.SelectedDate.HasValue)
             {
                 return;
             }
-            DateTime start = DtStartDate.SelectedDate.Value;
-            DateTime end = DtEndDate.SelectedDate.Value;
+            DateTime start = DtPckrStartDate.SelectedDate.Value;
+            DateTime end = DtPckrEndDate.SelectedDate.Value;
             bool isFilterByCategory = false;
             int catId = -1;
 
             bool isSummaryByMonth = ChkByMonth.IsChecked == true;
             bool isSummaryByCategory = ChkByCategory.IsChecked == true;
 
-            if (chkFilterCategory.IsChecked == true)
+            if (ChkFilterByCategory.IsChecked == true)
             {
                 isFilterByCategory = true;
                 catId = CmbFilterCategory.SelectedIndex;
