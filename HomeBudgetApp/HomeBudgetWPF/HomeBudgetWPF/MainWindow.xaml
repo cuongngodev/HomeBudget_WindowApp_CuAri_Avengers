@@ -102,7 +102,7 @@
                       Margin="10"
                       x:Name="DgBudgetItems"
                       IsReadOnly="True"
-                      AutoGenerateColumns="False">
+                      >
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Delete" Click="MenuItemDelete_Click"/>

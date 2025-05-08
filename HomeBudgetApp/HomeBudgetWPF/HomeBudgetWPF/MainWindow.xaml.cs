@@ -147,7 +147,7 @@ namespace HomeBudgetWPF
         public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
         {
             
-
+            
             if (isSummaryByCategory && isSummaryByMonth)
             {
                 _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
@@ -211,7 +211,6 @@ namespace HomeBudgetWPF
             balanceColumn.Header = "Balance";
             balanceColumn.Binding = new Binding("Balance");
             DgBudgetItems.Columns.Add(balanceColumn);
-            DgBudgetItems.AutoGenerateColumns = true;
         }
         
         public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
