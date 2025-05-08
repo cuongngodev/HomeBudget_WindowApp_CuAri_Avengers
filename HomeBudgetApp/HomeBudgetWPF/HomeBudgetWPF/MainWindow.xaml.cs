@@ -146,8 +146,7 @@ namespace HomeBudgetWPF
 
         public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
         {
-            
-            
+       
             if (isSummaryByCategory && isSummaryByMonth)
             {
                 _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
@@ -219,31 +218,21 @@ namespace HomeBudgetWPF
             {
                 return;
             }
-            // table hold the data
-            DataTable dataTable = new DataTable();
-
-            // Add columns 
-            dataTable.Columns.Add("Category", typeof(string));
-            dataTable.Columns.Add("Total", typeof(double));
-            dataTable.Columns.Add("Details", typeof(string));
-
-            // Add rows 
-            foreach (BudgetItemsByCategory item in expenseList)
+            DgBudgetItems.ItemsSource = expenseList;
+            // CategoryID column
+            DataGridTextColumn bGByCategory = new DataGridTextColumn()
             {
-                DataRow row = dataTable.NewRow();
-                row["Category"] = item.Category;
-                row["Total"] = item.Total;
-                row["Details"] = string.Join(",\n", item.Details.Select(d => d.ShortDescription));
+                Header = "Category",
+                Binding = new Binding("Category"),
+            };
+  
+            DgBudgetItems.Columns.Add(bGByCategory);
 
-                dataTable.Rows.Add(row);
-            }
-            // Bind the DataTable to the DataGrid
-            DgBudgetItems.ItemsSource = dataTable.DefaultView;
+            DataGridTextColumn total = new DataGridTextColumn();
 
-            // Auto-generate columns
-            DgBudgetItems.AutoGenerateColumns = true;
-
-
+            total.Header = "Total";
+            total.Binding = new Binding("Total");
+            DgBudgetItems.Columns.Add(total);
         }
         public void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> expenseList)
         {
@@ -251,35 +240,31 @@ namespace HomeBudgetWPF
             {
                 return;
             }
-            // table hold the data
-            DataTable dataTable = new DataTable();
-
-            // Add columns 
-            dataTable.Columns.Add("Month", typeof(string));
-            dataTable.Columns.Add("Total", typeof(double));
-            dataTable.Columns.Add("Descriptions", typeof(string));
-
-            // Add rows 
-            foreach (BudgetItemsByMonth item in expenseList)
+            DgBudgetItems.ItemsSource = expenseList;
+            // CategoryID column
+            DataGridTextColumn bGByMonth = new DataGridTextColumn()
             {
-                DataRow row = dataTable.NewRow();
-                row["Month"] = item.Month;
-                row["Total"] = item.Total;
-                row["Descriptions"] = string.Join(",\n", item.Details.Select(d => d.ShortDescription));
+                Header = "Month",
+                Binding = new Binding("Month"),
+            };
 
-                dataTable.Rows.Add(row);
-            }
+            DgBudgetItems.Columns.Add(bGByMonth);
 
-            // Bind the DataTable to the DataGrid
-            DgBudgetItems.ItemsSource = dataTable.DefaultView;
+            DataGridTextColumn total = new DataGridTextColumn();
 
-            // Auto-generate columns
-            DgBudgetItems.AutoGenerateColumns = true;
+            total.Header = "Total";
+            total.Binding = new Binding("Total");
+            DgBudgetItems.Columns.Add(total);
+
         }
 
 
         public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> data, List<string> catNames)
         {
+            if (data == null || !data.Any())
+            {
+                return;
+            }
             DgBudgetItems.ItemsSource = data;
             DgBudgetItems.AutoGenerateColumns = false;
 
