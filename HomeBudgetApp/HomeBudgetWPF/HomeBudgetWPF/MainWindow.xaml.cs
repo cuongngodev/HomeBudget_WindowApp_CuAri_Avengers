@@ -124,7 +124,7 @@ namespace HomeBudgetWPF
             // Clear all current collumn to avoid create more column to exsiting datagrid
             ExpensesDataGrid.Columns.Clear();
 
-            if (!DtStartDate.SelectedDate.HasValue || !DtEndDate.SelectedDate.HasValue)
+            if (!DtPckrStartDate.SelectedDate.HasValue || !DtPckrEndDate.SelectedDate.HasValue)
             {
                 return;
             }
@@ -374,8 +374,8 @@ namespace HomeBudgetWPF
         }
         public void SetDefaultDate(DateTime start, DateTime end)
         {
-            DtStartDate.SelectedDate = start;
-            DtEndDate.SelectedDate = end;
+            DtPckrStartDate.SelectedDate = start;
+            DtPckrEndDate.SelectedDate = end;
         }
         public void CloseMain()
         {
@@ -510,7 +510,10 @@ namespace HomeBudgetWPF
             }
         }
 
-       
+        private void SelectedDateChanged_Click(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
 
         private void CmbFilterCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

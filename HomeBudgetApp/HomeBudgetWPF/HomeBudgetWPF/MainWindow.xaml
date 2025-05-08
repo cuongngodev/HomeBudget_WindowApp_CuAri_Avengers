@@ -35,20 +35,20 @@
                         <StackPanel>
                             <StackPanel Margin="5">
                                 <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
-                                <DatePicker x:Name="DtStartDate" Padding="5"
+                                <DatePicker x:Name="DtPckrStartDate" Padding="5"
                                 Background="#405d27" Foreground="#82b74b"
                                 SelectedDateChanged="SelectedDateChanged_Click"
                                 />
                             </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
-                            <DatePicker x:Name="DtPckrEndDate" Padding="5"
-                                Background="#405d27" Foreground="#82b74b"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
+                                <DatePicker x:Name="DtPckrEndDate" Padding="5"
+                                    Background="#405d27" Foreground="#82b74b"/>
+                            </StackPanel>
 
                             <StackPanel Margin="5">
-                                <CheckBox x:Name="chkFilterCategory" Checked="chkFilterCategory_Checked" Unchecked="chkFilterCategory_Unchecked" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
+                                <CheckBox x:Name="ChkFilterByCategory" Checked="chkFilterCategory_Checked" Unchecked="chkFilterCategory_Unchecked" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
                                 <ComboBox x:Name="CmbFilterCategory" SelectionChanged="CmbFilterCategory_SelectionChanged"/>
                             </StackPanel>
                         </StackPanel>
