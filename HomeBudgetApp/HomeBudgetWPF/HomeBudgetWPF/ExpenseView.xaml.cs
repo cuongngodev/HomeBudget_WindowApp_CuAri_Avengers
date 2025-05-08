@@ -101,7 +101,7 @@ namespace HomeBudgetWPF
             {
                 if (_update)
                 {
-                    _p.UpdateExpense(_updateExpense.Id, date, catType, catName, desc);
+                    _p.UpdateExpense(_updateExpense.Id, date, catType, amount, desc);
                 }
                 else
                 {

@@ -221,6 +221,8 @@ namespace HomeBudgetWPF
                 return;
             }
             double newAmount = StringToDouble(amount);
+            cat += 1;
+
             if (newAmount == -1)
             {
                 _view.DisplayError("Invalid Amount,\nPlease enter a number");
@@ -228,6 +230,7 @@ namespace HomeBudgetWPF
             }
             _model.expenses.UpdateProperties(id, date, cat, newAmount, desc);
             _view.DisplayConfirmation("Edited Succesfully!");
+            _view.CloseExpenseMenu();
         }
         #endregion
 

@@ -703,12 +703,14 @@ namespace HomeBudgetWPF
         {
             BudgetItem selectedItem = (BudgetItem)DgBudgetItems.SelectedItem;
             _p.DeleteExpense(selectedItem.ExpenseID);
+            ApplyFilters();
         }
 
         private void MenuItemModify_Click(object sender, RoutedEventArgs e)
         {
             BudgetItem selectedItem = (BudgetItem)DgBudgetItems.SelectedItem;
             _p.OpenUpdateExpense(selectedItem.ExpenseID);
+
         }
 
         private void MenuItemCancel_Click(object sender, RoutedEventArgs e)
