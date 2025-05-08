@@ -54,23 +54,23 @@ namespace HomeBudgetWPF
             if (_update)
             {
                 this.Title = "Update Expense";
-                ExpensePageTitle.Content = "Update Expense";
+                LblExpensePageTitle.Content = "Update Expense";
                 BtnSubmit.Content = "Update";
                 
                 TxtDesc.Text = _updateExpense.Description;
                 TxtAmount.Text = _updateExpense.Amount.ToString();
-                DtDate.SelectedDate = _updateExpense.Date;
+                DtPckrDate.SelectedDate = _updateExpense.Date;
                 CmbCategory.SelectedIndex = _updateExpense.Category - 1;
 
                 BtnDeleteExpense.Visibility = Visibility.Visible;
             }
             else
             {
-                ExpensePageTitle.Content = "Add Expense";
+                LblExpensePageTitle.Content = "Add Expense";
                 this.Title = "Add Expense";
                 BtnSubmit.Content = "Add";
                 BtnDeleteExpense.Visibility = Visibility.Hidden;
-                DtDate.SelectedDate = DateTime.Now;
+                DtPckrDate.SelectedDate = DateTime.Now;
 
                 TxtAmount.Text = "0";
                 TxtDesc.Text = "";
@@ -91,7 +91,7 @@ namespace HomeBudgetWPF
 
         private void ExpenseSubmitClick(object sender, RoutedEventArgs e)
         {
-            DateTime date = DtDate.SelectedDate.Value;
+            DateTime date = DtPckrDate.SelectedDate.Value;
             int catType = CmbCategory.SelectedIndex;
             string catName = CmbCategory.Text;
             string desc = TxtDesc.Text;
