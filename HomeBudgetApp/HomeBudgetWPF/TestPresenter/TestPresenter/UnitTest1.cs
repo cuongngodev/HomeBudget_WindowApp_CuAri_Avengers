@@ -214,6 +214,46 @@ public class UnitTest1
         Assert.True(view.calledSetDefaultDate);
     }
     [Fact]
+    public void Test_CheckDatePeriod_Valid()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+        bool validDatePeriod = false;
+        presenter.SetDatabase("Test.db", true);
+        view.calledDisplayExpenseItemsGrid = false;
+
+        // Act
+        presenter.DisplayExpenseItems(start,end, false,1);
+        validDatePeriod = presenter.CheckDatePeriod(start,end);
+        // Assert
+        Assert.True(validDatePeriod);
+        Assert.True(view.calledDisplayExpenseItemsGrid);
+    }
+    [Fact]
+    public void Test_CheckDatePeriod_InValid()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 5, 1);
+        DateTime end = new DateTime(2025, 3, 29);
+        bool validDatePeriod = false;
+        presenter.SetDatabase("Test.db", true);
+        view.calledDisplayExpenseItemsGrid = false;
+        view.calledDisplayError = false;
+
+        // Act
+        presenter.DisplayExpenseItems(start, end, false, 1);
+        validDatePeriod = presenter.CheckDatePeriod(start, end);
+        // Assert
+        Assert.True(view.calledDisplayError);
+
+        Assert.False(validDatePeriod);
+    }
+    [Fact]
     public void TestConstructor()
     {
         // Arrange
