@@ -62,15 +62,13 @@ namespace HomeBudgetWPF
                 DtPckrDate.SelectedDate = _updateExpense.Date;
                 CmbCategory.SelectedIndex = _updateExpense.Category - 1;
 
-                BtnDeleteExpense.Visibility = Visibility.Visible;
             }
             else
             {
                 LblExpensePageTitle.Content = "Add Expense";
                 this.Title = "Add Expense";
                 BtnSubmit.Content = "Add";
-                BtnDeleteExpense.Visibility = Visibility.Hidden;
-                DtPckrDate.SelectedDate = DateTime.Now;
+                DtDate.SelectedDate = DateTime.Now;
 
                 TxtAmount.Text = "0";
                 TxtDesc.Text = "";
