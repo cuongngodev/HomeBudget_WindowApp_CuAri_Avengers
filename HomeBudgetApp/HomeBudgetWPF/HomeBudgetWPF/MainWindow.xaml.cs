@@ -116,6 +116,7 @@ namespace HomeBudgetWPF
             _expenseView.Show();
             this.Hide();
         }
+
         public void ApplyFilters()
         {
             // Clear all current collumn to avoid create more column to exsiting datagrid
@@ -129,6 +130,7 @@ namespace HomeBudgetWPF
             DateTime end = DtEndDate.SelectedDate.Value;
             bool isFilterByCategory = false;
             int catId = -1;
+    
 
             bool isSummaryByMonth = ChkByMonth.IsChecked == true;
             bool isSummaryByCategory = ChkByCategory.IsChecked == true;
@@ -141,6 +143,7 @@ namespace HomeBudgetWPF
             
             DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
         }
+
         public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
         {
             
@@ -177,38 +180,38 @@ namespace HomeBudgetWPF
 
             categoryIdColumn.Header = "CategoryID";
             categoryIdColumn.Binding = new Binding("CategoryID");
-            ExpensesDataGrid.Columns.Add(categoryIdColumn);
+            DgBudgetItems.Columns.Add(categoryIdColumn);
 
             //  Category column
             DataGridTextColumn categoryColumn = new DataGridTextColumn();
             categoryColumn.Header = "Category";
             categoryColumn.Binding = new Binding("Category");
-            ExpensesDataGrid.Columns.Add(categoryColumn);
+            DgBudgetItems.Columns.Add(categoryColumn);
 
             // Date column
             DataGridTextColumn dateColumn = new DataGridTextColumn();
             dateColumn.Header = "Date";
             dateColumn.Binding = new Binding("Date");
-            ExpensesDataGrid.Columns.Add(dateColumn);
+            DgBudgetItems.Columns.Add(dateColumn);
 
             // Description column
             DataGridTextColumn descriptionColumn = new DataGridTextColumn();
             descriptionColumn.Header = "Description";
-            descriptionColumn.Binding = new Binding("ShortDescription");
-            ExpensesDataGrid.Columns.Add(descriptionColumn);
+            descriptionColumn.Binding = new Binding("Description");
+            DgBudgetItems.Columns.Add(descriptionColumn);
 
             // Amount column
             DataGridTextColumn amountColumn = new DataGridTextColumn();
             amountColumn.Header = "Amount";
             amountColumn.Binding = new Binding("Amount");
-            ExpensesDataGrid.Columns.Add(amountColumn);
+            DgBudgetItems.Columns.Add(amountColumn);
 
             // Balance column
             DataGridTextColumn balanceColumn = new DataGridTextColumn();
             balanceColumn.Header = "Balance";
             balanceColumn.Binding = new Binding("Balance");
-            ExpensesDataGrid.Columns.Add(balanceColumn);
-            
+            DgBudgetItems.Columns.Add(balanceColumn);
+            DgBudgetItems.AutoGenerateColumns = true;
         }
         
         public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
@@ -226,7 +229,7 @@ namespace HomeBudgetWPF
             dataTable.Columns.Add("Details", typeof(string));
 
             // Add rows 
-            foreach (var item in expenseList)
+            foreach (BudgetItemsByCategory item in expenseList)
             {
                 DataRow row = dataTable.NewRow();
                 row["Category"] = item.Category;
@@ -236,10 +239,10 @@ namespace HomeBudgetWPF
                 dataTable.Rows.Add(row);
             }
             // Bind the DataTable to the DataGrid
-            ExpensesDataGrid.ItemsSource = dataTable.DefaultView;
+            DgBudgetItems.ItemsSource = dataTable.DefaultView;
 
             // Auto-generate columns
-            ExpensesDataGrid.AutoGenerateColumns = true;
+            DgBudgetItems.AutoGenerateColumns = true;
 
 
         }
@@ -258,7 +261,7 @@ namespace HomeBudgetWPF
             dataTable.Columns.Add("Descriptions", typeof(string));
 
             // Add rows 
-            foreach (var item in expenseList)
+            foreach (BudgetItemsByMonth item in expenseList)
             {
                 DataRow row = dataTable.NewRow();
                 row["Month"] = item.Month;
@@ -269,10 +272,10 @@ namespace HomeBudgetWPF
             }
 
             // Bind the DataTable to the DataGrid
-            ExpensesDataGrid.ItemsSource = dataTable.DefaultView;
+            DgBudgetItems.ItemsSource = dataTable.DefaultView;
 
             // Auto-generate columns
-            ExpensesDataGrid.AutoGenerateColumns = true;
+            DgBudgetItems.AutoGenerateColumns = true;
         }
 
 
@@ -322,11 +325,16 @@ namespace HomeBudgetWPF
             _categoryView.ShowView(name);
         }
 
-        public void DisplayUpdateExpenseMenu()
+        public void DisplayUpdateExpenseMenu(Expense expense)
         {
-            _expenseView.OpenExpenseUpdate();
+            _expenseView.OpenExpenseUpdate(expense);
             _expenseView.Show();
             this.Hide();
+        }
+
+        private void AddExpense(object sender, RoutedEventArgs e)
+        {
+            _p.OpenExpense();
         }
 
         #endregion
@@ -645,11 +653,8 @@ namespace HomeBudgetWPF
             #endregion
         }
         #endregion
-        private void AddExpense(object sender, RoutedEventArgs e)
-        {
-            _p.OpenExpense();
-        }
-     
+
+    
 
         private void SelectedDateChanged_Click(object sender, SelectionChangedEventArgs e)
         {
@@ -692,6 +697,23 @@ namespace HomeBudgetWPF
         private void ChkByCategory_Unchecked(object sender, RoutedEventArgs e)
         {
             ApplyFilters();
+        }
+
+        private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
+        {
+            BudgetItem selectedItem = (BudgetItem)DgBudgetItems.SelectedItem;
+            _p.DeleteExpense(selectedItem.ExpenseID);
+        }
+
+        private void MenuItemModify_Click(object sender, RoutedEventArgs e)
+        {
+            BudgetItem selectedItem = (BudgetItem)DgBudgetItems.SelectedItem;
+            _p.OpenUpdateExpense(selectedItem.ExpenseID);
+        }
+
+        private void MenuItemCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DgBudgetItems.SelectedItem = null;
         }
     }
 }

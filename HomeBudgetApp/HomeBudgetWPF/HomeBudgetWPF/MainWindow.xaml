@@ -96,13 +96,22 @@
         </StackPanel>
 
         <GroupBox Grid.Column="1" Grid.Row="1" Margin="10" >
+
             <DataGrid Padding="10" 
                       Background="#405d27" Foreground="#82b74b" 
                       BorderBrush="#82b74b" BorderThickness="5"
                       Margin="10"
-                      x:Name="ExpensesDataGrid"
+                      x:Name="DgBudgetItems"
                       IsReadOnly="True"
-                      >
+                      AutoGenerateColumns="False">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Delete" Click="MenuItemDelete_Click"/>
+                        <MenuItem Header="Modify" Click="MenuItemModify_Click"/>
+                        <Separator />
+                        <MenuItem Header="Cancel" Click="MenuItemCancel_Click" Command="" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 
             </DataGrid>
         </GroupBox>

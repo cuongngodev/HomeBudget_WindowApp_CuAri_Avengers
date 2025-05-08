@@ -133,9 +133,9 @@ namespace HomeBudgetWPF
             _view.DisplayCategories(_model.categories.List());
         }
 
-        public void OpenUpdateExpense()
+        public void OpenUpdateExpense(int expenseId)
         {
-            _view.DisplayUpdateExpenseMenu();
+            _view.DisplayUpdateExpenseMenu(_model.expenses.GetExpenseFromId(expenseId));
             _view.DisplayCategories(_model.categories.List());
         }
 
