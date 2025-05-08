@@ -26,6 +26,7 @@ namespace HomeBudgetWPF
     {
         public Presenter _p;
         private bool _update;
+        private Expense _updateExpense; 
         public ExpenseView(Presenter p)
         {
             InitializeComponent();
@@ -41,8 +42,9 @@ namespace HomeBudgetWPF
             SetupWindow();
         }
 
-        public void OpenExpenseUpdate()
+        public void OpenExpenseUpdate(Expense expense)
         {
+            _updateExpense = expense;
             _update = true;
             SetupWindow();
         }
@@ -54,6 +56,11 @@ namespace HomeBudgetWPF
                 this.Title = "Update Expense";
                 LblExpensePageTitle.Content = "Update Expense";
                 BtnSubmit.Content = "Update";
+                
+                TxtDesc.Text = _updateExpense.Description;
+                TxtAmount.Text = _updateExpense.Amount.ToString();
+                DtDate.SelectedDate = _updateExpense.Date;
+                CmbCategory.SelectedIndex = _updateExpense.Category - 1;
 
                 BtnDeleteExpense.Visibility = Visibility.Visible;
             }
@@ -63,6 +70,10 @@ namespace HomeBudgetWPF
                 this.Title = "Add Expense";
                 BtnSubmit.Content = "Add";
                 BtnDeleteExpense.Visibility = Visibility.Hidden;
+                DtDate.SelectedDate = DateTime.Now;
+
+                TxtAmount.Text = "0";
+                TxtDesc.Text = "";
             }
         }
 
@@ -76,11 +87,6 @@ namespace HomeBudgetWPF
             CmbCategory.ItemsSource = categoryList;
             CmbCategory.DisplayMemberPath = "Description";
             CmbCategory.SelectedIndex = 0;
-
-            DtPckrDate.SelectedDate = DateTime.Now;
-
-            TxtAmount.Text = "0";
-            TxtDesc.Text = "";
         }
 
         private void ExpenseSubmitClick(object sender, RoutedEventArgs e)
@@ -95,7 +101,7 @@ namespace HomeBudgetWPF
             {
                 if (_update)
                 {
-                    //Not sure the logic for this, depends on how the grid is designed and functions 
+                    _p.UpdateExpense(_updateExpense.Id, date, catType, amount, desc);
                 }
                 else
                 {
