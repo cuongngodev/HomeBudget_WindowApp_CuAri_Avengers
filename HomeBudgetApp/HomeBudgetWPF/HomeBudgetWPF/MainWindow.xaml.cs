@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
+using System.Data;
 using System.Collections.ObjectModel;
 
 namespace HomeBudgetWPF
@@ -120,7 +121,10 @@ namespace HomeBudgetWPF
         }
         public void ApplyFilters()
         {
-            if(!DtPckrStartDate.SelectedDate.HasValue && !DtPckrEndDate.SelectedDate.HasValue)
+            // Clear all current collumn to avoid create more column to exsiting datagrid
+            ExpensesDataGrid.Columns.Clear();
+
+            if (!DtStartDate.SelectedDate.HasValue || !DtEndDate.SelectedDate.HasValue)
             {
                 return;
             }
@@ -135,12 +139,15 @@ namespace HomeBudgetWPF
             if (ChkFilterByCategory.IsChecked == true)
             {
                 isFilterByCategory = true;
-                catId = CmbFilterCategory.SelectedIndex;
+                catId = CmbFilterCategory.SelectedIndex + 1;
             }
+            
             DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
         }
         public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
         {
+            
+
             if (isSummaryByCategory && isSummaryByMonth)
             {
                 _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
@@ -161,25 +168,147 @@ namespace HomeBudgetWPF
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
             ExpensesDataGrid.ItemsSource = expenseList;
-            // Start binding here
+            ExpensesDataGrid.AutoGenerateColumns = false;
+            
+            // CategoryID column
+            DataGridTextColumn categoryIdColumn = new DataGridTextColumn();
+
+            categoryIdColumn.Header = "CategoryID";
+            categoryIdColumn.Binding = new Binding("CategoryID");
+            ExpensesDataGrid.Columns.Add(categoryIdColumn);
+
+            //  Category column
+            DataGridTextColumn categoryColumn = new DataGridTextColumn();
+            categoryColumn.Header = "Category";
+            categoryColumn.Binding = new Binding("Category");
+            ExpensesDataGrid.Columns.Add(categoryColumn);
+
+            // Date column
+            DataGridTextColumn dateColumn = new DataGridTextColumn();
+            dateColumn.Header = "Date";
+            dateColumn.Binding = new Binding("Date");
+            ExpensesDataGrid.Columns.Add(dateColumn);
+
+            // Description column
+            DataGridTextColumn descriptionColumn = new DataGridTextColumn();
+            descriptionColumn.Header = "Description";
+            descriptionColumn.Binding = new Binding("ShortDescription");
+            ExpensesDataGrid.Columns.Add(descriptionColumn);
+
+            // Amount column
+            DataGridTextColumn amountColumn = new DataGridTextColumn();
+            amountColumn.Header = "Amount";
+            amountColumn.Binding = new Binding("Amount");
+            ExpensesDataGrid.Columns.Add(amountColumn);
+
+            // Balance column
+            DataGridTextColumn balanceColumn = new DataGridTextColumn();
+            balanceColumn.Header = "Balance";
+            balanceColumn.Binding = new Binding("Balance");
+            ExpensesDataGrid.Columns.Add(balanceColumn);
+            
         }
+        
         public void DisplayExpenseItemsByCategoryGrid(List<BudgetItemsByCategory> expenseList)
         {
-            ExpensesDataGrid.ItemsSource = expenseList;
-            // Start binding here
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
+            // table hold the data
+            DataTable dataTable = new DataTable();
+
+            // Add columns 
+            dataTable.Columns.Add("Category", typeof(string));
+            dataTable.Columns.Add("Total", typeof(double));
+            dataTable.Columns.Add("Details", typeof(string));
+
+            // Add rows 
+            foreach (var item in expenseList)
+            {
+                DataRow row = dataTable.NewRow();
+                row["Category"] = item.Category;
+                row["Total"] = item.Total;
+                row["Details"] = string.Join(",\n", item.Details.Select(d => d.ShortDescription));
+
+                dataTable.Rows.Add(row);
+            }
+            // Bind the DataTable to the DataGrid
+            ExpensesDataGrid.ItemsSource = dataTable.DefaultView;
+
+            // Auto-generate columns
+            ExpensesDataGrid.AutoGenerateColumns = true;
+
 
         }
         public void DisplayExpenseItemsByMonthGrid(List<BudgetItemsByMonth> expenseList)
         {
-            ExpensesDataGrid.ItemsSource = expenseList;
-            // Start binding here
+            if (expenseList == null || !expenseList.Any())
+            {
+                return;
+            }
+            // table hold the data
+            DataTable dataTable = new DataTable();
+
+            // Add columns 
+            dataTable.Columns.Add("Month", typeof(string));
+            dataTable.Columns.Add("Total", typeof(double));
+            dataTable.Columns.Add("Descriptions", typeof(string));
+
+            // Add rows 
+            foreach (var item in expenseList)
+            {
+                DataRow row = dataTable.NewRow();
+                row["Month"] = item.Month;
+                row["Total"] = item.Total;
+                row["Descriptions"] = string.Join(",\n", item.Details.Select(d => d.ShortDescription));
+
+                dataTable.Rows.Add(row);
+            }
+
+            // Bind the DataTable to the DataGrid
+            ExpensesDataGrid.ItemsSource = dataTable.DefaultView;
+
+            // Auto-generate columns
+            ExpensesDataGrid.AutoGenerateColumns = true;
         }
 
-        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string,object>> expenseList)
+
+        public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> data, List<string> catNames)
         {
-            ExpensesDataGrid.ItemsSource = expenseList;
-            // Start binding here
+            ExpensesDataGrid.ItemsSource = data;
+            ExpensesDataGrid.AutoGenerateColumns = false;
+
+            // Add month column
+            DataGridTextColumn monthColumn = new DataGridTextColumn()
+            {
+                Header = "Month",
+                Binding = new Binding("[Month]")
+            };
+            ExpensesDataGrid.Columns.Add(monthColumn);
+            // Add Category Columns
+            foreach (string catName in catNames)
+            {
+                DataGridTextColumn catColumn = new DataGridTextColumn()
+                {
+                    Header = catName,
+                    Binding = new Binding($"[{catName}]")
+                };
+                ExpensesDataGrid.Columns.Add(catColumn);
+            }
+            // Add Total Column
+            DataGridTextColumn totalColumn = new DataGridTextColumn()
+            {
+                Header = "Total",
+                Binding = new Binding("[Total]")
+            };
+            ExpensesDataGrid.Columns.Add(totalColumn);
+
         }
 
         public void DisplaySelectFileMenu()
@@ -240,9 +369,14 @@ namespace HomeBudgetWPF
             this.Show();
             // Application is ready
             _p.GetCategoriesForFilter();
+            _p.SetupDefaultDate();
             _fileSelectView.Hide();
         }
-
+        public void SetDefaultDate(DateTime start, DateTime end)
+        {
+            DtStartDate.SelectedDate = start;
+            DtEndDate.SelectedDate = end;
+        }
         public void CloseMain()
         {
             this.Hide();
@@ -374,6 +508,44 @@ namespace HomeBudgetWPF
                     control.BorderBrush = (Brush)brushConverter.ConvertFrom(theme.ElementBorderColor);
                     break;
             }
+        }
+
+       
+
+        private void CmbFilterCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+
+        }
+
+        private void chkFilterCategory_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void chkFilterCategory_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByMonth_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByMonth_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByCategory_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ChkByCategory_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
         }
     }
 }

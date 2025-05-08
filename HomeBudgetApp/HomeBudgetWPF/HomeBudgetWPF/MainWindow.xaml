@@ -32,12 +32,14 @@
                 </Button>
                 <GroupBox Header="Filter" FontWeight="Bold"
                   Foreground="#82b74b" Margin="10">
-                    <StackPanel>
-                        <StackPanel Margin="5">
-                            <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
-                            <DatePicker x:Name="DtPckrStartDate" Padding="5"
-                                Background="#405d27" Foreground="#82b74b"/>
-                        </StackPanel>
+                        <StackPanel>
+                            <StackPanel Margin="5">
+                                <Label x:Name="LblExpenseStartDate" FontWeight="Bold" Foreground="#82b74b" Content="Start Date"/>
+                                <DatePicker x:Name="DtStartDate" Padding="5"
+                                Background="#405d27" Foreground="#82b74b"
+                                SelectedDateChanged="SelectedDateChanged_Click"
+                                />
+                            </StackPanel>
 
                         <StackPanel Margin="5">
                             <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
@@ -45,19 +47,27 @@
                                 Background="#405d27" Foreground="#82b74b"/>
                         </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <CheckBox x:Name="ChkFilterByCategory" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
-                            <ComboBox x:Name="CmbFilterCategory"/>
+                            <StackPanel Margin="5">
+                                <CheckBox x:Name="chkFilterCategory" Checked="chkFilterCategory_Checked" Unchecked="chkFilterCategory_Unchecked" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">Filter by Category?</CheckBox>
+                                <ComboBox x:Name="CmbFilterCategory" SelectionChanged="CmbFilterCategory_SelectionChanged"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </GroupBox>
+                    </GroupBox>
 
                 <GroupBox Header="Summary" FontWeight="Bold"
                 Foreground="#82b74b" Margin="10,0" Width="auto">
                     <StackPanel>
                         <StackPanel Margin="5">
-                            <CheckBox x:Name="ChkByMonth" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">By Month</CheckBox>
-                            <CheckBox x:Name="ChkByCategory" Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">By Categoory</CheckBox>
+                            <CheckBox x:Name="ChkByMonth" 
+                                      Checked="ChkByMonth_Checked" 
+                                      Unchecked="ChkByMonth_Unchecked" 
+                                      Padding="5" Foreground="#82b74b" 
+                                      VerticalAlignment="Center" 
+                                      VerticalContentAlignment="Center">By Month</CheckBox>
+                            <CheckBox x:Name="ChkByCategory"
+                                      Checked="ChkByCategory_Checked"
+                                      Unchecked="ChkByCategory_Unchecked"
+                                      Padding="5" Foreground="#82b74b" VerticalAlignment="Center" VerticalContentAlignment="Center">By Categoory</CheckBox>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
@@ -90,15 +100,8 @@
                       Margin="10"
                       x:Name="ExpensesDataGrid"
                       IsReadOnly="True"
-                      AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="CategoryID" Binding="{Binding CategoryID}" Width="*"/>
-                    <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*"/>
-                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*"/>
-                    <DataGridTextColumn Header="Description" Binding="{Binding ShortDescription}" Width="*"/>
-                    <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="*"/>
-                    <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
-                </DataGrid.Columns>
+                      >
+                
             </DataGrid>
         </GroupBox>
 
