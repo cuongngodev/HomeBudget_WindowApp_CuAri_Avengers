@@ -120,7 +120,7 @@ namespace HomeBudgetWPF
         public void ApplyFilters()
         {
             // Clear all current collumn to avoid create more column to exsiting datagrid
-            ExpensesDataGrid.Columns.Clear();
+            DgBudgetItems.Columns.Clear();
 
             if (!DtStartDate.SelectedDate.HasValue || !DtEndDate.SelectedDate.HasValue)
             {
@@ -172,8 +172,8 @@ namespace HomeBudgetWPF
             {
                 return;
             }
-            ExpensesDataGrid.ItemsSource = expenseList;
-            ExpensesDataGrid.AutoGenerateColumns = false;
+            DgBudgetItems.ItemsSource = expenseList;
+            DgBudgetItems.AutoGenerateColumns = false;
             
             // CategoryID column
             DataGridTextColumn categoryIdColumn = new DataGridTextColumn();
@@ -281,8 +281,8 @@ namespace HomeBudgetWPF
 
         public void DisplayExpenseItemmsByCategoryAndMonthGrid(List<Dictionary<string, object>> data, List<string> catNames)
         {
-            ExpensesDataGrid.ItemsSource = data;
-            ExpensesDataGrid.AutoGenerateColumns = false;
+            DgBudgetItems.ItemsSource = data;
+            DgBudgetItems.AutoGenerateColumns = false;
 
             // Add month column
             DataGridTextColumn monthColumn = new DataGridTextColumn()
@@ -290,7 +290,7 @@ namespace HomeBudgetWPF
                 Header = "Month",
                 Binding = new Binding("[Month]")
             };
-            ExpensesDataGrid.Columns.Add(monthColumn);
+            DgBudgetItems.Columns.Add(monthColumn);
             // Add Category Columns
             foreach (string catName in catNames)
             {
@@ -299,7 +299,7 @@ namespace HomeBudgetWPF
                     Header = catName,
                     Binding = new Binding($"[{catName}]")
                 };
-                ExpensesDataGrid.Columns.Add(catColumn);
+                DgBudgetItems.Columns.Add(catColumn);
             }
             // Add Total Column
             DataGridTextColumn totalColumn = new DataGridTextColumn()
@@ -307,7 +307,7 @@ namespace HomeBudgetWPF
                 Header = "Total",
                 Binding = new Binding("[Total]")
             };
-            ExpensesDataGrid.Columns.Add(totalColumn);
+            DgBudgetItems.Columns.Add(totalColumn);
 
         }
 
