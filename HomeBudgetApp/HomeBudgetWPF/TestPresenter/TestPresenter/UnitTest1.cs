@@ -28,6 +28,7 @@ public class MockView : ViewInterface
     public bool calledDisplayExpenseItemsByMonth;
     public bool calledDisplayExpenseItemmsByCategoryAndMonthGrid;
     public bool calledSetDefaultDate;
+    public bool calledDisplayUpdateExpenseMenu;
     public void DisplayError(string message)
     {
         calledDisplayError = true;
@@ -117,9 +118,10 @@ public class MockView : ViewInterface
     {
         calledDisplayExpenseItemmsByCategoryAndMonthGrid = true;
     }
-    public void DisplayUpdateExpenseMenu()
+    public void DisplayUpdateExpenseMenu(Expense expense)
     {
         // Implementation not needed for this test
+        calledDisplayUpdateExpenseMenu = true;
     }
     public void SetDefaultDate(DateTime start, DateTime end)
     {
@@ -132,127 +134,6 @@ public class MockView : ViewInterface
 }
 public class UnitTest1
 {
-    [Fact]
-    public void Test_DisplayExpenseItems_NoFilter()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 5, 1);
-        DateTime end = new DateTime(2025, 5, 29);
-        view.calledDisplayExpenseItemsGrid = false;
-        presenter.SetDatabase("Test.db", true);
-
-        // Act
-        presenter.DisplayExpenseItems(start,end, false,1);
-        // Assert
-        Assert.True(view.calledDisplayExpenseItemsGrid);
-    }
-    
-    [Fact]
-    public void Test_DisplayExpenseItemsByMonth()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 3, 1);
-        DateTime end = new DateTime(2025, 5, 29);
-        view.calledDisplayExpenseItemsByMonth = false;
-        presenter.SetDatabase("Test.db", true);
-
-        // Act
-        presenter.DisplayExpenseItemsByMonth(start,end, false,1);
-        // Assert
-        Assert.True(view.calledDisplayExpenseItemsByMonth);
-    }
-     [Fact]
-    public void Test_DisplayExpenseItemsByCategory()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 3, 1);
-        DateTime end = new DateTime(2025, 5, 29);
-        view.calledDisplayExpenseItemsByCategory = false;
-        presenter.SetDatabase("Test.db", true);
-
-        // Act
-        presenter.DisplayExpenseItemsByCategory(start,end, false,1);
-        // Assert
-        Assert.True(view.calledDisplayExpenseItemsByCategory);
-    }
-      [Fact]
-    public void Test_DisplayExpenseItemsByMonthAndCategory()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 3, 1);
-        DateTime end = new DateTime(2025, 5, 29);
-        view.calledDisplayExpenseItemmsByCategoryAndMonthGrid = false;
-        presenter.SetDatabase("Test.db", true);
-
-        // Act
-        presenter.DisplayExpenseItemsByCategoryAndMonth(start,end, false,1);
-        // Assert
-        Assert.True(view.calledDisplayExpenseItemmsByCategoryAndMonthGrid);
-    }
-    [Fact]
-    public void Test_DefaultDate()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 3, 1);
-        DateTime end = new DateTime(2025, 5, 29);
-        view.calledSetDefaultDate = false;
-        presenter.SetDatabase("Test.db", true);
-
-        // Act
-        presenter.SetupDefaultDate();
-        // Assert
-        Assert.True(view.calledSetDefaultDate);
-    }
-    [Fact]
-    public void Test_CheckDatePeriod_Valid()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 3, 1);
-        DateTime end = new DateTime(2025, 5, 29);
-        bool validDatePeriod = false;
-        presenter.SetDatabase("Test.db", true);
-        view.calledDisplayExpenseItemsGrid = false;
-
-        // Act
-        presenter.DisplayExpenseItems(start,end, false,1);
-        validDatePeriod = presenter.CheckDatePeriod(start,end);
-        // Assert
-        Assert.True(validDatePeriod);
-        Assert.True(view.calledDisplayExpenseItemsGrid);
-    }
-    [Fact]
-    public void Test_CheckDatePeriod_InValid()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 5, 1);
-        DateTime end = new DateTime(2025, 3, 29);
-        bool validDatePeriod = false;
-        presenter.SetDatabase("Test.db", true);
-        view.calledDisplayExpenseItemsGrid = false;
-        view.calledDisplayError = false;
-
-        // Act
-        presenter.DisplayExpenseItems(start, end, false, 1);
-        validDatePeriod = presenter.CheckDatePeriod(start, end);
-        // Assert
-        Assert.True(view.calledDisplayError);
-
-        Assert.False(validDatePeriod);
-    }
     [Fact]
     public void TestConstructor()
     {
@@ -609,5 +490,224 @@ public class UnitTest1
         // Assert
         Assert.True(view.calledSetTritanopiaTheme);
     }
+    [Fact]
+    public void Test_DisplayExpenseItems_NoFilter()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 5, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+        view.calledDisplayExpenseItemsGrid = false;
+        presenter.SetDatabase("Test.db", true);
 
+        // Act
+        presenter.DisplayExpenseItems(start, end, false, 1);
+        // Assert
+        Assert.True(view.calledDisplayExpenseItemsGrid);
+    }
+
+    [Fact]
+    public void Test_DisplayExpenseItemsByMonth()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+        view.calledDisplayExpenseItemsByMonth = false;
+        presenter.SetDatabase("Test.db", true);
+
+        // Act
+        presenter.DisplayExpenseItemsByMonth(start, end, false, 1);
+        // Assert
+        Assert.True(view.calledDisplayExpenseItemsByMonth);
+    }
+    [Fact]
+    public void Test_DisplayExpenseItemsByCategory()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+        view.calledDisplayExpenseItemsByCategory = false;
+        presenter.SetDatabase("Test.db", true);
+
+        // Act
+        presenter.DisplayExpenseItemsByCategory(start, end, false, 1);
+        // Assert
+        Assert.True(view.calledDisplayExpenseItemsByCategory);
+    }
+    [Fact]
+    public void Test_DisplayExpenseItemsByMonthAndCategory()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+        view.calledDisplayExpenseItemmsByCategoryAndMonthGrid = false;
+        presenter.SetDatabase("Test.db", true);
+
+        // Act
+        presenter.DisplayExpenseItemsByCategoryAndMonth(start, end, false, 1);
+        // Assert
+        Assert.True(view.calledDisplayExpenseItemmsByCategoryAndMonthGrid);
+    }
+    [Fact]
+    public void Test_DefaultDate()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+        view.calledSetDefaultDate = false;
+        presenter.SetDatabase("Test.db", true);
+
+        // Act
+        presenter.SetupDefaultDate();
+        // Assert
+        Assert.True(view.calledSetDefaultDate);
+    }
+    [Fact]
+    public void Test_CheckDatePeriod_Valid()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+        bool validDatePeriod = false;
+        presenter.SetDatabase("Test.db", true);
+        view.calledDisplayExpenseItemsGrid = false;
+
+        // Act
+        presenter.DisplayExpenseItems(start, end, false, 1);
+        validDatePeriod = presenter.CheckDatePeriod(start, end);
+        // Assert
+        Assert.True(validDatePeriod);
+        Assert.True(view.calledDisplayExpenseItemsGrid);
+    }
+    [Fact]
+    public void Test_CheckDatePeriod_InValid()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 5, 1);
+        DateTime end = new DateTime(2025, 3, 29);
+        bool validDatePeriod = false;
+        presenter.SetDatabase("Test.db", true);
+        view.calledDisplayExpenseItemsGrid = false;
+        view.calledDisplayError = false;
+
+        // Act
+        presenter.DisplayExpenseItems(start, end, false, 1);
+        validDatePeriod = presenter.CheckDatePeriod(start, end);
+        // Assert
+        Assert.True(view.calledDisplayError);
+
+        Assert.False(validDatePeriod);
+    }
+
+    [Fact]
+    public void Test_OpenUpdateExpense()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+
+        int expenseId = 1;
+        presenter.SetDatabase("Test.db", true);
+        presenter.CreateNewExpense(new DateTime(2025, 5, 5), 1, "100", "Testing Expense");
+
+        view.calledDisplayUpdateExpenseMenu = false;
+        view.calledDisplayCategories = false;
+
+        // Act
+        presenter.OpenUpdateExpense(expenseId);
+
+        // Assert
+        Assert.True(view.calledDisplayCategories);
+
+        Assert.True(view.calledDisplayUpdateExpenseMenu);
+    }
+
+    [Fact]
+    public void Test_UpdateExpense()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+
+        int expenseId = 1;
+        presenter.SetDatabase("Test.db", true);
+        // presenter.CreateNewExpense(new DateTime(2025, 5, 5), 1, "100", "Testing Expense");
+
+
+        view.calledDisplayConfirmation = false;
+        view.calledCloseExpenseMenu = false;
+
+        // Act
+        presenter.UpdateExpense(0, new DateTime(2025, 2, 2), 2, "200", "Updated Expense");
+
+
+        // Assert
+        Assert.True(view.calledCloseExpenseMenu);
+
+        Assert.True(view.calledDisplayConfirmation);
+    }
+    [Fact]
+    public void Test_UpdateExpense_ExpenseNotSelected()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+
+        int invalidExpenseId = -1;
+        presenter.SetDatabase("Test.db", true);
+        // presenter.CreateNewExpense(new DateTime(2025, 5, 5), 1, "100", "Testing Expense");
+
+
+        view.calledDisplayError = false;
+
+        // Act
+        presenter.UpdateExpense(invalidExpenseId, new DateTime(2025, 2, 2), 2, "200", "Updated Expense");
+
+
+        // Assert
+        Assert.True(view.calledDisplayError);
+    }
+    [Fact]
+    public void Test_UpdateExpense_AmountIsNotANumber()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime start = new DateTime(2025, 3, 1);
+        DateTime end = new DateTime(2025, 5, 29);
+
+        int expenseId = 1;
+        string invalidAmount = "sdf";
+        presenter.SetDatabase("Test.db", true);
+        // presenter.CreateNewExpense(new DateTime(2025, 5, 5), 1, "100", "Testing Expense");
+
+
+        view.calledDisplayError = false;
+
+        // Act
+        presenter.UpdateExpense(expenseId, new DateTime(2025, 2, 2), 2, invalidAmount, "Updated Expense");
+
+
+        // Assert
+        Assert.True(view.calledDisplayError);
+    }
 }
