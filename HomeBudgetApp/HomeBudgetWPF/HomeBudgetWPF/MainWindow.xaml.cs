@@ -560,8 +560,9 @@ namespace HomeBudgetWPF
 
         private void MenuItemModify_Click(object sender, RoutedEventArgs e)
         {
-            BudgetItem selectedItem = (BudgetItem)DgBudgetItems.SelectedItem;
-            _p.OpenUpdateExpense(selectedItem.ExpenseID);
+            if (DgBudgetItems.SelectedItem is BudgetItem selectedItem){
+                _p.OpenUpdateExpense(selectedItem.ExpenseID);
+            }
 
         }
 

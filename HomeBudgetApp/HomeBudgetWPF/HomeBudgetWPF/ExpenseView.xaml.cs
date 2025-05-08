@@ -68,7 +68,7 @@ namespace HomeBudgetWPF
                 LblExpensePageTitle.Content = "Add Expense";
                 this.Title = "Add Expense";
                 BtnSubmit.Content = "Add";
-                DtDate.SelectedDate = DateTime.Now;
+                DtPckrDate.SelectedDate = DateTime.Now;
 
                 TxtAmount.Text = "0";
                 TxtDesc.Text = "";
@@ -84,7 +84,9 @@ namespace HomeBudgetWPF
         {
             CmbCategory.ItemsSource = categoryList;
             CmbCategory.DisplayMemberPath = "Description";
-            CmbCategory.SelectedIndex = 0;
+
+            if (CmbCategory.SelectedIndex == -1)
+                CmbCategory.SelectedIndex = 0;
         }
 
         private void ExpenseSubmitClick(object sender, RoutedEventArgs e)

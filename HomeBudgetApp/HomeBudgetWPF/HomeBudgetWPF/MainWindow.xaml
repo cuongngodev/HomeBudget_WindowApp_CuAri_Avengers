@@ -43,7 +43,8 @@
                             <StackPanel Margin="5">
                                 <Label x:Name="LblExpenseEndDate" FontWeight="Bold" Foreground="#82b74b" Content="End Date"/>
                                 <DatePicker x:Name="DtPckrEndDate" Padding="5"
-                                    Background="#405d27" Foreground="#82b74b"/>
+                                    Background="#405d27" Foreground="#82b74b"
+                                    SelectedDateChanged="SelectedDateChanged_Click"/>
                             </StackPanel>
 
                             <StackPanel Margin="5">
