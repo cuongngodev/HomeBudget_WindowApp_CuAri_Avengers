@@ -59,7 +59,7 @@ namespace HomeBudgetWPF
                 
                 TxtDesc.Text = _updateExpense.Description;
                 TxtAmount.Text = _updateExpense.Amount.ToString();
-                DtDate.SelectedDate = _updateExpense.Date;
+                DtPckrDate.SelectedDate = _updateExpense.Date;
                 CmbCategory.SelectedIndex = _updateExpense.Category - 1;
 
                 BtnDeleteExpense.Visibility = Visibility.Visible;
@@ -70,7 +70,7 @@ namespace HomeBudgetWPF
                 this.Title = "Add Expense";
                 BtnSubmit.Content = "Add";
                 BtnDeleteExpense.Visibility = Visibility.Hidden;
-                DtDate.SelectedDate = DateTime.Now;
+                DtPckrDate.SelectedDate = DateTime.Now;
 
                 TxtAmount.Text = "0";
                 TxtDesc.Text = "";
