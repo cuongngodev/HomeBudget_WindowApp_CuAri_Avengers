@@ -19,9 +19,9 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\HomeBudgetWPF.csproj" />
+    <ProjectReference Include="..\TestHomeBudgetWPF\HomeBudgetWPF.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
