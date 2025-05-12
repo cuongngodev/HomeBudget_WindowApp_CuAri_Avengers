@@ -551,6 +551,14 @@ namespace HomeBudgetWPF
 
         }
 
+        private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (DgBudgetItems.SelectedItem is BudgetItem selectedItem)
+            {
+                _p.DeleteExpense(selectedItem);
+            }
+        }
+
         private void MenuItemCancel_Click(object sender, RoutedEventArgs e)
         {
             DgBudgetItems.SelectedItem = null;

@@ -220,6 +220,20 @@ namespace HomeBudgetWPF
             _view.DisplayConfirmation("Edited Succesfully!");
             _view.CloseExpenseMenu();
         }
+
+        public void DeleteExpense(BudgetItem budgetItem)
+        {
+            if (budgetItem.ExpenseID == -1)
+            {
+                _view.DisplayError("You did not select an expense to delete!");
+                return;
+            }
+
+
+            _model.expenses.Delete(budgetItem.ExpenseID);
+            _view.DisplayConfirmation("Deleted Succesfully!");
+            _view.CloseExpenseMenu();
+        }
         #endregion
 
         public double StringToDouble(string amount)
