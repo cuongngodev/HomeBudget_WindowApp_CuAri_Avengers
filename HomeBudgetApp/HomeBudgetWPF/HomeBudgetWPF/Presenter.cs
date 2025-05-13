@@ -236,7 +236,7 @@ namespace HomeBudgetWPF
         }
         #endregion
 
-        public double StringToDouble(string amount)
+        private double StringToDouble(string amount)
         {
             double result; 
             if (string.IsNullOrEmpty(amount))
@@ -250,11 +250,13 @@ namespace HomeBudgetWPF
             }
             return result;
         }
+
         public bool CheckDatePeriod(DateTime start, DateTime end)
         {
-            return start <= end ? true : false;
+            return start <= end;
 
         }
+
         public void ChangeColorTheme(string theme)
         {
             switch (theme)
@@ -273,6 +275,7 @@ namespace HomeBudgetWPF
             }
         }
         // Data Grid
+        #region DataGrid
         public void DisplayExpenseItems(DateTime start, DateTime end, bool filterFlag, int catID)
         {
             if (CheckDatePeriod(start, end))
@@ -322,5 +325,6 @@ namespace HomeBudgetWPF
                 _view.DisplayError("Start date can not excess end date");
             }          
         }
+        #endregion
     }
 }
