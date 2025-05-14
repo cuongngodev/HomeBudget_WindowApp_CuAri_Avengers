@@ -152,10 +152,7 @@ namespace HomeBudgetWPF
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
-            //if (expenseList == null || !expenseList.Any())
-            //{
-            //    return;
-            //}
+
             DgBudgetItems.ItemsSource = expenseList;
             DgBudgetItems.AutoGenerateColumns = false;
             
