@@ -104,6 +104,10 @@
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Modify" Click="MenuItemModify_Click"/>
+                        <MenuItem Header="Delete" Click="MenuItemDelete_Click"/>
+                        <Separator/>
+                        <MenuItem Header="Cancel" Click="MenuItemCancel_Click"/>
+                        
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 
