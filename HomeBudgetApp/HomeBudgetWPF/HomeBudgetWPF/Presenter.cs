@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Budget;
-using static HomeBudgetWPF.ViewInterface;
+﻿using Budget;
+using System.Windows.Automation;
 
 
 
 namespace HomeBudgetWPF
 {
-  
+
     public class Presenter
     {
         private HomeBudget? _model;
@@ -25,7 +19,7 @@ namespace HomeBudgetWPF
         public void SetupPresenter()
         {
             _view.DisplaySelectFileMenu();
-            
+
         }
         public void SetupDefaultDate()
         {
@@ -35,7 +29,7 @@ namespace HomeBudgetWPF
         #region Database
         public void SetDatabase(string db, bool isNew)
         {
-            if(string.IsNullOrEmpty(db))
+            if (string.IsNullOrEmpty(db))
             {
                 _view.DisplayError("You did not select location to save to.");
                 return;
@@ -148,17 +142,17 @@ namespace HomeBudgetWPF
         {
             if (cat == -1)
             {
-                cat = _model.categories.List().Count() -1;
+                cat = _model.categories.List().Count() - 1;
             }
 
-            
+
             if (string.IsNullOrEmpty(desc))
             {
                 _view.DisplayError("You did not enter description!");
                 return;
             }
 
-            
+
             cat += 1;
 
             double newAmount = StringToDouble(amount);
@@ -169,13 +163,13 @@ namespace HomeBudgetWPF
                 return;
             }
 
-            if (MakeIdenticalExpense(date,cat,newAmount,desc))
+            if (MakeIdenticalExpense(date, cat, newAmount, desc))
                 return;
 
-            
-            _model.expenses.Add(date,cat, newAmount, desc);
- 
-            _view.DisplayConfirmation ("Added Succesfully!");
+
+            _model.expenses.Add(date, cat, newAmount, desc);
+
+            _view.DisplayConfirmation("Added Succesfully!");
             _view.CloseExpenseMenu();
         }
 
@@ -199,7 +193,7 @@ namespace HomeBudgetWPF
             return makeIdenticalExpense;
         }
 
-    
+
 
         public void UpdateExpense(int id, DateTime date, int cat, string amount, string desc)
         {
@@ -233,12 +227,15 @@ namespace HomeBudgetWPF
             _model.expenses.Delete(budgetItem.ExpenseID);
             _view.DisplayConfirmation("Deleted Succesfully!");
             _view.CloseExpenseMenu();
+
         }
+
+
         #endregion
 
         private double StringToDouble(string amount)
         {
-            double result; 
+            double result;
             if (string.IsNullOrEmpty(amount))
             {
                 _view.DisplayError("You did not enter amount!");
@@ -275,13 +272,55 @@ namespace HomeBudgetWPF
             }
         }
         // Data Grid
+
         #region DataGrid
-        public void DisplayExpenseItems(DateTime start, DateTime end, bool filterFlag, int catID)
+        
+        private (List<BudgetItem>, bool matchFound) FilterItems(string searchParams, List<BudgetItem> items)
+        {
+            searchParams = searchParams.Trim().ToLower();
+            List<BudgetItem> test = [];
+
+            foreach (BudgetItem item in items)
+            {
+                if (item.ShortDescription.ToLower().Contains(searchParams))
+                {
+                    test.Add(item);
+                }
+
+                else if (item.Amount.ToString().Contains(searchParams))
+                {
+                    test.Add(item);
+                }
+            }
+
+   
+            return (test,test.Count == 0);
+
+        }
+
+
+        public void DisplayExpenseItems(DateTime start, DateTime end, bool filterFlag, int catID, string searchParams = "")
         {
             if (CheckDatePeriod(start, end))
             {
                 List<BudgetItem> items = _model.GetBudgetItems(start, end, filterFlag, catID);
+
+                bool notFound = false;
+                if (searchParams != "")
+                {
+                   
+                    (items, notFound) = FilterItems(searchParams,items);
+                    
+              
+                }
+
                 _view.DisplayExpenseItemsGrid(items);
+
+                if (notFound)
+                {
+                    _view.DisplayError("No items found");
+                }
+
             }
             else
             {
@@ -290,41 +329,64 @@ namespace HomeBudgetWPF
         }
         public void DisplayExpenseItemsByMonth(DateTime start, DateTime end, bool filterFlag, int catID)
         {
-            if (CheckDatePeriod(start, end))
-            {
-                List<BudgetItemsByMonth> items = _model.GetBudgetItemsByMonth(start, end, filterFlag, catID);
-                _view.DisplayExpenseItemsByMonthGrid(items);
-            }
-            else
+            if (!CheckDatePeriod(start, end))
             {
                 _view.DisplayError("Start date can not excess end date");
+                return;
             }
+            List<BudgetItemsByMonth> items = _model.GetBudgetItemsByMonth(start, end, filterFlag, catID);
+            _view.DisplayExpenseItemsByMonthGrid(items);
+
+
+
         }
         public void DisplayExpenseItemsByCategory(DateTime start, DateTime end, bool filterFlag, int catID)
         {
-            if (CheckDatePeriod(start, end))
-            {
-                List<BudgetItemsByCategory> items = _model.GetBudgetItemsByCategory(start, end, filterFlag, catID);
-                _view.DisplayExpenseItemsByCategoryGrid(items);
-            }
-            else
+            if (!CheckDatePeriod(start, end))
             {
                 _view.DisplayError("Start date can not excess end date");
+                return; 
             }
+            List<BudgetItemsByCategory> items = _model.GetBudgetItemsByCategory(start, end, filterFlag, catID);
+            _view.DisplayExpenseItemsByCategoryGrid(items);
+
+
         }
         public void DisplayExpenseItemsByCategoryAndMonth(DateTime start, DateTime end, bool filterFlag, int catID)
         {
-            if (CheckDatePeriod(start, end))
+            if (!CheckDatePeriod(start, end))
             {
-                List<Dictionary<string, object>> itemsDict = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, filterFlag, catID);
-                List<string> categoryNames = _model.categories.List().Select(c => c.Description).ToList();
-                _view.DisplayExpenseItemmsByCategoryAndMonthGrid(itemsDict, categoryNames);
+                _view.DisplayError("Start date can not excess end date");
+                return; 
+            }
+            List<Dictionary<string, object>> itemsDict = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, filterFlag, catID);
+            List<string> categoryNames = _model.categories.List().Select(c => c.Description).ToList();
+            _view.DisplayExpenseItemmsByCategoryAndMonthGrid(itemsDict, categoryNames);
+
+        }
+
+
+        public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
+        {
+            _view.CloseSearchBar();
+            if (isSummaryByCategory && isSummaryByMonth)
+            {
+                DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
+            }
+            else if (isSummaryByCategory && !isSummaryByMonth)
+            {
+                DisplayExpenseItemsByCategory(start, end, isFilterByCategory, catID);
+            }
+            else if (!isSummaryByCategory && isSummaryByMonth)
+            {
+                DisplayExpenseItemsByMonth(start, end, isFilterByCategory, catID);
             }
             else
             {
-                _view.DisplayError("Start date can not excess end date");
-            }          
-        }
+                _view.DisplaySearchBar();
+                DisplayExpenseItems(start, end, isFilterByCategory, catID);
+            }
+        }        
         #endregion
     }
 }
