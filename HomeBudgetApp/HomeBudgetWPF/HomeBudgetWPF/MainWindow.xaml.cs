@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using System.Data;
 using System.Collections.ObjectModel;
+using System.Media;
 
 namespace HomeBudgetWPF
 {
@@ -308,6 +309,11 @@ namespace HomeBudgetWPF
             MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        public void ShowAudioError()
+        {
+            SystemSounds.Beep.Play();
+        }
+
         public void DisplayConfirmation(string message)
         {
             MessageBox.Show(message, "Success", MessageBoxButton.OK);
@@ -543,22 +549,6 @@ namespace HomeBudgetWPF
             DgBudgetItems.SelectedItem = null;
         }
 
-        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            DateTime start = DtPckrStartDate.SelectedDate.Value;
-            DateTime end = DtPckrEndDate.SelectedDate.Value;
-            bool isFilterByCategory = false;
-            int catId = -1;
-
-            if (ChkFilterByCategory.IsChecked == true)
-            {
-                isFilterByCategory = true;
-                catId = CmbFilterCategory.SelectedIndex + 1;
-            }
-
-            _p.DisplayExpenseItems(start, end, isFilterByCategory, catId, TxtSearch.Text);
-        }
-
         public void DisplaySearchBar()
         {
             stckSearch.Visibility = Visibility.Visible;
@@ -569,5 +559,16 @@ namespace HomeBudgetWPF
             stckSearch.Visibility = Visibility.Collapsed;
         }
 
+        private void BtnSearch_Click_1(object sender, RoutedEventArgs e)
+        {
+           
+            DgBudgetItems.SelectedItem = _p.Search((BudgetItem)DgBudgetItems.SelectedItem, (List<BudgetItem>)DgBudgetItems.ItemsSource, TxtSearch.Text);
+
+            if (DgBudgetItems.SelectedItem == null)
+                return;
+            
+            DgBudgetItems.ScrollIntoView(DgBudgetItems.SelectedItem);
+            DgBudgetItems.Focus();
+        }
     }
 }

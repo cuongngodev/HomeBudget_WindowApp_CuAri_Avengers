@@ -1,4 +1,5 @@
 ﻿using Budget;
+using System.Diagnostics;
 using System.Windows.Automation;
 
 
@@ -274,53 +275,49 @@ namespace HomeBudgetWPF
         // Data Grid
 
         #region DataGrid
-        
-        private (List<BudgetItem>, bool matchFound) FilterItems(string searchParams, List<BudgetItem> items)
+        public BudgetItem Search(BudgetItem? currentItem, List<BudgetItem> items, string searchParams)
         {
-            searchParams = searchParams.Trim().ToLower();
-            List<BudgetItem> test = [];
-
-            foreach (BudgetItem item in items)
+            if (string.IsNullOrEmpty(searchParams))
             {
-                if (item.ShortDescription.ToLower().Contains(searchParams))
-                {
-                    test.Add(item);
-                }
+                return null;
+            }
+           
+            if (items.Count == 0)
+            {
+                return null;
+            }
+        
+            int startingIndex = currentItem != null?items.IndexOf(currentItem) +1:0;
 
-                else if (item.Amount.ToString().Contains(searchParams))
+            
+            for (int i = startingIndex; i < items.Count; i++)
+            {
+                if (items[i].ShortDescription.ToLower().Contains(searchParams.ToLower()) || items[i].Amount.ToString().ToLower().Contains(searchParams.ToLower()))
                 {
-                    test.Add(item);
+                    return items[i];
                 }
             }
 
-   
-            return (test,test.Count == 0);
+            for (int i = 0; i < startingIndex; i++)
+            {
+                if (items[i].ShortDescription.ToLower().Contains(searchParams.ToLower()) || items[i].Amount.ToString().ToLower().Contains(searchParams.ToLower()))
+                {
+                    return items[i];
+                }
+            }
+            _view.ShowAudioError();
+            _view.DisplayError("No items found");
 
+            return currentItem;
         }
 
-
-        public void DisplayExpenseItems(DateTime start, DateTime end, bool filterFlag, int catID, string searchParams = "")
+        public void DisplayExpenseItems(DateTime start, DateTime end, bool filterFlag, int catID)
         {
             if (CheckDatePeriod(start, end))
             {
                 List<BudgetItem> items = _model.GetBudgetItems(start, end, filterFlag, catID);
 
-                bool notFound = false;
-                if (searchParams != "")
-                {
-                   
-                    (items, notFound) = FilterItems(searchParams,items);
-                    
-              
-                }
-
                 _view.DisplayExpenseItemsGrid(items);
-
-                if (notFound)
-                {
-                    _view.DisplayError("No items found");
-                }
-
             }
             else
             {
