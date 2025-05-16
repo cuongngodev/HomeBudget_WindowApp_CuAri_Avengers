@@ -306,6 +306,7 @@ namespace HomeBudgetWPF
                 }
             }
             _view.ShowAudioError();
+            _view.DisplayError("No items found");
 
             return currentItem;
         }
