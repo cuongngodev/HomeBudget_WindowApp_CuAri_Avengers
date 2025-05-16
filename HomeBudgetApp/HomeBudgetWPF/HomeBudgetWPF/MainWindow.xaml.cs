@@ -120,15 +120,16 @@ namespace HomeBudgetWPF
             this.Hide();
         }
 
-        public void ApplyFilters()
+        public void ApplyFilters(string searchParams = "")
         {
             // Clear all current collumn to avoid create more column to exsiting datagrid
             DgBudgetItems.Columns.Clear();
 
-            if (!DtPckrStartDate.SelectedDate.HasValue || !DtPckrEndDate.SelectedDate.HasValue)
+            if (DtPckrStartDate.SelectedDate == null || DtPckrEndDate.SelectedDate == null)
             {
                 return;
             }
+
             DateTime start = DtPckrStartDate.SelectedDate.Value;
             DateTime end = DtPckrEndDate.SelectedDate.Value;
             bool isFilterByCategory = false;
@@ -144,36 +145,14 @@ namespace HomeBudgetWPF
                 catId = CmbFilterCategory.SelectedIndex + 1;
             }
             
-            DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
+            _p.DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);
         }
 
-        public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
-        {
-       
-            if (isSummaryByCategory && isSummaryByMonth)
-            {
-                _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
-            }
-            else if (isSummaryByCategory && !isSummaryByMonth)
-            {
-                _p.DisplayExpenseItemsByCategory(start, end, isFilterByCategory, catID);
-            }
-            else if (!isSummaryByCategory && isSummaryByMonth)
-            {
-                _p.DisplayExpenseItemsByMonth(start, end, isFilterByCategory, catID);
-            }
-            else
-            {
-                _p.DisplayExpenseItems(start, end, isFilterByCategory, catID);
-            }
-        }
+
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
-            if (expenseList == null || !expenseList.Any())
-            {
-                return;
-            }
+
             DgBudgetItems.ItemsSource = expenseList;
             DgBudgetItems.AutoGenerateColumns = false;
             
@@ -563,5 +542,32 @@ namespace HomeBudgetWPF
         {
             DgBudgetItems.SelectedItem = null;
         }
+
+        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DateTime start = DtPckrStartDate.SelectedDate.Value;
+            DateTime end = DtPckrEndDate.SelectedDate.Value;
+            bool isFilterByCategory = false;
+            int catId = -1;
+
+            if (ChkFilterByCategory.IsChecked == true)
+            {
+                isFilterByCategory = true;
+                catId = CmbFilterCategory.SelectedIndex + 1;
+            }
+
+            _p.DisplayExpenseItems(start, end, isFilterByCategory, catId, TxtSearch.Text);
+        }
+
+        public void DisplaySearchBar()
+        {
+            stckSearch.Visibility = Visibility.Visible;
+        }
+
+        public void CloseSearchBar()
+        {
+            stckSearch.Visibility = Visibility.Collapsed;
+        }
+
     }
 }
