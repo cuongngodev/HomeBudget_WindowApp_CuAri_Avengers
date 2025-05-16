@@ -60,8 +60,6 @@ namespace HomeBudgetWPF
 
         void CloseSearchBar();
 
-        void HighlightSearchResult();
-
         void ShowAudioError();
 
     }

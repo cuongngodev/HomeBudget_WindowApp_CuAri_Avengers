@@ -287,9 +287,18 @@ namespace HomeBudgetWPF
                 return null;
             }
         
-            int startingIndex = currentItem != null?items.IndexOf(currentItem):0;
+            int startingIndex = currentItem != null?items.IndexOf(currentItem) +1:0;
+
             
-            for (int i = startingIndex + 1; i < items.Count; i++)
+            for (int i = startingIndex; i < items.Count; i++)
+            {
+                if (items[i].ShortDescription.ToLower().Contains(searchParams.ToLower()) || items[i].Amount.ToString().ToLower().Contains(searchParams.ToLower()))
+                {
+                    return items[i];
+                }
+            }
+
+            for (int i = 0; i < startingIndex; i++)
             {
                 if (items[i].ShortDescription.ToLower().Contains(searchParams.ToLower()) || items[i].Amount.ToString().ToLower().Contains(searchParams.ToLower()))
                 {
@@ -297,6 +306,7 @@ namespace HomeBudgetWPF
                 }
             }
             _view.ShowAudioError();
+
             return currentItem;
         }
 
@@ -306,21 +316,7 @@ namespace HomeBudgetWPF
             {
                 List<BudgetItem> items = _model.GetBudgetItems(start, end, filterFlag, catID);
 
-                bool notFound = false;
-           
-
                 _view.DisplayExpenseItemsGrid(items);
-
-                if (items.Count == 1)
-                {
-                    _view.HighlightSearchResult();
-                }
-
-                if (notFound)
-                {
-                    _view.ShowAudioError();
-                }
-
             }
             else
             {

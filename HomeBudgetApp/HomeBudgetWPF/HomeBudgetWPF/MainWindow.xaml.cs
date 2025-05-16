@@ -559,31 +559,16 @@ namespace HomeBudgetWPF
             stckSearch.Visibility = Visibility.Collapsed;
         }
 
-        public void HighlightSearchResult()
-        {
-        
-            DgBudgetItems.ScrollIntoView(DgBudgetItems.Items[0]);
-            DgBudgetItems.SelectedItem = DgBudgetItems.Items[0];
-            DgBudgetItems.CurrentItem = DgBudgetItems.Items[0];
-           
-        }
-
         private void BtnSearch_Click_1(object sender, RoutedEventArgs e)
         {
-            DateTime start = DtPckrStartDate.SelectedDate.Value;
-            DateTime end = DtPckrEndDate.SelectedDate.Value;
-            bool isFilterByCategory = false;
-            int catId = -1;
-
-            if (ChkFilterByCategory.IsChecked == true)
-            {
-                isFilterByCategory = true;
-                catId = CmbFilterCategory.SelectedIndex + 1;
-            }
-
+           
             DgBudgetItems.SelectedItem = _p.Search((BudgetItem)DgBudgetItems.SelectedItem, (List<BudgetItem>)DgBudgetItems.ItemsSource, TxtSearch.Text);
 
+            if (DgBudgetItems.SelectedItem == null)
+                return;
+            
             DgBudgetItems.ScrollIntoView(DgBudgetItems.SelectedItem);
+            DgBudgetItems.Focus();
         }
     }
 }
