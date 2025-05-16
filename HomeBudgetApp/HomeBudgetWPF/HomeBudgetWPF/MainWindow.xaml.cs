@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using System.Data;
 using System.Collections.ObjectModel;
+using System.Media;
 
 namespace HomeBudgetWPF
 {
@@ -308,6 +309,11 @@ namespace HomeBudgetWPF
             MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        public void ShowAudioError()
+        {
+            SystemSounds.Beep.Play();
+        }
+
         public void DisplayConfirmation(string message)
         {
             MessageBox.Show(message, "Success", MessageBoxButton.OK);
@@ -543,7 +549,26 @@ namespace HomeBudgetWPF
             DgBudgetItems.SelectedItem = null;
         }
 
-        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        public void DisplaySearchBar()
+        {
+            stckSearch.Visibility = Visibility.Visible;
+        }
+
+        public void CloseSearchBar()
+        {
+            stckSearch.Visibility = Visibility.Collapsed;
+        }
+
+        public void HighlightSearchResult()
+        {
+        
+            DgBudgetItems.ScrollIntoView(DgBudgetItems.Items[0]);
+            DgBudgetItems.SelectedItem = DgBudgetItems.Items[0];
+            DgBudgetItems.CurrentItem = DgBudgetItems.Items[0];
+           
+        }
+
+        private void BtnSearch_Click_1(object sender, RoutedEventArgs e)
         {
             DateTime start = DtPckrStartDate.SelectedDate.Value;
             DateTime end = DtPckrEndDate.SelectedDate.Value;
@@ -556,18 +581,9 @@ namespace HomeBudgetWPF
                 catId = CmbFilterCategory.SelectedIndex + 1;
             }
 
-            _p.DisplayExpenseItems(start, end, isFilterByCategory, catId, TxtSearch.Text);
-        }
+            DgBudgetItems.SelectedItem = _p.Search((BudgetItem)DgBudgetItems.SelectedItem, (List<BudgetItem>)DgBudgetItems.ItemsSource, TxtSearch.Text);
 
-        public void DisplaySearchBar()
-        {
-            stckSearch.Visibility = Visibility.Visible;
+            DgBudgetItems.ScrollIntoView(DgBudgetItems.SelectedItem);
         }
-
-        public void CloseSearchBar()
-        {
-            stckSearch.Visibility = Visibility.Collapsed;
-        }
-
     }
 }
