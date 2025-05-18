@@ -25,7 +25,7 @@ namespace HomeBudgetWPF
         // ----------------------------------------------------------------------------------
         // private globals
         // ----------------------------------------------------------------------------------
-        private List<object> _dataSource;
+        private List<Dictionary<string,object>> _dataSource;
         private enum ChartType
         {
             Standard,
@@ -39,8 +39,8 @@ namespace HomeBudgetWPF
         // ----------------------------------------------------------------------------------
         // public properites
         // ----------------------------------------------------------------------------------
-        public Presenter presenter { get; set; }
-        public List<object> DataSource
+        public Presenter Presenter { get; set; }
+        public List<Dictionary<string,object>> DataSource
         {
             get { return _dataSource; }
             set
