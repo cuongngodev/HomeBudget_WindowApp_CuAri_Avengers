@@ -140,6 +140,8 @@ namespace HomeBudgetWPF
             bool isSummaryByMonth = ChkByMonth.IsChecked == true;
             bool isSummaryByCategory = ChkByCategory.IsChecked == true;
 
+            UpdateSummaryButtonVisibility();
+
             if (ChkFilterByCategory.IsChecked == true)
             {
                 isFilterByCategory = true;
@@ -149,7 +151,17 @@ namespace HomeBudgetWPF
             _p.DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);
         }
 
-
+        private void UpdateSummaryButtonVisibility()
+        {
+            if (ChkByMonth.IsChecked == true && ChkByCategory.IsChecked == true)
+            {
+                BtnShowSummaryChart.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                BtnShowSummaryChart.Visibility = Visibility.Collapsed;
+            }
+        }
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
@@ -569,6 +581,16 @@ namespace HomeBudgetWPF
             
             DgBudgetItems.ScrollIntoView(DgBudgetItems.SelectedItem);
             DgBudgetItems.Focus();
+        }
+
+        private void BtnShowSummaryChart_Click(object sender, RoutedEventArgs e)
+        {
+            // button show
+            // hide datagrid
+            DgBudgetItems.Visibility = Visibility.Collapsed;
+            // show datacontrol
+            dataChartControl.Visibility = Visibility.Visible;
+
         }
     }
 }
