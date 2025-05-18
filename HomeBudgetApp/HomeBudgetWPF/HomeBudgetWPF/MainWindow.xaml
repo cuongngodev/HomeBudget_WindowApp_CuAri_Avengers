@@ -8,6 +8,7 @@
         Title="MainWindow" Height="450" Width="800"
         Background="#3e4444">
     <Grid x:Name="GrdMainView">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -91,13 +92,27 @@
 
 
         </StackPanel>
-
+        <!--This button to control the visibility of the DataViewContro. It shows when ChkSummaryByMonth and cat are checked-->
+        <Button x:Name="BtnShowSummaryChart"
+            Content="Show Summary Chart"
+            Grid.Column="1" Grid.Row="0"
+            Margin="10"
+            Padding="5"
+                Height="40"
+                Width="200"
+                HorizontalAlignment="Right"
+            Visibility="Visible"
+            Background="#405d27"
+            Foreground="#82b74b"
+            Click="BtnShowSummaryChart_Click"
+        />
         <GroupBox Header="Expenses" Grid.Column="1" Grid.Row="1" 
          Margin="10" Foreground="#82b74b" FontWeight="Bold">
             <DockPanel>
-
+                
                 <StackPanel DockPanel.Dock="Top" Margin="10,10,10,5">
                     <StackPanel x:Name="stckSearch" Orientation="Horizontal" HorizontalAlignment="Right">
+                        
                         <TextBox x:Name="TxtSearch" 
                         Width="200" 
                         Background="#405d27" 
@@ -114,7 +129,7 @@
                         
                     </StackPanel>
                 </StackPanel>
-
+                
                 <DataGrid Padding="10" 
                  Background="#405d27" 
                  Foreground="#82b74b" 
@@ -122,7 +137,8 @@
                  BorderThickness="5"
                  Margin="10"
                  x:Name="DgBudgetItems"
-                 IsReadOnly="True">
+                 IsReadOnly="True"
+                 Visibility="Visible">
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Modify" Click="MenuItemModify_Click"/>
@@ -135,6 +151,10 @@
             </DockPanel>
         </GroupBox>
 
+        <local:DataChartView x:Name="dataChartControl"
+                             Grid.Column="1" 
+                             Grid.Row="1" Margin="10" 
+                             Visibility="Collapsed"/>
 
         <StackPanel Grid.Row="3" Grid.Column="1"  Margin="10">
             <Label Foreground="#82b74b" x:Name="LblThemeTitle" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Color Themes</Label>
