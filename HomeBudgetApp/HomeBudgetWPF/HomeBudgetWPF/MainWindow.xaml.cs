@@ -591,6 +591,39 @@ namespace HomeBudgetWPF
             // show datacontrol
             dataChartControl.Visibility = Visibility.Visible;
 
+            // Pass Presenter to DataViewControl
+            dataChartControl.Presenter = _p;
+
+            // Get state before making request to Presenter
+            if (DtPckrStartDate.SelectedDate == null || DtPckrEndDate.SelectedDate == null)
+            {
+                return;
+            }
+
+            DateTime start = DtPckrStartDate.SelectedDate.Value;
+            DateTime end = DtPckrEndDate.SelectedDate.Value;
+            bool isFilterByCategory = false;
+            int catId = -1;
+
+
+            bool isSummaryByMonth = ChkByMonth.IsChecked == true;
+            bool isSummaryByCategory = ChkByCategory.IsChecked == true;
+
+            UpdateSummaryButtonVisibility();
+
+            if (ChkFilterByCategory.IsChecked == true)
+            {
+                isFilterByCategory = true;
+                catId = CmbFilterCategory.SelectedIndex + 1;
+            }
+
+            _p.GetBudgetItemsByMonthAndCategory(start, end, isFilterByCategory, catId);
+
+        }
+
+        public void SetDataSourceForViewControl(List<Dictionary<string, object>> dataSource)
+        {
+            dataChartControl.DataSource = dataSource;
         }
     }
 }

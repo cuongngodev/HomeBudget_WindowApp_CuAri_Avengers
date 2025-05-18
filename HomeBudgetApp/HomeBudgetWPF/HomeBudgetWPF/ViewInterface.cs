@@ -62,6 +62,8 @@ namespace HomeBudgetWPF
 
         void ShowAudioError();
 
+        void SetDataSourceForViewControl(List<Dictionary<string,object>> data);
+
     }
 
 

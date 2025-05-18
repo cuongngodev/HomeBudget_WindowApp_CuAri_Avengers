@@ -383,7 +383,14 @@ namespace HomeBudgetWPF
                 _view.DisplaySearchBar();
                 DisplayExpenseItems(start, end, isFilterByCategory, catID);
             }
-        }        
+        } 
+        
+        public void GetBudgetItemsByMonthAndCategory(DateTime start, DateTime end, bool isFilterByCategory, int catID)
+        {
+            List<Dictionary<string, object>> data = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, isFilterByCategory, catID);
+            
+            _view.SetDataSourceForViewControl(data);
+        }
         #endregion
     }
 }
