@@ -34,7 +34,7 @@ namespace HomeBudgetWPF
             ByMonthAndCategory
         }
         private ChartType chartType = ChartType.Standard;
-        private List<string> Categories;
+        public List<string> Categories; // Just for now, may set to private later, Ask Helen
 
         // ----------------------------------------------------------------------------------
         // public properites
@@ -194,7 +194,7 @@ namespace HomeBudgetWPF
                         double.TryParse(value, out amount);
 
                         // only display expenses (i.e., amount < 0)
-                        if (amount < 0)
+                        if (amount > 0)
                         {
                             DisplayData.Add(new KeyValuePair<String, double>(category, -amount));
                         }
