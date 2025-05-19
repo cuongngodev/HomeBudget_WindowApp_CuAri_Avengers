@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using System.Data;
 using System.Collections.ObjectModel;
+using System.Media;
 
 namespace HomeBudgetWPF
 {
@@ -120,15 +121,16 @@ namespace HomeBudgetWPF
             this.Hide();
         }
 
-        public void ApplyFilters()
+        public void ApplyFilters(string searchParams = "")
         {
             // Clear all current collumn to avoid create more column to exsiting datagrid
             DgBudgetItems.Columns.Clear();
 
-            if (!DtPckrStartDate.SelectedDate.HasValue || !DtPckrEndDate.SelectedDate.HasValue)
+            if (DtPckrStartDate.SelectedDate == null || DtPckrEndDate.SelectedDate == null)
             {
                 return;
             }
+
             DateTime start = DtPckrStartDate.SelectedDate.Value;
             DateTime end = DtPckrEndDate.SelectedDate.Value;
             bool isFilterByCategory = false;
@@ -144,36 +146,14 @@ namespace HomeBudgetWPF
                 catId = CmbFilterCategory.SelectedIndex + 1;
             }
             
-            DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);   
+            _p.DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);
         }
 
-        public void DisplayExpenseDataGrid(DateTime start, DateTime end, bool isFilterByCategory, int catID, bool isSummaryByMonth, bool isSummaryByCategory)
-        {
-       
-            if (isSummaryByCategory && isSummaryByMonth)
-            {
-                _p.DisplayExpenseItemsByCategoryAndMonth(start, end, isFilterByCategory, catID);
-            }
-            else if (isSummaryByCategory && !isSummaryByMonth)
-            {
-                _p.DisplayExpenseItemsByCategory(start, end, isFilterByCategory, catID);
-            }
-            else if (!isSummaryByCategory && isSummaryByMonth)
-            {
-                _p.DisplayExpenseItemsByMonth(start, end, isFilterByCategory, catID);
-            }
-            else
-            {
-                _p.DisplayExpenseItems(start, end, isFilterByCategory, catID);
-            }
-        }
+
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
-            if (expenseList == null || !expenseList.Any())
-            {
-                return;
-            }
+
             DgBudgetItems.ItemsSource = expenseList;
             DgBudgetItems.AutoGenerateColumns = false;
             
@@ -327,6 +307,11 @@ namespace HomeBudgetWPF
         public void DisplayError(string message)
         {
             MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        public void ShowAudioError()
+        {
+            SystemSounds.Beep.Play();
         }
 
         public void DisplayConfirmation(string message)
@@ -551,9 +536,39 @@ namespace HomeBudgetWPF
 
         }
 
+        private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (DgBudgetItems.SelectedItem is BudgetItem selectedItem)
+            {
+                _p.DeleteExpense(selectedItem);
+            }
+        }
+
         private void MenuItemCancel_Click(object sender, RoutedEventArgs e)
         {
             DgBudgetItems.SelectedItem = null;
+        }
+
+        public void DisplaySearchBar()
+        {
+            stckSearch.Visibility = Visibility.Visible;
+        }
+
+        public void CloseSearchBar()
+        {
+            stckSearch.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnSearch_Click_1(object sender, RoutedEventArgs e)
+        {
+           
+            DgBudgetItems.SelectedItem = _p.Search((BudgetItem)DgBudgetItems.SelectedItem, (List<BudgetItem>)DgBudgetItems.ItemsSource, TxtSearch.Text);
+
+            if (DgBudgetItems.SelectedItem == null)
+                return;
+            
+            DgBudgetItems.ScrollIntoView(DgBudgetItems.SelectedItem);
+            DgBudgetItems.Focus();
         }
     }
 }

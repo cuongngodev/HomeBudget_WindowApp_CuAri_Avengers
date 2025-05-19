@@ -55,6 +55,13 @@ namespace HomeBudgetWPF
         void ShowCategoriesOptions(List<Category> categories);
 
         void SetDefaultDate(DateTime start, DateTime end);
+
+        void DisplaySearchBar();
+
+        void CloseSearchBar();
+
+        void ShowAudioError();
+
     }
 
 

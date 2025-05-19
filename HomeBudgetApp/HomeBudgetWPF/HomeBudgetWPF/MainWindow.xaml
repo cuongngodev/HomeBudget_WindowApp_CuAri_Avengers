@@ -93,21 +93,46 @@
         </StackPanel>
 
         <GroupBox Header="Expenses" Grid.Column="1" Grid.Row="1" 
-                  Margin="10" Foreground="#82b74b" FontWeight="Bold">
-            <DataGrid Padding="10" 
-                      Background="#405d27" Foreground="#82b74b" 
-                      BorderBrush="#82b74b" BorderThickness="5"
-                      Margin="10"
-                      x:Name="DgBudgetItems"
-                      IsReadOnly="True"
-                      >
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Modify" Click="MenuItemModify_Click"/>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-                
-            </DataGrid>
+         Margin="10" Foreground="#82b74b" FontWeight="Bold">
+            <DockPanel>
+
+                <StackPanel DockPanel.Dock="Top" Margin="10,10,10,5">
+                    <StackPanel x:Name="stckSearch" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBox x:Name="TxtSearch" 
+                        Width="200" 
+                        Background="#405d27" 
+                        Foreground="#82b74b"
+                        BorderBrush="#82b74b"
+                        BorderThickness="1"
+                        Padding="5,3"
+                        />
+                        <Button x:Name="BtnSearch" 
+                            FontWeight="Bold" Background="#405d27" Foreground="#82b74b" 
+                            Height="30" Width="auto" Padding="5" Margin="10,0,10,0" BorderThickness="2" BorderBrush="White" 
+                            Click="BtnSearch_Click_1">
+                            Search</Button>
+                        
+                    </StackPanel>
+                </StackPanel>
+
+                <DataGrid Padding="10" 
+                 Background="#405d27" 
+                 Foreground="#82b74b" 
+                 BorderBrush="#82b74b" 
+                 BorderThickness="5"
+                 Margin="10"
+                 x:Name="DgBudgetItems"
+                 IsReadOnly="True">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Modify" Click="MenuItemModify_Click"/>
+                            <MenuItem Header="Delete" Click="MenuItemDelete_Click"/>
+                            <Separator/>
+                            <MenuItem Header="Cancel" Click="MenuItemCancel_Click"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
+            </DockPanel>
         </GroupBox>
 
 
