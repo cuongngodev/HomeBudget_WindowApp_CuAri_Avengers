@@ -1,6 +1,7 @@
 ﻿using Budget;
 using System.Diagnostics;
 using System.Windows.Automation;
+using System.Windows.Input;
 
 
 
@@ -391,6 +392,52 @@ namespace HomeBudgetWPF
             
             _view.SetDataSourceForViewControl(data);
         }
+        /// <summary>
+        /// Extracts the unique Category from the List<Dictionary<string, object>>.
+        /// </summary>
+        /// <param name="data"></param>
+        public void GetCategoryList(List<Dictionary<string, object>> data)
+        {
+            List<string> result = new List<string>();
+
+            foreach (Dictionary<string, object> dict in data)
+            {
+                foreach (KeyValuePair<string, object> kvp in dict)
+                {
+                    if (kvp.Key == "Month" || kvp.Key == "Total" || kvp.Key.StartsWith("details:"))
+                        continue;
+
+                    // Only add key with category 
+                    if (!result.Contains(kvp.Key))
+                        result.Add(kvp.Key);
+                }
+            }
+
+            _view.SetCategoryForControlView(result);
+
+        }
+        public void GetMonthList(List<Dictionary<string, object>> data)
+        {
+            List<string> result = new List<string>();
+
+            foreach (Dictionary<string, object> dict in data)
+            {
+                foreach (KeyValuePair<string, object> kvp in dict)
+                {
+                    if (kvp.Key == "Month" && kvp.Value is string value)
+                    {
+                        DateTime.TryParseExact(value, "yyyy/MM", null, System.Globalization.DateTimeStyles.None, out _);
+
+                        result.Add(value);
+                    }
+                }
+            }
+
+            _view.SetMonthSelectionForControlView(result);
+
+
+        }
+
         #endregion
     }
 }
