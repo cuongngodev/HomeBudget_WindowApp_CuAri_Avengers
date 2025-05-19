@@ -155,6 +155,7 @@ namespace HomeBudgetWPF
         {
             if (ChkByMonth.IsChecked == true && ChkByCategory.IsChecked == true)
             {
+
                 BtnShowSummaryChart.Visibility = Visibility.Visible;
                 BtnShowDataGrid.Visibility = Visibility.Visible;
             }
@@ -587,6 +588,7 @@ namespace HomeBudgetWPF
         private void BtnShowSummaryChart_Click(object sender, RoutedEventArgs e)
         {
             // button show
+
             // hide datagrid
             DgBudgetItems.Visibility = Visibility.Collapsed;
             // show datacontrol
@@ -626,6 +628,9 @@ namespace HomeBudgetWPF
         {
             dataChartControl.cbMonths.ItemsSource = months;
 
+            // set initial value to show the chart for better UI. 
+            dataChartControl.cbMonths.SelectedIndex = months.Count - 1;
+
         }
 
         public void SetCategoryForControlView(List<string> categories)
@@ -637,6 +642,8 @@ namespace HomeBudgetWPF
 
         public void SetDataSourceForViewControl(List<Dictionary<string, object>> dataSource)
         {
+            
+
             dataChartControl.DataSource = dataSource;
             // request Presenter
             _p.GetCategoryList(dataSource);

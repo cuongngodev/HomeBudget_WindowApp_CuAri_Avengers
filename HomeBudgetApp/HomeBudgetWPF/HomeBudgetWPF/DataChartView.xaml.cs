@@ -56,6 +56,7 @@ namespace HomeBudgetWPF
         public DataChartView()
         {
             InitializeComponent();
+            set_MonthCategory_Data();
         }
         // -----------------------------------------------------------------------------------
         // clear the current data
