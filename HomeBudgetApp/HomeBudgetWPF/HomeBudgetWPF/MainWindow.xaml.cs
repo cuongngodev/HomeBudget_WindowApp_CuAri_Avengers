@@ -592,7 +592,7 @@ namespace HomeBudgetWPF
             dataChartControl.Visibility = Visibility.Visible;
 
             // Pass Presenter to DataViewControl
-            dataChartControl.Presenter = _p;
+            //dataChartControl.Presenter = _p; Do we need presenter in the DataViewControl?
 
             // Get state before making request to Presenter
             if (DtPckrStartDate.SelectedDate == null || DtPckrEndDate.SelectedDate == null)
@@ -616,14 +616,32 @@ namespace HomeBudgetWPF
                 isFilterByCategory = true;
                 catId = CmbFilterCategory.SelectedIndex + 1;
             }
-
             _p.GetBudgetItemsByMonthAndCategory(start, end, isFilterByCategory, catId);
 
         }
 
+
+        public void SetMonthSelectionForControlView(List<string> months)
+        {
+            dataChartControl.cbMonths.ItemsSource = months;
+
+        }
+
+        public void SetCategoryForControlView(List<string> categories)
+        {
+            dataChartControl.Categories = categories;
+
+        }
+
+
         public void SetDataSourceForViewControl(List<Dictionary<string, object>> dataSource)
         {
             dataChartControl.DataSource = dataSource;
+            // request Presenter
+            _p.GetCategoryList(dataSource);
+            _p.GetMonthList(dataSource);
+
         }
+
     }
 }
