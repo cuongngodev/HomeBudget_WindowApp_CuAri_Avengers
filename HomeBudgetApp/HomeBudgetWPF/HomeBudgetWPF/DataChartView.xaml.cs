@@ -73,7 +73,7 @@ namespace HomeBudgetWPF
             txtTitle.Text = "By Month";
             chartType = ChartType.ByMonthAndCategory;   // set chart type appropriately
             chPie.Visibility = Visibility.Visible;      // show the pie chart
-            txtInvalid.Visibility = Visibility.Hidden;  // hide the "invalid parameters" text
+            //txtInvalid.Visibility = Visibility.Hidden;  // hide the "invalid parameters" text
             this.Categories = CategoryList;             // save the categories list
         }
         // -----------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ namespace HomeBudgetWPF
         public void InitializeByCategoryDisplay()
         {
             chPie.Visibility = Visibility.Hidden;
-            txtInvalid.Visibility = Visibility.Visible;
+            //txtInvalid.Visibility = Visibility.Visible;
         }
 
         // -----------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ namespace HomeBudgetWPF
         public void InitializeByMonthDisplay()
         {
             chPie.Visibility = Visibility.Hidden;
-            txtInvalid.Visibility = Visibility.Visible;
+            //txtInvalid.Visibility = Visibility.Visible;
         }
 
         // -----------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ namespace HomeBudgetWPF
         public void InitializeStandardDisplay()
         {
             chPie.Visibility = Visibility.Hidden;
-            txtInvalid.Visibility = Visibility.Visible;
+            //txtInvalid.Visibility = Visibility.Visible;
         }
         
 

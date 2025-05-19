@@ -156,6 +156,7 @@ namespace HomeBudgetWPF
             if (ChkByMonth.IsChecked == true && ChkByCategory.IsChecked == true)
             {
                 BtnShowSummaryChart.Visibility = Visibility.Visible;
+                BtnShowDataGrid.Visibility = Visibility.Visible;
             }
             else
             {
@@ -643,5 +644,10 @@ namespace HomeBudgetWPF
 
         }
 
+        private void BtnShowDataGrid_Click(object sender, RoutedEventArgs e)
+        {
+            dataChartControl.Visibility = Visibility.Collapsed;
+            DgBudgetItems.Visibility = Visibility.Visible;
+        }
     }
 }

@@ -93,19 +93,36 @@
 
         </StackPanel>
         <!--This button to control the visibility of the DataViewContro. It shows when ChkSummaryByMonth and cat are checked-->
-        <Button x:Name="BtnShowSummaryChart"
-            Content="Show Summary Chart"
-            Grid.Column="1" Grid.Row="0"
-            Margin="10"
-            Padding="5"
-                Height="40"
-                Width="200"
-                HorizontalAlignment="Right"
-            Visibility="Visible"
-            Background="#405d27"
-            Foreground="#82b74b"
-            Click="BtnShowSummaryChart_Click"
-        />
+        <DockPanel Grid.Column="1" Grid.Row="0">
+
+            <Button x:Name="BtnShowSummaryChart"
+                Content="View Piechar"
+            
+                Margin="10"
+                Padding="5"
+                    Height="30"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                Visibility="Collapsed"
+                Background="#405d27"
+                Foreground="#82b74b"
+                Click="BtnShowSummaryChart_Click"
+            />
+            <Button x:Name="BtnShowDataGrid"
+                Content="View DataGrid"
+            
+                Margin="10"
+                Padding="5"
+                    Height="30"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                Visibility="Collapsed"
+                Background="#405d27"
+                Foreground="#82b74b"
+                Click="BtnShowDataGrid_Click"
+            />
+
+        </DockPanel>
         <GroupBox Header="Expenses" Grid.Column="1" Grid.Row="1" 
          Margin="10" Foreground="#82b74b" FontWeight="Bold">
             <DockPanel>
