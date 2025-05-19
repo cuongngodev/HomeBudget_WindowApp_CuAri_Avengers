@@ -64,6 +64,10 @@ namespace HomeBudgetWPF
 
         void SetDataSourceForViewControl(List<Dictionary<string,object>> data);
 
+        void SetMonthSelectionForControlView(List<string> months);
+        void SetCategoryForControlView(List<string> categories);
+
+
     }
 
 
