@@ -2,6 +2,7 @@ namespace TestPresenter;
 using HomeBudgetWPF;
 using Budget;
 using System.Security.Policy;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 
 public class MockView : ViewInterface
 {
@@ -29,6 +30,10 @@ public class MockView : ViewInterface
     public bool calledDisplayExpenseItemmsByCategoryAndMonthGrid;
     public bool calledSetDefaultDate;
     public bool calledDisplayUpdateExpenseMenu;
+    public bool calledDisplaySearchBar;
+    public bool calledCloseSearchBar;
+    public bool calledShowAudioError;
+    public bool calledShowCategoriesOptions;
     public void DisplayError(string message)
     {
         calledDisplayError = true;
@@ -97,6 +102,10 @@ public class MockView : ViewInterface
     {
         calledDisplayCategories = true;
     }
+    public void ShowCategoriesOptions(List<Category> categories)
+    {
+        calledShowCategoriesOptions = true;
+    }
     public void DisplayCategoryMenuWithName(string name)
     {
         calledDisplayCategoryMenuWithName = true;
@@ -127,9 +136,20 @@ public class MockView : ViewInterface
     {
         calledSetDefaultDate = true;
     }
-    public void ShowCategoriesOptions(List<Category> categories)
+
+    public void DisplaySearchBar()
     {
-        // Implementation not needed for this test
+        calledDisplaySearchBar = true;
+    }
+
+    public void CloseSearchBar()
+    {
+        calledCloseSearchBar = true;
+    }
+
+    public void ShowAudioError()
+    {
+        calledShowAudioError = true;
     }
 }
 public class UnitTest1
@@ -505,6 +525,7 @@ public class UnitTest1
         presenter.DisplayExpenseItems(start, end, false, 1);
         // Assert
         Assert.True(view.calledDisplayExpenseItemsGrid);
+
     }
 
     [Fact]
@@ -707,6 +728,215 @@ public class UnitTest1
         presenter.UpdateExpense(expenseId, new DateTime(2025, 2, 2), 2, invalidAmount, "Updated Expense");
 
 
+        // Assert
+        Assert.True(view.calledDisplayError);
+    }
+
+    [Fact]
+    public void Test_searchBar()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
+
+        List<BudgetItem> items = new List<BudgetItem>
+        {
+            new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" },
+            new BudgetItem { ExpenseID = 2, ShortDescription = "Test2" },
+            new BudgetItem { ExpenseID = 3, ShortDescription = "Test3" }
+        };
+
+        // Act
+        BudgetItem test = presenter.Search(items[0],items,"2");
+
+        // Assert
+        Assert.Equal(test, items[1]);
+    }
+    [Fact]
+    public void Test_searchBarNoFound()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
+
+        view.calledDisplayError = false;
+        view.calledShowAudioError = false;
+        List<BudgetItem> items = new List<BudgetItem>
+        {
+            new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" },
+            new BudgetItem { ExpenseID = 2, ShortDescription = "Test2" },
+            new BudgetItem { ExpenseID = 3, ShortDescription = "Test3" }
+        };
+
+        // Act
+        BudgetItem test = presenter.Search(items[0], items, "a");
+
+        // Assert
+        Assert.True(view.calledDisplayError);
+        Assert.True(view.calledShowAudioError);
+        Assert.Equal(test, items[0]);
+    }
+    [Fact]
+    public void Test_searchBarReverse()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
+
+        view.calledDisplayError = false;
+        view.calledShowAudioError = false;
+        List<BudgetItem> items = new List<BudgetItem>
+        {
+            new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" },
+            new BudgetItem { ExpenseID = 2, ShortDescription = "Test2" },
+            new BudgetItem { ExpenseID = 3, ShortDescription = "Test3" }
+        };
+
+        // Act
+        BudgetItem test = presenter.Search(items[1], items, "1");
+
+        // Assert
+        Assert.Equal(test, items[0]);
+    }
+
+    [Fact]
+    public void Test_searchNullSearchParams()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
+
+        view.calledDisplayError = false;
+        view.calledShowAudioError = false;
+        List<BudgetItem> items = new List<BudgetItem>
+        {
+            new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" },
+            new BudgetItem { ExpenseID = 2, ShortDescription = "Test2" },
+            new BudgetItem { ExpenseID = 3, ShortDescription = "Test3" }
+        };
+
+        // Act
+        BudgetItem test = presenter.Search(items[1], items, "");
+
+        // Assert
+        Assert.Equal(test, items[1]);
+    }
+    [Fact]
+    public void Test_searchNullItems()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
+
+        view.calledDisplayError = false;
+        view.calledShowAudioError = false;
+        List<BudgetItem> items = new();
+        BudgetItem item = new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" };
+        // Act
+        BudgetItem test = presenter.Search(item, items, "a");
+
+        // Assert
+        Assert.Equal(test,item);
+    }
+
+    [Fact]
+    public void TestGetCategoriesForFilter()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        presenter.SetDatabase("Test.db", true);
+        view.calledShowCategoriesOptions = false;
+
+        presenter.CreateNewCategory("test1", Category.CategoryType.Income);
+        presenter.CreateNewCategory("test2", Category.CategoryType.Income);
+        presenter.CreateNewCategory("test3", Category.CategoryType.Income);
+        // Act
+        presenter.GetCategoriesForFilter();
+        // Assert
+        Assert.True(view.calledShowCategoriesOptions);
+    }
+
+    [Fact]
+    public void Test_NewCatFromDropDownFail()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string description = "Test Create Category From Dropdown";
+        Category.CategoryType type = Category.CategoryType.Income;
+        view.calledDisplayError = false;
+        presenter.SetDatabase("Test.db", true);
+        presenter.CreateNewCategory(description, type);
+        // Act
+       
+        bool test = presenter.CreateNewCategoryFromDropDown(description);
+        // Assert
+        Assert.False(test);
+    }
+
+    [Fact]
+    public void Test_CreateNewExpenseInvalidCat()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime date = DateTime.MaxValue;
+        string description = "Test Create Category From Dropdown";
+        int categoryId = -1;
+        
+        presenter.SetDatabase("Test.db", true);
+        // Act
+        presenter.CreateNewExpense(date, categoryId, "100", description);
+
+    }
+
+    [Fact]
+    public void Test_DeleteExpense()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        int expenseId = 1;
+        view.calledDisplayConfirmation = false;
+        view.calledCloseExpenseMenu = false;
+        presenter.SetDatabase("Test.db", true);
+
+        BudgetItem item = new BudgetItem
+        {
+            ExpenseID = expenseId,
+            ShortDescription = "Test Delete Expense"
+        };
+        presenter.CreateNewExpense(DateTime.MaxValue, 1, "100", "Test Delete Expense");
+        // Act
+        presenter.DeleteExpense(item);
+        // Assert
+        Assert.True(view.calledDisplayConfirmation);
+        Assert.True(view.calledCloseExpenseMenu);
+    } 
+    [Fact]
+    public void Test_DeleteExpenseInvalidId()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        int expenseId = -1;
+        view.calledDisplayError = false;
+        presenter.SetDatabase("Test.db", true);
+
+        BudgetItem item = new BudgetItem
+        {
+            ExpenseID = expenseId,
+            ShortDescription = "Test Delete Expense"
+        };
+        presenter.CreateNewExpense(DateTime.MaxValue, 1, "100", "Test Delete Expense");
+        // Act
+        presenter.DeleteExpense(item);
         // Assert
         Assert.True(view.calledDisplayError);
     }
