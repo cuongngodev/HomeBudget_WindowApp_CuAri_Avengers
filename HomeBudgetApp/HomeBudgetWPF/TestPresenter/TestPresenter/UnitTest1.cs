@@ -33,6 +33,7 @@ public class MockView : ViewInterface
     public bool calledDisplaySearchBar;
     public bool calledCloseSearchBar;
     public bool calledShowAudioError;
+    public bool calledShowCategoriesOptions;
     public void DisplayError(string message)
     {
         calledDisplayError = true;
@@ -101,6 +102,10 @@ public class MockView : ViewInterface
     {
         calledDisplayCategories = true;
     }
+    public void ShowCategoriesOptions(List<Category> categories)
+    {
+        calledShowCategoriesOptions = true;
+    }
     public void DisplayCategoryMenuWithName(string name)
     {
         calledDisplayCategoryMenuWithName = true;
@@ -130,10 +135,6 @@ public class MockView : ViewInterface
     public void SetDefaultDate(DateTime start, DateTime end)
     {
         calledSetDefaultDate = true;
-    }
-    public void ShowCategoriesOptions(List<Category> categories)
-    {
-        // Implementation not needed for this test
     }
 
     public void DisplaySearchBar()
@@ -524,6 +525,7 @@ public class UnitTest1
         presenter.DisplayExpenseItems(start, end, false, 1);
         // Assert
         Assert.True(view.calledDisplayExpenseItemsGrid);
+
     }
 
     [Fact]
@@ -731,161 +733,211 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Test_DisplayExpenseDataGrid_ShowsSearchBarForNonSummaryViews()
+    public void Test_searchBar()
     {
         // Arrange
         MockView view = new MockView();
         Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 3, 1);
-        DateTime end = new DateTime(2025, 5, 29);
-        bool isFilterByCategory = false;
-        int catID = 1;
-        bool isSummaryByMonth = false;
-        bool isSummaryByCategory = false;
-
-        presenter.SetDatabase("Test.db", true);
         view.calledDisplaySearchBar = false;
-        view.calledDisplayExpenseItemsGrid = false;
+
+        List<BudgetItem> items = new List<BudgetItem>
+        {
+            new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" },
+            new BudgetItem { ExpenseID = 2, ShortDescription = "Test2" },
+            new BudgetItem { ExpenseID = 3, ShortDescription = "Test3" }
+        };
 
         // Act
-        presenter.DisplayExpenseDataGrid(start, end, isFilterByCategory, catID, isSummaryByMonth, isSummaryByCategory);
+        BudgetItem test = presenter.Search(items[0],items,"2");
 
         // Assert
-        Assert.True(view.calledDisplaySearchBar);
-        Assert.True(view.calledDisplayExpenseItemsGrid);
+        Assert.Equal(test, items[1]);
     }
-
-    [Fact]  
-    public void Test_DisplayExpenseDataGrid_HidesSearchBarForSummaryViews()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-        DateTime start = new DateTime(2025, 3, 1);
-        DateTime end = new DateTime(2025, 5, 29);
-        bool isFilterByCategory = false;
-        int catID = 1;
-        bool isSummaryByMonth = true;
-        bool isSummaryByCategory = false;
-
-        presenter.SetDatabase("Test.db", true);
-        view.calledCloseSearchBar = false;
-        view.calledDisplayExpenseItemsByMonth = false;
-
-        // Act
-        presenter.DisplayExpenseDataGrid(start, end, isFilterByCategory, catID, isSummaryByMonth, isSummaryByCategory);
-
-        // Assert
-        Assert.True(view.calledCloseSearchBar);
-        Assert.True(view.calledDisplayExpenseItemsByMonth);
-        Assert.False(view.calledDisplaySearchBar);
-    }
- 
     [Fact]
-    public void Test_Search_WithEmptySearchParam()
+    public void Test_searchBarNoFound()
     {
         // Arrange
         MockView view = new MockView();
         Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
 
-        presenter.SetDatabase("Test.db", true);
-
-        string searchParam = "";
-
-        // Act
-        bool result = string.IsNullOrEmpty(searchParam);
-
-        // Assert
-        Assert.True(result);
-    }
-
-    [Fact]
-    public void Test_Search_NullParameters_HandledGracefully()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-
-        presenter.SetDatabase("Test.db", true);
-
-        // Act
-        // Check if presenter properly handles null parameters
-        // This would typically be implemented in the presenter as a null check
-        bool handlesNullGracefully = true; // Assume presenter has proper null checks
-
-        // Assert
-        Assert.True(handlesNullGracefully);
-        // Could also verify that no exceptions were thrown
-    }
- 
-    [Fact]
-    public void Test_SearchErrorHandling_DisplaysErrorOnNoMatch()
-    {
-        // Arrange
-        MockView view = new MockView();
-        Presenter presenter = new Presenter(view);
-
-        presenter.SetDatabase("Test.db", true);
-
-        // Reset the error flags
         view.calledDisplayError = false;
         view.calledShowAudioError = false;
-
-        // Create a test approach that doesn't require manipulating BudgetItems directly
-        // Instead, we'll simulate what happens when no match is found
-
-        // Act - Simulate the presenter logic for no matches
-        // This is assuming your presenter has this logic
-        bool noMatchFound = true;
-        if (noMatchFound)
+        List<BudgetItem> items = new List<BudgetItem>
         {
-            view.DisplayError("No matching items found.");
-            view.ShowAudioError();
-        }
+            new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" },
+            new BudgetItem { ExpenseID = 2, ShortDescription = "Test2" },
+            new BudgetItem { ExpenseID = 3, ShortDescription = "Test3" }
+        };
+
+        // Act
+        BudgetItem test = presenter.Search(items[0], items, "a");
 
         // Assert
         Assert.True(view.calledDisplayError);
         Assert.True(view.calledShowAudioError);
+        Assert.Equal(test, items[0]);
     }
     [Fact]
-    public void Test_SearchFunction_BasicFunctionality()
+    public void Test_searchBarReverse()
     {
         // Arrange
         MockView view = new MockView();
         Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
 
-        presenter.SetDatabase("Test.db", true);
-
-        // Create a test string to simulate search
-        string itemDescription = "Food shopping";
-        string searchParam = "food";
+        view.calledDisplayError = false;
+        view.calledShowAudioError = false;
+        List<BudgetItem> items = new List<BudgetItem>
+        {
+            new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" },
+            new BudgetItem { ExpenseID = 2, ShortDescription = "Test2" },
+            new BudgetItem { ExpenseID = 3, ShortDescription = "Test3" }
+        };
 
         // Act
-        // Test the core functionality of the search - case insensitive contains
-        bool isMatch = itemDescription.ToLower().Contains(searchParam.ToLower());
+        BudgetItem test = presenter.Search(items[1], items, "1");
 
         // Assert
-        Assert.True(isMatch);
+        Assert.Equal(test, items[0]);
     }
 
     [Fact]
-    public void Test_SearchFunction_NoMatch()
+    public void Test_searchNullSearchParams()
     {
         // Arrange
         MockView view = new MockView();
         Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
 
-        presenter.SetDatabase("Test.db", true);
-
-        // Create a test string to simulate search
-        string itemDescription = "Food shopping";
-        string searchParam = "gasoline";
+        view.calledDisplayError = false;
+        view.calledShowAudioError = false;
+        List<BudgetItem> items = new List<BudgetItem>
+        {
+            new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" },
+            new BudgetItem { ExpenseID = 2, ShortDescription = "Test2" },
+            new BudgetItem { ExpenseID = 3, ShortDescription = "Test3" }
+        };
 
         // Act
-        // Test the core functionality of the search - case insensitive contains
-        bool isMatch = itemDescription.ToLower().Contains(searchParam.ToLower());
+        BudgetItem test = presenter.Search(items[1], items, "");
 
         // Assert
-        Assert.False(isMatch);
+        Assert.Equal(test, items[1]);
+    }
+    [Fact]
+    public void Test_searchNullItems()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        view.calledDisplaySearchBar = false;
+
+        view.calledDisplayError = false;
+        view.calledShowAudioError = false;
+        List<BudgetItem> items = new();
+        BudgetItem item = new BudgetItem { ExpenseID = 1, ShortDescription = "Test1" };
+        // Act
+        BudgetItem test = presenter.Search(item, items, "a");
+
+        // Assert
+        Assert.Equal(test,item);
+    }
+
+    [Fact]
+    public void TestGetCategoriesForFilter()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        presenter.SetDatabase("Test.db", true);
+        view.calledShowCategoriesOptions = false;
+
+        presenter.CreateNewCategory("test1", Category.CategoryType.Income);
+        presenter.CreateNewCategory("test2", Category.CategoryType.Income);
+        presenter.CreateNewCategory("test3", Category.CategoryType.Income);
+        // Act
+        presenter.GetCategoriesForFilter();
+        // Assert
+        Assert.True(view.calledShowCategoriesOptions);
+    }
+
+    [Fact]
+    public void Test_NewCatFromDropDownFail()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        string description = "Test Create Category From Dropdown";
+        Category.CategoryType type = Category.CategoryType.Income;
+        view.calledDisplayError = false;
+        presenter.SetDatabase("Test.db", true);
+        presenter.CreateNewCategory(description, type);
+        // Act
+       
+        bool test = presenter.CreateNewCategoryFromDropDown(description);
+        // Assert
+        Assert.False(test);
+    }
+
+    [Fact]
+    public void Test_CreateNewExpenseInvalidCat()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime date = DateTime.MaxValue;
+        string description = "Test Create Category From Dropdown";
+        int categoryId = -1;
+        
+        presenter.SetDatabase("Test.db", true);
+        // Act
+        presenter.CreateNewExpense(date, categoryId, "100", description);
+
+    }
+
+    [Fact]
+    public void Test_DeleteExpense()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        int expenseId = 1;
+        view.calledDisplayConfirmation = false;
+        view.calledCloseExpenseMenu = false;
+        presenter.SetDatabase("Test.db", true);
+
+        BudgetItem item = new BudgetItem
+        {
+            ExpenseID = expenseId,
+            ShortDescription = "Test Delete Expense"
+        };
+        presenter.CreateNewExpense(DateTime.MaxValue, 1, "100", "Test Delete Expense");
+        // Act
+        presenter.DeleteExpense(item);
+        // Assert
+        Assert.True(view.calledDisplayConfirmation);
+        Assert.True(view.calledCloseExpenseMenu);
+    } 
+    [Fact]
+    public void Test_DeleteExpenseInvalidId()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        int expenseId = -1;
+        view.calledDisplayError = false;
+        presenter.SetDatabase("Test.db", true);
+
+        BudgetItem item = new BudgetItem
+        {
+            ExpenseID = expenseId,
+            ShortDescription = "Test Delete Expense"
+        };
+        presenter.CreateNewExpense(DateTime.MaxValue, 1, "100", "Test Delete Expense");
+        // Act
+        presenter.DeleteExpense(item);
+        // Assert
+        Assert.True(view.calledDisplayError);
     }
 }
