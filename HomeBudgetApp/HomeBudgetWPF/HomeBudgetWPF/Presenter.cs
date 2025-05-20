@@ -224,7 +224,6 @@ namespace HomeBudgetWPF
                 return;
             }
 
-
             _model.expenses.Delete(budgetItem.ExpenseID);
             _view.DisplayConfirmation("Deleted Succesfully!");
             _view.CloseExpenseMenu();
