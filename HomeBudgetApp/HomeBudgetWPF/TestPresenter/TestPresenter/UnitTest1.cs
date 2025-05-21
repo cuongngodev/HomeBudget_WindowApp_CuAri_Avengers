@@ -37,6 +37,7 @@ public class MockView : ViewInterface
     public bool calledSetDataSourceForViewControl;
     public bool calledSetMonthSelectionForControlView;
     public bool calledSetCategoryForControlView;
+    public bool calledUpdateSummaryButtonVisibility;
     public void DisplayError(string message)
     {
         calledDisplayError = true;
@@ -166,6 +167,10 @@ public class MockView : ViewInterface
     public void SetCategoryForControlView(List<string> categories)
     {
         calledSetCategoryForControlView = true;
+    }
+    public void UpdateSummaryButtonVisibility(bool showBtnPieChart, bool showBtnDataGrid)
+    {
+        calledUpdateSummaryButtonVisibility = true;
     }
 }
 public class UnitTest1
@@ -1018,8 +1023,8 @@ public class UnitTest1
         // Arrange
         MockView view = new MockView();
         Presenter presenter = new Presenter(view);
-        DateTime? startDate = new DateTime(2025, 4, 29);
-        DateTime? endDate = new DateTime(2025, 5, 29);
+        DateTime startDate = new DateTime(2025, 4, 29);
+        DateTime endDate = new DateTime(2025, 5, 29);
         bool isFilterByCategoryChecked = true;
         int selectedCategoryIndex = 1;
         bool isSummaryByMonthChecked = true;
@@ -1031,4 +1036,26 @@ public class UnitTest1
         presenter.GetBudgetItemsByMonthAndCategory(startDate, endDate, isFilterByCategoryChecked, selectedCategoryIndex, isSummaryByMonthChecked, isSummaryByCategoryChecked);
         Assert.True(view.calledSetDataSourceForViewControl);
     }
+      [Fact]
+    public void Test_UpdateSummaryButtonVisibility()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime startDate = new DateTime(2025, 4, 29);
+        DateTime endDate = new DateTime(2025, 5, 29);
+        bool isFilterByCategoryChecked = true;
+        int selectedCategoryIndex = 1;
+        bool isSummaryByMonthChecked = true;
+        bool isSummaryByCategoryChecked = false;
+
+        view.calledUpdateSummaryButtonVisibility = false;
+        presenter.SetDatabase("Test.db", true);
+        // Act
+        presenter.HandleSummaryButtonVisibility(isSummaryByMonthChecked, isFilterByCategoryChecked);
+        presenter.DisplayExpenseDataGrid(startDate, endDate, isFilterByCategoryChecked, selectedCategoryIndex, isSummaryByMonthChecked, isSummaryByCategoryChecked);
+
+        Assert.True(view.calledUpdateSummaryButtonVisibility);
+    }
+
 }
