@@ -386,12 +386,6 @@ namespace HomeBudgetWPF
             }
         }
 
-        //public void GetBudgetItemsByMonthAndCategory(DateTime start, DateTime end, bool isFilterByCategory, int catID)
-        //{
-        //    List<Dictionary<string, object>> data = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, isFilterByCategory, catID);
-
-        //    _view.SetDataSourceForViewControl(data);
-        //}
         public void GetBudgetItemsByMonthAndCategory(
             DateTime? startDate,
             DateTime? endDate,
