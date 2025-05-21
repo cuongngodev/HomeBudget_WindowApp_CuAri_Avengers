@@ -34,7 +34,7 @@ namespace HomeBudgetWPF
             ByMonthAndCategory
         }
         private ChartType chartType = ChartType.Standard;
-        public List<string> Categories; // Just for now, may set to private later, Ask Helen
+        private List<string> Categories;
 
         // ----------------------------------------------------------------------------------
         // public properites

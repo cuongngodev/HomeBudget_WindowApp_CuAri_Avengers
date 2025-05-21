@@ -615,7 +615,7 @@ namespace HomeBudgetWPF
 
         public void SetCategoryForControlView(List<string> categories)
         {
-            dataChartControl.Categories = categories;
+            dataChartControl.InitializeByCategoryAndMonthDisplay(categories);
 
         }
 
