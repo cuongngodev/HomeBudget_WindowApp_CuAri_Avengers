@@ -66,7 +66,8 @@ namespace HomeBudgetWPF
 
         void SetMonthSelectionForControlView(List<string> months);
         void SetCategoryForControlView(List<string> categories);
-
+        
+        void UpdateSummaryButtonVisibility(bool showBtnPieChart, bool showBtnDataGrid);
 
     }
 

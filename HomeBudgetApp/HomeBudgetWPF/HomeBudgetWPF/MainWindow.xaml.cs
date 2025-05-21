@@ -140,7 +140,7 @@ namespace HomeBudgetWPF
             bool isSummaryByMonth = ChkByMonth.IsChecked == true;
             bool isSummaryByCategory = ChkByCategory.IsChecked == true;
 
-            UpdateSummaryButtonVisibility();
+            _p.HandleSummaryButtonVisibility(isSummaryByMonth, isSummaryByCategory);
 
             if (ChkFilterByCategory.IsChecked == true)
             {
@@ -151,19 +151,11 @@ namespace HomeBudgetWPF
             _p.DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);
         }
 
-        private void UpdateSummaryButtonVisibility()
+        public void UpdateSummaryButtonVisibility(bool showBtnPieChart, bool showBtnDataGrid)
         {
-            if (ChkByMonth.IsChecked == true && ChkByCategory.IsChecked == true)
-            {
-
-                BtnShowPieChart.Visibility = Visibility.Visible;
-                BtnShowDataGrid.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                BtnShowDataGrid.Visibility = Visibility.Collapsed;
-                BtnShowPieChart.Visibility = Visibility.Collapsed;
-            }
+           
+            BtnShowPieChart.Visibility = showBtnPieChart ? Visibility.Visible : Visibility.Collapsed;
+            BtnShowDataGrid.Visibility = showBtnDataGrid ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)

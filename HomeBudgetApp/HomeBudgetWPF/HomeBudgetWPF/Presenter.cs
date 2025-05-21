@@ -1,5 +1,6 @@
 ﻿using Budget;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Input;
 
@@ -459,7 +460,22 @@ namespace HomeBudgetWPF
 
 
         }
+        public void HandleSummaryButtonVisibility(bool isByMonth, bool isByCategory)
+        {
+            bool showBtnPieChart, showBtnDataGrid = false;
 
+            if (isByMonth && isByCategory)
+            {
+                showBtnDataGrid = true;
+                showBtnPieChart = true;
+            }
+            else
+            {
+                showBtnDataGrid = false;
+                showBtnPieChart = false;
+            }
+            _view.UpdateSummaryButtonVisibility(showBtnPieChart,showBtnDataGrid);
+        }
         #endregion
     }
 }
