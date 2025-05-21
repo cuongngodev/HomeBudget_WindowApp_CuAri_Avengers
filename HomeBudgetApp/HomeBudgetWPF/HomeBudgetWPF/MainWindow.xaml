@@ -95,7 +95,7 @@
         <!--This button to control the visibility of the DataViewContro. It shows when ChkSummaryByMonth and cat are checked-->
         <DockPanel Grid.Column="1" Grid.Row="0">
 
-            <Button x:Name="BtnShowSummaryChart"
+            <Button x:Name="BtnShowPieChart"
                 Content="View Piechar"
             
                 Margin="10"

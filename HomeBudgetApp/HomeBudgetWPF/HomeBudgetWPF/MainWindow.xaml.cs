@@ -156,12 +156,13 @@ namespace HomeBudgetWPF
             if (ChkByMonth.IsChecked == true && ChkByCategory.IsChecked == true)
             {
 
-                BtnShowSummaryChart.Visibility = Visibility.Visible;
+                BtnShowPieChart.Visibility = Visibility.Visible;
                 BtnShowDataGrid.Visibility = Visibility.Visible;
             }
             else
             {
-                BtnShowSummaryChart.Visibility = Visibility.Collapsed;
+                BtnShowDataGrid.Visibility = Visibility.Collapsed;
+                BtnShowPieChart.Visibility = Visibility.Collapsed;
             }
         }
 
