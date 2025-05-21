@@ -34,6 +34,9 @@ public class MockView : ViewInterface
     public bool calledCloseSearchBar;
     public bool calledShowAudioError;
     public bool calledShowCategoriesOptions;
+    public bool calledSetDataSourceForViewControl;
+    public bool calledSetMonthSelectionForControlView;
+    public bool calledSetCategoryForControlView;
     public void DisplayError(string message)
     {
         calledDisplayError = true;
@@ -150,6 +153,19 @@ public class MockView : ViewInterface
     public void ShowAudioError()
     {
         calledShowAudioError = true;
+    }
+
+    public void SetDataSourceForViewControl(List<Dictionary<string, object>> data)
+    {
+        calledSetDataSourceForViewControl = true;
+    }
+    public void SetMonthSelectionForControlView(List<string> months)
+    {
+        calledSetMonthSelectionForControlView = true;
+    }
+    public void SetCategoryForControlView(List<string> categories)
+    {
+        calledSetCategoryForControlView = true;
     }
 }
 public class UnitTest1
@@ -939,5 +955,80 @@ public class UnitTest1
         presenter.DeleteExpense(item);
         // Assert
         Assert.True(view.calledDisplayError);
+    }
+
+    [Fact]
+    public void Test_SetDataSourceForViewControl()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
+        view.calledSetCategoryForControlView = false;
+        view.calledSetMonthSelectionForControlView = true;
+        presenter.SetDatabase("Test.db", true);
+        presenter.GetMonthList(data);
+        // Act
+        presenter.GetCategoryList(data);
+
+        Assert.True(view.calledSetCategoryForControlView);
+        Assert.True(view.calledSetMonthSelectionForControlView);
+    }
+    [Fact]
+    public void Test_SetMonthSelectionForControlView()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
+        view.calledSetCategoryForControlView = false;
+        view.calledSetMonthSelectionForControlView = true;
+        presenter.SetDatabase("Test.db", true);
+        presenter.GetMonthList(data);
+        // Act
+        presenter.GetCategoryList(data);
+
+        Assert.True(view.calledSetCategoryForControlView);
+        Assert.True(view.calledSetMonthSelectionForControlView);
+    }
+
+    [Fact]
+    public void Test_GetBudgetItemsByMonthAndCategory_DateNull()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime? startDate = null;
+        DateTime? endDate = null;
+        bool isFilterByCategoryChecked = true;
+        int selectedCategoryIndex = 1;
+        bool isSummaryByMonthChecked = true;
+        bool isSummaryByCategoryChecked = false;
+
+        view.calledDisplayError = false;
+        presenter.SetDatabase("Test.db", true);
+        // Act
+        presenter.GetBudgetItemsByMonthAndCategory(startDate, endDate, isFilterByCategoryChecked, selectedCategoryIndex, isSummaryByMonthChecked, isSummaryByCategoryChecked);
+        Assert.True(view.calledDisplayError);
+    }
+
+    [Fact]
+    public void Test_GetBudgetItemsByMonthAndCategory_Valid()
+    {
+        // Arrange
+        MockView view = new MockView();
+        Presenter presenter = new Presenter(view);
+        DateTime? startDate = new DateTime(2025, 4, 29);
+        DateTime? endDate = new DateTime(2025, 5, 29);
+        bool isFilterByCategoryChecked = true;
+        int selectedCategoryIndex = 1;
+        bool isSummaryByMonthChecked = true;
+        bool isSummaryByCategoryChecked = false;
+
+        view.calledSetDataSourceForViewControl = false;
+        presenter.SetDatabase("Test.db", true);
+        // Act
+        presenter.GetBudgetItemsByMonthAndCategory(startDate, endDate, isFilterByCategoryChecked, selectedCategoryIndex, isSummaryByMonthChecked, isSummaryByCategoryChecked);
+        Assert.True(view.calledSetDataSourceForViewControl);
     }
 }
