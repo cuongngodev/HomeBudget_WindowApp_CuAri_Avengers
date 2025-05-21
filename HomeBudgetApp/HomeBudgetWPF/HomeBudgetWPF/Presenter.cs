@@ -224,7 +224,6 @@ namespace HomeBudgetWPF
                 return;
             }
 
-
             _model.expenses.Delete(budgetItem.ExpenseID);
             _view.DisplayConfirmation("Deleted Succesfully!");
             _view.CloseExpenseMenu();
@@ -279,12 +278,12 @@ namespace HomeBudgetWPF
         {
             if (string.IsNullOrEmpty(searchParams))
             {
-                return null;
+                return currentItem;
             }
            
             if (items.Count == 0)
             {
-                return null;
+                return currentItem;
             }
         
             int startingIndex = currentItem != null?items.IndexOf(currentItem) +1:0;
@@ -383,7 +382,7 @@ namespace HomeBudgetWPF
                 _view.DisplaySearchBar();
                 DisplayExpenseItems(start, end, isFilterByCategory, catID);
             }
-        }        
+        }
         #endregion
     }
 }
