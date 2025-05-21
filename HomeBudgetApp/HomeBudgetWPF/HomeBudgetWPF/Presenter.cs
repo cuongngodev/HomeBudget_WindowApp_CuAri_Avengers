@@ -384,14 +384,42 @@ namespace HomeBudgetWPF
                 _view.DisplaySearchBar();
                 DisplayExpenseItems(start, end, isFilterByCategory, catID);
             }
-        } 
-        
-        public void GetBudgetItemsByMonthAndCategory(DateTime start, DateTime end, bool isFilterByCategory, int catID)
+        }
+
+        //public void GetBudgetItemsByMonthAndCategory(DateTime start, DateTime end, bool isFilterByCategory, int catID)
+        //{
+        //    List<Dictionary<string, object>> data = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, isFilterByCategory, catID);
+
+        //    _view.SetDataSourceForViewControl(data);
+        //}
+        public void GetBudgetItemsByMonthAndCategory(
+            DateTime? startDate,
+            DateTime? endDate,
+            bool isFilterByCategoryChecked,
+            int selectedCategoryIndex,
+            bool isSummaryByMonthChecked,
+            bool isSummaryByCategoryChecked
+        )
         {
-            List<Dictionary<string, object>> data = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, isFilterByCategory, catID);
-            
+            if (startDate == null || endDate == null)
+            {
+                _view.DisplayError("Please select both start and end dates.");
+                return;
+            }
+
+            DateTime start = startDate.Value;
+            DateTime end = endDate.Value;
+
+            bool isFilterByCategory = isFilterByCategoryChecked;
+            int catId = isFilterByCategory ? selectedCategoryIndex + 1 : -1;
+
+           
+
+            List<Dictionary<string, object>> data = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, isFilterByCategory, catId);
+
             _view.SetDataSourceForViewControl(data);
         }
+
         /// <summary>
         /// Extracts the unique Category from the List<Dictionary<string, object>>.
         /// </summary>
