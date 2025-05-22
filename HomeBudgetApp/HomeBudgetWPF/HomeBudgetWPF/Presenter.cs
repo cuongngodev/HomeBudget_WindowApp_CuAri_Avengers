@@ -1,6 +1,8 @@
 ﻿using Budget;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Input;
 
 
 
@@ -382,6 +384,96 @@ namespace HomeBudgetWPF
                 _view.DisplaySearchBar();
                 DisplayExpenseItems(start, end, isFilterByCategory, catID);
             }
+        }
+
+        public void GetBudgetItemsByMonthAndCategory(
+            DateTime? startDate,
+            DateTime? endDate,
+            bool isFilterByCategoryChecked,
+            int selectedCategoryIndex,
+            bool isSummaryByMonthChecked,
+            bool isSummaryByCategoryChecked
+        )
+        {
+            if (startDate == null || endDate == null)
+            {
+                _view.DisplayError("Please select both start and end dates.");
+                return;
+            }
+
+            DateTime start = startDate.Value;
+            DateTime end = endDate.Value;
+
+            bool isFilterByCategory = isFilterByCategoryChecked;
+            int catId = isFilterByCategory ? selectedCategoryIndex + 1 : -1;
+
+           
+
+            List<Dictionary<string, object>> data = _model.GetBudgetDictionaryByCategoryAndMonth(start, end, isFilterByCategory, catId);
+
+            _view.SetDataSourceForViewControl(data);
+        }
+
+        /// <summary>
+        /// Extracts the unique Category from the List<Dictionary<string, object>>.
+        /// </summary>
+        /// <param name="data"></param>
+        public void GetCategoryList(List<Dictionary<string, object>> data)
+        {
+            List<string> result = new List<string>();
+
+            foreach (Dictionary<string, object> dict in data)
+            {
+                foreach (KeyValuePair<string, object> kvp in dict)
+                {
+                    if (kvp.Key == "Month" || kvp.Key == "Total" || kvp.Key.StartsWith("details:"))
+                        continue;
+
+                    // Only add key with category 
+                    if (!result.Contains(kvp.Key))
+                        result.Add(kvp.Key);
+                }
+            }
+
+            _view.SetCategoryForControlView(result);
+
+        }
+        public void GetMonthList(List<Dictionary<string, object>> data)
+        {
+            List<string> result = new List<string>();
+
+            foreach (Dictionary<string, object> dict in data)
+            {
+                foreach (KeyValuePair<string, object> kvp in dict)
+                {
+                    if (kvp.Key == "Month" && kvp.Value is string value)
+                    {
+                        DateTime.TryParseExact(value, "yyyy/MM", null, System.Globalization.DateTimeStyles.None, out _);
+
+                        result.Add(value);
+                    }
+                }
+            }
+
+            _view.SetMonthSelectionForControlView(result);
+
+
+        }
+        public void HandleSummaryButtonVisibility(bool isByMonth, bool isByCategory)
+        {
+            bool showBtnPieChart, showBtnDataGrid = false;
+
+            if (isByMonth && isByCategory)
+            {
+                showBtnDataGrid = true;
+                showBtnPieChart = true;
+            }
+            else
+            {
+                showBtnDataGrid = false;
+                showBtnPieChart = false;
+            }
+            _view.UpdateSummaryButtonVisibility(showBtnPieChart,showBtnDataGrid);
         }
         #endregion
     }

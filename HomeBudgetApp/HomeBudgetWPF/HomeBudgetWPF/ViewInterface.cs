@@ -62,6 +62,13 @@ namespace HomeBudgetWPF
 
         void ShowAudioError();
 
+        void SetDataSourceForViewControl(List<Dictionary<string,object>> data);
+
+        void SetMonthSelectionForControlView(List<string> months);
+        void SetCategoryForControlView(List<string> categories);
+        
+        void UpdateSummaryButtonVisibility(bool showBtnPieChart, bool showBtnDataGrid);
+
     }
 
 

@@ -140,6 +140,8 @@ namespace HomeBudgetWPF
             bool isSummaryByMonth = ChkByMonth.IsChecked == true;
             bool isSummaryByCategory = ChkByCategory.IsChecked == true;
 
+            _p.HandleSummaryButtonVisibility(isSummaryByMonth, isSummaryByCategory);
+
             if (ChkFilterByCategory.IsChecked == true)
             {
                 isFilterByCategory = true;
@@ -149,7 +151,12 @@ namespace HomeBudgetWPF
             _p.DisplayExpenseDataGrid(start, end, isFilterByCategory, catId, isSummaryByMonth, isSummaryByCategory);
         }
 
-
+        public void UpdateSummaryButtonVisibility(bool showBtnPieChart, bool showBtnDataGrid)
+        {
+           
+            BtnShowPieChart.Visibility = showBtnPieChart ? Visibility.Visible : Visibility.Collapsed;
+            BtnShowDataGrid.Visibility = showBtnDataGrid ? Visibility.Visible : Visibility.Collapsed;
+        }
 
         public void DisplayExpenseItemsGrid(List<BudgetItem> expenseList)
         {
@@ -569,6 +576,57 @@ namespace HomeBudgetWPF
             
             DgBudgetItems.ScrollIntoView(DgBudgetItems.SelectedItem);
             DgBudgetItems.Focus();
+        }
+
+        private void BtnShowSummaryChart_Click(object sender, RoutedEventArgs e)
+        {
+            DgBudgetItems.Visibility = Visibility.Collapsed;
+            dataChartControl.Visibility = Visibility.Visible;
+
+            // Send raw inputs to the presenter
+            _p.GetBudgetItemsByMonthAndCategory(
+                DtPckrStartDate.SelectedDate,
+                DtPckrEndDate.SelectedDate,
+                ChkFilterByCategory.IsChecked == true,
+                CmbFilterCategory.SelectedIndex,
+                ChkByMonth.IsChecked == true,
+                ChkByCategory.IsChecked == true
+            );
+
+        }
+
+
+        public void SetMonthSelectionForControlView(List<string> months)
+        {
+            dataChartControl.cbMonths.ItemsSource = months;
+
+            // set initial value to show the chart for better UI. 
+            dataChartControl.cbMonths.SelectedIndex = months.Count - 1;
+
+        }
+
+        public void SetCategoryForControlView(List<string> categories)
+        {
+            dataChartControl.InitializeByCategoryAndMonthDisplay(categories);
+
+        }
+
+
+        public void SetDataSourceForViewControl(List<Dictionary<string, object>> dataSource)
+        {
+            
+
+            dataChartControl.DataSource = dataSource;
+            // request Presenter
+            _p.GetCategoryList(dataSource);
+            _p.GetMonthList(dataSource);
+
+        }
+
+        private void BtnShowDataGrid_Click(object sender, RoutedEventArgs e)
+        {
+            dataChartControl.Visibility = Visibility.Collapsed;
+            DgBudgetItems.Visibility = Visibility.Visible;
         }
     }
 }
