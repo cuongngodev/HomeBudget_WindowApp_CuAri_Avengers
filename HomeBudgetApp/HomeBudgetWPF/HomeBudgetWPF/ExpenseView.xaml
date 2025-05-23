@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
         Title="ExpenseView" Height="450" Width="350"
+        MinHeight="300"
+        MinWidth="250"
         Background="#3e4444">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="StkExpenseView">
        

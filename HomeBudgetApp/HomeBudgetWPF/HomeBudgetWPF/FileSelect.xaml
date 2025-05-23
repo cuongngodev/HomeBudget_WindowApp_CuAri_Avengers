@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
         Title="FileSelect" Height="450" Width="800"
+        MinHeight="250"
+        MinWidth="250"
         WindowStartupLocation="CenterScreen"
         Background="#3e4444">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="StkFileSelectView">
