@@ -36,7 +36,8 @@
                                   Height="305" 
                                   VerticalAlignment="Top" 
                                   Width="537" 
-                                  Title="Test" Margin="10,10,0,0">
+                                  Title="Test" Margin="10,10,0,0"
+                                  Foreground="Black">
 
             </toolkit:LabeledPieSeries>
         </toolkit:Chart>

@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:HomeBudgetWPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
+        MinHeight="450"
+        MinWidth="600"
         Background="#3e4444">
     <Grid x:Name="GrdMainView">
         
@@ -92,6 +94,7 @@
 
 
         </StackPanel>
+        
         <!--This button to control the visibility of the DataViewContro. It shows when ChkSummaryByMonth and cat are checked-->
         <DockPanel Grid.Column="1" Grid.Row="0">
 
@@ -110,7 +113,6 @@
             />
             <Button x:Name="BtnShowDataGrid"
                 Content="View DataGrid"
-            
                 Margin="10"
                 Padding="5"
                     Height="30"
@@ -121,8 +123,8 @@
                 Foreground="#82b74b"
                 Click="BtnShowDataGrid_Click"
             />
-
         </DockPanel>
+        
         <GroupBox Header="Expenses" Grid.Column="1" Grid.Row="1" 
          Margin="10" Foreground="#82b74b" FontWeight="Bold">
             <DockPanel>
@@ -171,7 +173,9 @@
         <local:DataChartView x:Name="dataChartControl"
                              Grid.Column="1" 
                              Grid.Row="1" Margin="10" 
-                             Visibility="Collapsed"/>
+                             Visibility="Collapsed"
+                             Foreground="Black"
+                             />
 
         <StackPanel Grid.Row="3" Grid.Column="1"  Margin="10">
             <Label Foreground="#82b74b" x:Name="LblThemeTitle" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Color Themes</Label>

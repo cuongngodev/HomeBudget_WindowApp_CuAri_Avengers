@@ -25,6 +25,16 @@ namespace HomeBudgetWPF
     /// </summary>
     public partial class MainWindow : Window, ViewInterface
     {
+        private const int BASE_HEIGHT_WITH_GRID = 450;
+        private const int BASE_WIDTH_WITH_GRID = 800;
+        private const int BASE_HEIGHT_WITH_PIE = 600;
+        private const int BASE_WIDTH_WITH_PIE = 1050;
+        
+        private const int MIN_HEIGHT_WITH_GRID = 450;
+        private const int MIN_WIDTH_WITH_GRID = 600;
+        private const int MIN_HEIGHT_WITH_PIE = 600;
+        private const int MIN_WIDTH_WITH_PIE = 1050;
+        
         public Theme theme = new Theme(0);
         
         public Presenter _p;
@@ -568,7 +578,6 @@ namespace HomeBudgetWPF
 
         private void BtnSearch_Click_1(object sender, RoutedEventArgs e)
         {
-           
             DgBudgetItems.SelectedItem = _p.Search((BudgetItem)DgBudgetItems.SelectedItem, (List<BudgetItem>)DgBudgetItems.ItemsSource, TxtSearch.Text);
 
             if (DgBudgetItems.SelectedItem == null)
@@ -583,6 +592,11 @@ namespace HomeBudgetWPF
             DgBudgetItems.Visibility = Visibility.Collapsed;
             dataChartControl.Visibility = Visibility.Visible;
 
+            Height = BASE_HEIGHT_WITH_PIE;
+            Width = BASE_WIDTH_WITH_PIE;
+            MinHeight = MIN_HEIGHT_WITH_PIE;
+            MinWidth = MIN_WIDTH_WITH_PIE;
+
             // Send raw inputs to the presenter
             _p.GetBudgetItemsByMonthAndCategory(
                 DtPckrStartDate.SelectedDate,
@@ -592,7 +606,6 @@ namespace HomeBudgetWPF
                 ChkByMonth.IsChecked == true,
                 ChkByCategory.IsChecked == true
             );
-
         }
 
 
@@ -602,31 +615,30 @@ namespace HomeBudgetWPF
 
             // set initial value to show the chart for better UI. 
             dataChartControl.cbMonths.SelectedIndex = months.Count - 1;
-
         }
 
         public void SetCategoryForControlView(List<string> categories)
         {
             dataChartControl.InitializeByCategoryAndMonthDisplay(categories);
-
         }
-
 
         public void SetDataSourceForViewControl(List<Dictionary<string, object>> dataSource)
         {
-            
-
             dataChartControl.DataSource = dataSource;
             // request Presenter
             _p.GetCategoryList(dataSource);
             _p.GetMonthList(dataSource);
-
         }
 
         private void BtnShowDataGrid_Click(object sender, RoutedEventArgs e)
         {
             dataChartControl.Visibility = Visibility.Collapsed;
             DgBudgetItems.Visibility = Visibility.Visible;
+
+            Height = BASE_HEIGHT_WITH_GRID;
+            Width = BASE_WIDTH_WITH_GRID;
+            MinWidth = MIN_WIDTH_WITH_GRID;
+            MinHeight = MIN_HEIGHT_WITH_GRID;
         }
     }
 }
