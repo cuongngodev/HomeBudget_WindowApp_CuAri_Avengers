@@ -28,3 +28,13 @@ Quick start:
    git clone https://github.com/cuongngodev/HomeBudget_WindowApp_CuAri_Avengers.git
 2. Open the solution file (.sln) in Visual Studio.
 3. Build the solution and run the project (F5).
+
+
+## Screenshots
+Below are some screenshots from the app. These show the main UI, dashboards and reports.
+![Home page](HomeBudgetApp/HomeBudgetWPF/BudgetAppWAP/Images/App/home-page.png)
+![Report view](HomeBudgetApp/HomeBudgetWPF/BudgetAppWAP/Images/App/report.png)
+![User dashboard (1)](HomeBudgetApp/HomeBudgetWPF/BudgetAppWAP/Images/App/user-dashboard.png)
+![User dashboard (2)](HomeBudgetApp/HomeBudgetWPF/BudgetAppWAP/Images/App/user-dashboard-2.png)
+
+
