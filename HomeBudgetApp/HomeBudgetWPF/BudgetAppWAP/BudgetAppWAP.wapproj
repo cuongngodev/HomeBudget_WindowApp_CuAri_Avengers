@@ -102,6 +102,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BudgetAppWAP_TemporaryKey.pfx" />
+    <Content Include="Images\App\home-page.png" />
+    <Content Include="Images\App\report.png" />
+    <Content Include="Images\App\user-dashboard-2.png" />
+    <Content Include="Images\App\user-dashboard.png" />
     <Content Include="Images\icon.png" />
     <Content Include="Images\LargeTile.scale-100.png" />
     <Content Include="Images\LargeTile.scale-125.png" />
